@@ -169,6 +169,41 @@
       </div>
     </div>
 
+    <!-- AI Assistant Section -->
+    <div id="aiSection" class="tab-section ai-section hidden">
+      <div class="ai-chat-container">
+        <div class="ai-header">
+          <div class="ai-avatar">✨</div>
+          <div class="ai-header-info">
+            <div class="ai-title">Trợ lý Đội xe AI</div>
+            <div class="ai-status">Gemini 1.5 Flash • Đang trực tuyến</div>
+          </div>
+        </div>
+        
+        <div id="aiChatMessages" class="ai-messages">
+          <div class="ai-msg bot">
+            Chào bạn! Tôi là trợ lý AI chuyên về đội xe của bạn. Tôi có dữ liệu về lịch sử bảo dưỡng và GPS thời gian thực. Bạn muốn hỏi gì không?
+            <div class="ai-msg-time">Vừa xong</div>
+          </div>
+        </div>
+
+        <div class="ai-suggestions" id="aiSuggestions">
+          <button class="ai-chip" onclick="sendAiSuggestion('Top 5 xe tốn chi phí nhất?')">Top 5 xe tốn phí</button>
+          <button class="ai-chip" onclick="sendAiSuggestion('Xe nào chạy nhiều nhất hôm nay?')">Xe chạy nhiều hôm nay</button>
+          <button class="ai-chip" onclick="sendAiSuggestion('Tóm tắt tình trạng bảo dưỡng?')">Tóm tắt bảo dưỡng</button>
+        </div>
+
+        <div class="ai-input-box">
+          <div class="ai-input-wrap">
+            <textarea id="aiInput" class="ai-textarea" placeholder="Hỏi tôi về đội xe..." rows="1"></textarea>
+            <button id="sendAiBtn" class="ai-send-btn" onclick="submitAiQuery()">
+              <span class="material-icons">send</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Settings Section -->
     <div id="settingsSection" class="tab-section settings-section hidden">
       <div class="settings-group">
@@ -214,7 +249,7 @@
       </div>
       <div class="settings-group">
         <div class="settings-group-title">Thông tin</div>
-        <div class="settings-row"><div class="settings-row-left"><span class="settings-icon">📱</span><span class="settings-row-label">Phiên bản</span></div><span class="settings-value-text">V126-GPS</span></div>
+        <div class="settings-row"><div class="settings-row-left"><span class="settings-icon">📱</span><span class="settings-row-label">Phiên bản</span></div><span class="settings-value-text">V127-AI</span></div>
         <div class="settings-row"><div class="settings-row-left"><span class="settings-icon">📅</span><span class="settings-row-label">Cập nhật</span></div><span class="settings-value-text">07/04/2026</span></div>
         </div>
         <div class="settings-row">
@@ -248,6 +283,7 @@
     </div>
   </div>
   <script src="scripts.js"></script>
+  <script src="ai_logic.js"></script>
   <button id="backToTopBtn" class="back-to-top hidden" onclick="scrollToTop()">
     <span class="material-icons">arrow_upward</span>
   </button>
@@ -265,6 +301,10 @@
     <button class="nav-item" data-section="stats" onclick="switchBottomNavTab('stats')">
       <span class="material-icons">analytics</span>
       <span class="nav-label">Thống kê</span>
+    </button>
+    <button class="nav-item" data-section="ai" onclick="switchBottomNavTab('ai')">
+      <span class="material-icons">auto_awesome</span>
+      <span class="nav-label">Hỏi AI</span>
     </button>
     <button class="nav-item" data-section="settings" onclick="switchBottomNavTab('settings')">
       <span class="material-icons">settings</span>
