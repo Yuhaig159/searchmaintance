@@ -1,5 +1,5 @@
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbwUipO_fQ7XB0635MSN8cjg37VVmFLvZgeEVAaB5_tuo5gSBzo6C9ST5zCwZIB96Whu/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbxvoLJLzy_71zcV5QodOgEklLkhQdOQJS9a23DmghTovmlPYe0ZQk2FwGE_SNg98NSjdg/exec',
   VERSION: "V127-AI",
   BUILD_DATE: "2026-04-07"
 };
@@ -1169,4 +1169,4 @@ function decompressKeys(obj) {
 
     const filtered = currentGpsData.vehicles.filter(v => v.plate.includes(query));
     renderGpsVehicleList(filtered);
-  }
+  }
