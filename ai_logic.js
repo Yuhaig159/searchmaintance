@@ -31,9 +31,7 @@
     const msgDiv = document.createElement('div');
     msgDiv.className = `ai-msg ${isBot ? 'bot' : 'user'}`;
     
-    // Convert newlines to breaks for AI responses
     const formattedText = text.replace(/\n/g, '<br>');
-    
     msgDiv.innerHTML = `
       ${formattedText}
       <div class="ai-msg-time">${new Date().toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'})}</div>
@@ -53,17 +51,10 @@
 
     const typingDiv = document.createElement('div');
     typingDiv.className = 'ai-msg bot ai-typing-wrapper';
+    typingDiv.id = 'aiTypingIndicator';
     typingDiv.style.background = 'transparent';
     typingDiv.style.boxShadow = 'none';
-    typingDiv.style.border = 'none';
-    typingDiv.id = 'aiTypingIndicator';
-    typingDiv.innerHTML = `
-      <div class="ai-typing">
-        <div class="ai-dot"></div>
-        <div class="ai-dot"></div>
-        <div class="ai-dot"></div>
-      </div>
-    `;
+    typingDiv.innerHTML = `<div class="ai-typing"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div></div>`;
     container.appendChild(typingDiv);
     scrollAiToBottom();
   }
@@ -88,39 +79,42 @@
     const query = input? input.value.trim() : '';
     if (!query || isAiLoading) return;
 
-    // UI state
     isAiLoading = true;
     input.value = '';
     appendAiMessage(query, false);
     showAiTyping();
 
-    // Call Backend
-    const url = CONFIG.API_URL + (CONFIG.API_URL.includes('?') ? '&' : '?') + 'action=askAi';
+    // ⚡ V127: Gửi Action & Query qua URL để đảm bảo GAS nhận được ngay cả khi CORS bị chặn
+    const url = CONFIG.API_URL + (CONFIG.API_URL.includes('?') ? '&' : '?') + 
+                'action=askAi&query=' + encodeURIComponent(query);
     
     fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({
-        action: 'askAi',
-        args: [query]
-      })
+      headers: { 'Content-Type': 'text/plain' }
     })
-    .then(res => res.json())
+    .then(async res => {
+      const text = await res.text();
+      try {
+        return JSON.parse(text);
+      } catch(e) {
+        throw new Error('Server trả về không phải JSON: ' + text.substring(0, 100));
+      }
+    })
     .then(res => {
       isAiLoading = false;
       removeAiTyping();
       if (res && res.success) {
-        appendAiMessage(res.answer, true);
+        appendAiMessage(res.answer || res.message, true);
       } else {
-        const errorMsg = res?.error || res?.message || 'Không thể lấy câu trả lời từ AI';
-        appendAiMessage('❌ Lỗi: ' + errorMsg, true);
+        const err = res?.error || res?.stt || 'Lỗi không xác định';
+        appendAiMessage('❌ Lỗi hệ thống: ' + err, true);
+        console.error('AI Detail Error:', res);
       }
-      if (input) input.focus();
     })
     .catch(err => {
       isAiLoading = false;
       removeAiTyping();
       appendAiMessage('❌ Lỗi kết nối: ' + err.message, true);
-      if (input) input.focus();
+      console.error('Fetch Error:', err);
     });
   }
