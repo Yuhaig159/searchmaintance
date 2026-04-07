@@ -112,7 +112,8 @@
       if (res && res.success) {
         appendAiMessage(res.answer, true);
       } else {
-        appendAiMessage('❌ Lỗi: ' + (res?.error || 'Không thể lấy câu trả lời'), true);
+        const errorMsg = res?.error || res?.message || 'Không thể lấy câu trả lời từ AI';
+        appendAiMessage('❌ Lỗi: ' + errorMsg, true);
       }
       if (input) input.focus();
     })
