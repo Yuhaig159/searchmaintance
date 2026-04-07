@@ -1,0 +1,16 @@
+{
+  "name": "Tra Cứu Bảo Dưỡng Xe",
+  "short_name": "Tra Cứu Xe",
+  "description": "Ứng dụng tra cứu lịch sử bảo dưỡng xe chuyên nghiệp",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#F2F2F7",
+  "theme_color": "#14695C",
+  "icons": [
+    {
+      "src": "Logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
