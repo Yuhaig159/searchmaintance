@@ -91,7 +91,12 @@ function sendQuoteToAi(base64Data, mimeType) {
     .then(res => {
         showLoading(false);
         if (res && res.error) {
-            alert('❌ Lỗi từ AI: ' + res.error);
+            // Xử lý lỗi đặc thù cho Gemini 2.5 Flash
+            if (res.error.includes('503') || res.error.includes('high demand')) {
+                alert('⚠️ Hệ thống AI 2.5 Flash hiện đang quá tải (Busy). Vui lòng đợi khoảng 1 phút và nhấn nút quét lại. Chúng tôi đang giữ cố định phiên bản này cho bạn!');
+            } else {
+                alert('❌ Lỗi từ AI: ' + res.error);
+            }
         } else if (res && res.plate !== undefined) {
             renderScanReview(res);
         } else {
