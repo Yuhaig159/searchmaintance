@@ -19,13 +19,14 @@ function handleQuoteFile(input) {
     if (!input.files || !input.files[0]) return;
     
     const file = input.files[0];
+    const mimeType = file.type || 'image/jpeg';
     showLoading(true);
     
-    // Đọc ảnh và chuyển sang Base64
+    // Đọc ảnh/PDF và chuyển sang Base64
     const reader = new FileReader();
     reader.onload = function(e) {
         const base64Data = e.target.result.split(',')[1];
-        sendQuoteToAi(base64Data);
+        sendQuoteToAi(base64Data, mimeType);
     };
     reader.readAsDataURL(file);
     
@@ -34,15 +35,15 @@ function handleQuoteFile(input) {
 }
 
 /**
- * Gửi ảnh lên backend để AI bóc tách
+ * Gửi ảnh/PDF lên backend để AI bóc tách
  */
-function sendQuoteToAi(base64Data) {
+function sendQuoteToAi(base64Data, mimeType) {
     const url = CONFIG.API_URL + (CONFIG.API_URL.includes('?') ? '&' : '?') + 'action=extractQuote';
     
     fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ base64Data: base64Data })
+        body: JSON.stringify({ base64Data: base64Data, mimeType: mimeType })
     })
     .then(res => res.json())
     .then(res => {
