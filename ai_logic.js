@@ -84,37 +84,43 @@
     appendAiMessage(query, false);
     showAiTyping();
 
-    // ⚡ V127: Gửi Action & Query qua URL để đảm bảo GAS nhận được ngay cả khi CORS bị chặn
+    // ⚡ V127-AI: Gửi Action & Query qua URL để tránh lỗi CORS và mất Payload khi redirect
     const url = CONFIG.API_URL + (CONFIG.API_URL.includes('?') ? '&' : '?') + 
                 'action=askAi&query=' + encodeURIComponent(query);
     
     fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain' }
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }
     })
     .then(async res => {
       const text = await res.text();
       try {
         return JSON.parse(text);
       } catch(e) {
-        throw new Error('Server trả về không phải JSON: ' + text.substring(0, 100));
+        // Fallback: có thể Server trả về lỗi dạng Text thuần túy (HTML Error)
+        if (text.includes('Service Unavailable') || text.includes('Error 500')) {
+          throw new Error('Dịch vụ Google Script tạm bận hoặc đang bảo trì.');
+        }
+        throw new Error('Máy chủ phản hồi không đúng định dạng JSON.');
       }
     })
     .then(res => {
       isAiLoading = false;
       removeAiTyping();
       if (res && res.success) {
-        appendAiMessage(res.answer || res.message, true);
+        appendAiMessage(res.answer || res.message || 'AI không có câu trả lời cụ thể cho vấn đề này.', true);
       } else {
-        const err = res?.error || res?.stt || 'Lỗi không xác định';
-        appendAiMessage('❌ Lỗi hệ thống: ' + err, true);
+        const err = res?.error || res?.stt || 'Lỗi không xác định từ Backend';
+        appendAiMessage('⚠️ ' + err, true);
         console.error('AI Detail Error:', res);
       }
     })
     .catch(err => {
       isAiLoading = false;
       removeAiTyping();
-      appendAiMessage('❌ Lỗi kết nối: ' + err.message, true);
+      let userMsg = '❌ Lỗi kết nối: ' + err.message;
+      if (err.message.includes('fetch')) userMsg = '❌ Không thể kết nối tới Server. Hãy kiểm tra Internet hoặc URL Web App.';
+      appendAiMessage(userMsg, true);
       console.error('Fetch Error:', err);
     });
   }
