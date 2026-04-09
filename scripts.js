@@ -1,5 +1,5 @@
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbyzRfzOpCTYiQKLwK-JLLBwP3_UGkYXHIhE-tzJuFFaBLENyXnj9PkRcoo11tX4zxokAg/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbzzYXc7w1OIr6Crtu5zoXHlQckR_oqjFW-wTBUx20lfTvBPvp_4jPuAKDDInauBwsELOQ/exec',
   VERSION: "V127-AI",
   BUILD_DATE: "2026-04-07"
 };
