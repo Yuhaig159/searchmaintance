@@ -15,6 +15,9 @@ function triggerQuoteScan() {
 /**
  * Xử lý sau khi người dùng chọn ảnh
  */
+/**
+ * Xử lý sau khi người dùng chọn ảnh
+ */
 function handleQuoteFile(input) {
     if (!input.files || !input.files[0]) return;
     
@@ -22,16 +25,55 @@ function handleQuoteFile(input) {
     const mimeType = file.type || 'image/jpeg';
     showLoading(true);
     
-    // Đọc ảnh/PDF và chuyển sang Base64
+    // Nếu là file PDF, gửi trực tiếp. Nếu là ảnh, thực hiện nén.
+    if (mimeType === 'application/pdf') {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Data = e.target.result.split(',')[1];
+            sendQuoteToAi(base64Data, mimeType);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        compressImage(file, function(base64Data) {
+            sendQuoteToAi(base64Data, mimeType);
+        });
+    }
+    
+    // Reset input
+    input.value = '';
+}
+
+/**
+ * Nén ảnh bằng Canvas để giảm dung lượng
+ */
+function compressImage(file, callback) {
     const reader = new FileReader();
     reader.onload = function(e) {
-        const base64Data = e.target.result.split(',')[1];
-        sendQuoteToAi(base64Data, mimeType);
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            
+            // Giới hạn chiều rộng tối đa 1600px để đảm bảo AI đọc được nhưng không quá nặng
+            const MAX_WIDTH = 1600;
+            if (width > MAX_WIDTH) {
+                height = Math.round((height * MAX_WIDTH) / width);
+                width = MAX_WIDTH;
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // Nén chất lượng xuống 0.7
+            const base64Data = canvas.toDataURL('image/jpeg', 0.7).split(',')[1];
+            callback(base64Data);
+        };
+        img.src = e.target.result;
     };
     reader.readAsDataURL(file);
-    
-    // Reset input để có thể chọn lại cùng 1 file
-    input.value = '';
 }
 
 /**
@@ -48,10 +90,12 @@ function sendQuoteToAi(base64Data, mimeType) {
     .then(res => res.json())
     .then(res => {
         showLoading(false);
-        if (res && res.plate !== undefined) {
+        if (res && res.error) {
+            alert('❌ Lỗi từ AI: ' + res.error);
+        } else if (res && res.plate !== undefined) {
             renderScanReview(res);
         } else {
-            alert('❌ AI không thể đọc được báo giá này. Hãy thử chụp ảnh rõ nét hơn.');
+            alert('❌ AI không trả về dữ liệu hợp lệ. Hãy thử chụp ảnh rõ nét hơn.');
         }
     })
     .catch(err => {
