@@ -1,7 +1,7 @@
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbzzYXc7w1OIr6Crtu5zoXHlQckR_oqjFW-wTBUx20lfTvBPvp_4jPuAKDDInauBwsELOQ/exec',
-  VERSION: "V127-AI",
-  BUILD_DATE: "2026-04-07"
+  API_URL: 'https://script.google.com/macros/s/AKfycbyJtGnyQcq5bxvAHqARyZ11x0mXIVlttBo3P6o7bSk06K_iN7oImLGToWWxX3nFrTaguA/exec',
+  VERSION: "V128-AI",
+  BUILD_DATE: "2026-04-08"
 };
 
 const MAINTENANCE_TARGETS = [
