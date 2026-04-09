@@ -265,6 +265,61 @@
     <div class="loading-spinner"></div>
   </div>
 
+  <!-- AI QUOTE SCANNER MODAL (NEW V128-AI) -->
+  <div id="scanReviewModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeScanReview()"></div>
+    <div class="modal-content scan-modal">
+      <div class="modal-header">
+        <h2 class="modal-title">KIỂM DUYỆT BÁO GIÁ</h2>
+        <button class="modal-close" onclick="closeScanReview()">
+          <span class="material-icons">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="scan-basic-info">
+          <div class="scan-input-group">
+            <label>Biển số</label>
+            <input type="text" id="scanPlate" placeholder="VD: 51K12345">
+          </div>
+          <div class="scan-input-group">
+            <label>Ngày</label>
+            <input type="text" id="scanDate" placeholder="DD/MM/YYYY">
+          </div>
+          <div class="scan-input-group">
+            <label>Số KM</label>
+            <input type="number" id="scanKm" placeholder="0">
+          </div>
+        </div>
+        
+        <h3 class="scan-sub-title">Danh sách hạng mục</h3>
+        <div id="scanItemsList" class="scan-items-list">
+          <!-- Hạng mục sẽ được render ở đây -->
+        </div>
+        
+        <div class="scan-actions">
+          <button class="scan-add-btn" onclick="addScanItem()">
+            <span class="material-icons">add</span> Thêm hạng mục
+          </button>
+          <div class="scan-total">
+            Tổng cộng: <strong id="scanTotalAmount">0</strong> VNĐ
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="settings-btn settings-btn-secondary" onclick="closeScanReview()">Hủy</button>
+        <button class="settings-btn" id="saveScanBtn" onclick="submitScannedData()">
+          <span class="material-icons" style="font-size:18px;">save</span> Xác nhận lưu
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nút quét báo giá nổi (Floating Action Button) -->
+  <input type="file" id="quoteFileInput" accept="image/*" capture="environment" class="hidden" onchange="handleQuoteFile(this)">
+  <button class="fab-btn" id="scanQuoteBtn" onclick="triggerQuoteScan()" title="Quét báo giá AI">
+    <span class="material-icons">photo_camera</span>
+  </button>
+
   <!-- REPLACEMENT DETAILS MODAL -->
   <div id="replacementModal" class="modal hidden">
     <div class="modal-overlay" onclick="closeReplacementModal()"></div>
@@ -284,6 +339,7 @@
   </div>
   <script src="scripts.js"></script>
   <script src="ai_logic.js"></script>
+  <script src="scanner_logic.js"></script>
   <button id="backToTopBtn" class="back-to-top hidden" onclick="scrollToTop()">
     <span class="material-icons">arrow_upward</span>
   </button>
@@ -314,4 +370,4 @@
 
 </body>
 
-</html>
+</html>s
