@@ -95,12 +95,14 @@ function sendQuoteToAi(base64Data, mimeType) {
             if (res.error.includes('503') || res.error.includes('high demand')) {
                 alert('⚠️ Hệ thống AI 2.5 Flash hiện đang quá tải (Busy). Vui lòng đợi khoảng 1 phút và nhấn nút quét lại. Chúng tôi đang giữ cố định phiên bản này cho bạn!');
             } else {
-                alert('❌ Lỗi từ AI: ' + res.error);
+                let msg = '❌ Lỗi: ' + res.error;
+                if (res.raw) msg += '\n\nDữ liệu thô AI trả về:\n' + res.raw;
+                alert(msg);
             }
         } else if (res && res.plate !== undefined) {
             renderScanReview(res);
         } else {
-            alert('❌ AI không trả về dữ liệu hợp lệ. Hãy thử chụp ảnh rõ nét hơn.');
+            alert('❌ AI không trả về dữ liệu hợp lệ. Hãy thử chụp ảnh rõ nét hơn hoặc kiểm tra lại file.');
         }
     })
     .catch(err => {
