@@ -90,10 +90,16 @@ function sendQuoteToAi(base64Data, mimeType) {
     .then(res => res.json())
     .then(res => {
         showLoading(false);
+        
+        // 🔓 Giải nén nếu dữ liệu được nén từ Backend
+        if (res && res.isCompressed && typeof decompressKeys === 'function') {
+            res = decompressKeys(res);
+        }
+
         if (res && res.error) {
-            // Xử lý lỗi đặc thù cho Gemini 2.5 Flash
-            if (res.error.includes('503') || res.error.includes('high demand')) {
-                alert('⚠️ Hệ thống AI 2.5 Flash hiện đang quá tải (Busy). Vui lòng đợi khoảng 1 phút và nhấn nút quét lại. Chúng tôi đang giữ cố định phiên bản này cho bạn!');
+            // Xử lý lỗi đặc thù cho Gemini
+            if (res.error.includes('503') || res.error.includes('high demand') || res.error.includes('Busy')) {
+                alert('⚠️ Hệ thống AI hiện đang quá tải (Busy). Vui lòng đợi khoảng 1 phút và nhấn nút quét lại.');
             } else {
                 let msg = '❌ Lỗi: ' + res.error;
                 if (res.raw) msg += '\n\nDữ liệu thô AI trả về:\n' + res.raw;
@@ -102,7 +108,8 @@ function sendQuoteToAi(base64Data, mimeType) {
         } else if (res && res.plate !== undefined) {
             renderScanReview(res);
         } else {
-            alert('❌ AI không trả về dữ liệu hợp lệ. Hãy thử chụp ảnh rõ nét hơn hoặc kiểm tra lại file.');
+            console.error('Phản hồi AI không hợp lệ:', res);
+            alert('❌ AI không trả về dữ liệu hợp lệ. Hãy thử chụp ảnh rõ nét hơn hoặc kiểm tra kỹ file PDF của bạn.');
         }
     })
     .catch(err => {
