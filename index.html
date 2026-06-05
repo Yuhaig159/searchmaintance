@@ -136,24 +136,29 @@
             <div class="ai-title">Trợ lý Đội xe AI</div>
             <div class="ai-status">Gemini 2.5 Flash • Đang trực tuyến</div>
           </div>
+          <button class="icon-btn" onclick="clearAiChat()" title="Xóa lịch sử trò chuyện" style="width:36px;height:36px;min-width:36px;">
+            <span class="material-icons" style="font-size:18px;">delete_outline</span>
+          </button>
         </div>
         
         <div id="aiChatMessages" class="ai-messages">
           <div class="ai-msg bot">
-            Chào bạn! Tôi là trợ lý AI chuyên về đội xe của bạn. Tôi có dữ liệu về lịch sử bảo dưỡng và GPS thời gian thực. Bạn muốn hỏi gì không?
+            <div class="ai-msg-content">Chào bạn! Tôi là trợ lý AI chuyên về đội xe. Tôi có dữ liệu về lịch sử bảo dưỡng và GPS thời gian thực. Bạn muốn hỏi gì không?</div>
             <div class="ai-msg-time">Vừa xong</div>
           </div>
         </div>
 
         <div class="ai-suggestions" id="aiSuggestions">
-          <button class="ai-chip" onclick="sendAiSuggestion('Top 5 xe tốn chi phí nhất?')">Top 5 xe tốn phí</button>
-          <button class="ai-chip" onclick="sendAiSuggestion('Xe nào chạy nhiều nhất hôm nay?')">Xe chạy nhiều hôm nay</button>
-          <button class="ai-chip" onclick="sendAiSuggestion('Tóm tắt tình trạng bảo dưỡng?')">Tóm tắt bảo dưỡng</button>
+          <button class="ai-chip" onclick="sendAiSuggestion('Top 5 xe tốn chi phí nhất?')">💰 Top 5 xe tốn phí</button>
+          <button class="ai-chip" onclick="sendAiSuggestion('Xe nào chạy nhiều km nhất hôm nay?')">🚗 Xe chạy nhiều hôm nay</button>
+          <button class="ai-chip" onclick="sendAiSuggestion('Tóm tắt tình trạng bảo dưỡng toàn đội xe')">📋 Tóm tắt bảo dưỡng</button>
+          <button class="ai-chip" onclick="sendAiSuggestion('Xe nào cần bảo dưỡng sớm nhất?')">⚠️ Cần bảo dưỡng gấp</button>
+          <button class="ai-chip" onclick="sendAiSuggestion('So sánh chi phí bảo dưỡng giữa các xe')">📊 So sánh chi phí</button>
         </div>
 
         <div class="ai-input-box">
           <div class="ai-input-wrap">
-            <textarea id="aiInput" class="ai-textarea" placeholder="Hỏi tôi về đội xe..." rows="1"></textarea>
+            <textarea id="aiInput" class="ai-textarea" placeholder="Hỏi về đội xe, chi phí, GPS..." rows="1"></textarea>
             <button id="sendAiBtn" class="ai-send-btn" onclick="submitAiQuery()">
               <span class="material-icons">send</span>
             </button>
