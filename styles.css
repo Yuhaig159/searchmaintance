@@ -3086,7 +3086,17 @@
     box-shadow: 0 4px 8px rgba(255, 45, 85, 0.2);
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 1023px) {
+    .ai-floating-widget {
+      bottom: calc(100px + env(safe-area-inset-bottom));
+      right: 16px;
+      width: 48px;
+      height: 48px;
+      box-shadow: 0 6px 20px rgba(175, 82, 222, 0.4), 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+    .ai-floating-widget .material-icons {
+      font-size: 24px !important;
+    }
     .ai-floating-chatbox {
       width: calc(100vw - 32px) !important;
       height: calc(100vh - 180px) !important;
@@ -3094,6 +3104,10 @@
       top: 90px !important;
       right: 16px !important;
       bottom: auto !important;
+    }
+    .ai-floating-chatbox::before,
+    .ai-floating-chatbox::after {
+      display: none !important;
     }
   }
   
