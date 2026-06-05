@@ -189,7 +189,7 @@
 
     // Thêm AbortController để timeout tránh kẹt trạng thái khi rớt mạng hoặc máy sleep
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // Timeout 30 giây
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // Tăng timeout lên 60 giây (Gemini có thể xử lý lâu)
 
     fetch(url, {
       method: 'POST',
