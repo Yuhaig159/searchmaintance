@@ -3376,104 +3376,193 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   DESKTOP OPTIMIZATION (Responsive Layout)
+   PREMIUM DESKTOP SAAS LAYOUT
    ═══════════════════════════════════════════════════════════════════════ */
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   body {
     display: flex;
     flex-direction: row;
     height: 100vh;
     overflow: hidden;
+    background: var(--ios-bg-secondary);
   }
 
-  /* Transform Bottom Nav to Sidebar */
+  /* 1. Sidebar Styling (Refined) */
   .bottom-nav {
     position: static;
     flex-direction: column;
     justify-content: flex-start;
-    width: 240px;
+    width: 260px;
     height: 100vh;
     border-radius: 0;
     border-right: 1px solid var(--ios-sep);
     border-top: none;
     border-bottom: none;
     border-left: none;
-    padding: 32px 16px;
-    gap: 16px;
-    background: var(--ios-bg-secondary);
-    box-shadow: none;
+    padding: 40px 20px;
+    gap: 8px;
+    background: var(--glass-bg);
+    box-shadow: 2px 0 20px var(--shadow-light);
     flex-shrink: 0;
     z-index: 100;
-    order: -1; /* Move to the left of app-section */
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+    order: -1;
+    backdrop-filter: blur(40px) saturate(150%);
+    -webkit-backdrop-filter: blur(40px) saturate(150%);
+  }
+
+  /* Sidebar header */
+  .bottom-nav::before {
+    content: 'FLEET MANAGER';
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--ios-text-tertiary);
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    padding-left: 16px;
   }
 
   .nav-item {
     flex-direction: row;
     justify-content: flex-start;
     max-width: 100%;
-    padding: 12px 16px;
+    padding: 14px 16px;
     gap: 16px;
-    border-radius: var(--radius-md);
+    border-radius: 14px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .nav-item:hover {
+    background: var(--ios-fill-secondary);
   }
 
   .nav-label {
     font-size: 15px;
     display: block;
+    font-weight: 600;
   }
 
   .nav-item.active {
-    background: var(--ios-card);
-    box-shadow: 0 4px 12px var(--shadow-light);
+    background: var(--brand-green);
+    color: white !important;
+    box-shadow: 0 4px 16px rgba(28, 105, 91, 0.3);
+    transform: translateY(-2px);
   }
 
-  /* Adjust App Section for Desktop */
+  .nav-item.active .material-icons {
+    color: white !important;
+  }
+
+  /* 2. Main App Area (Right Pane) */
   .app-section {
     flex: 1;
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
-    padding-bottom: 20px;
+    background: transparent; /* Allows body background to show through if needed */
   }
 
-  .main-content, .tab-section {
-    padding: 24px 40px;
+  /* Custom Scrollbar for Desktop */
+  .app-section::-webkit-scrollbar {
+    width: 8px;
+  }
+  .app-section::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .app-section::-webkit-scrollbar-thumb {
+    background: var(--ios-sep);
+    border-radius: 10px;
   }
 
-  /* Hero Section */
+  /* 3. Hero Section (Centered nicely on the right pane) */
+  .hero-section {
+    min-height: 100%; /* take full height of app-section */
+    justify-content: center;
+    background: transparent;
+  }
+
   .hero-search-box {
-    max-width: 600px;
+    max-width: 640px;
+    padding: 12px 12px 12px 32px;
   }
 
-  /* Results List Layout */
+  .hero-input {
+    font-size: 20px;
+  }
+
+  .hero-icon {
+    max-width: 320px;
+    margin-bottom: 24px;
+  }
+
+  /* 4. App Header (Floating Top Bar) */
+  .app-header {
+    margin: 24px auto;
+    max-width: 1120px;
+    border-radius: 20px;
+    padding: 16px 24px;
+    box-shadow: 0 8px 32px var(--shadow-light);
+    border: 1px solid var(--ios-sep-light);
+  }
+
+  /* 5. Main Content Wrapper */
+  .main-content, .tab-section {
+    max-width: 1200px; /* Constrain width for perfect readability */
+    margin: 0 auto;
+    padding: 0 40px 60px 40px;
+  }
+
+  /* 6. Summary Card (Wider Layout) */
+  .summary-card {
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    padding: 24px 32px;
+  }
+
+  .summary-item {
+    align-items: flex-start;
+    text-align: left;
+  }
+  
+  .summary-item.right-align {
+    text-align: left;
+  }
+
+  .summary-btn {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    height: 100%;
+    font-size: 14px;
+  }
+
+  /* 7. Results List Grid */
   #resultsList {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 20px;
-    padding-bottom: 40px;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 24px;
+    padding-top: 16px;
   }
 
   .card {
     margin: 0;
     height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* GPS Grid */
+  .card-body {
+    flex: 1; /* Make inner content expand */
+  }
+
+  /* 8. GPS Section */
   #gpsVehicleList {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
   }
 
   .gps-card {
     margin: 0;
-  }
-
-  /* App Header */
-  .app-header {
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
-    margin: 0 16px 24px 16px;
   }
 }
