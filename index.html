@@ -12,7 +12,7 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=131">
   <link rel="stylesheet" href="desktop.css" media="(min-width: 1024px)">
   
   <!-- SEO & PWA Optimization -->
@@ -126,49 +126,6 @@
       </div>
     </div>
 
-    <!-- Floating AI Assistant Widget & Chatbox -->
-    <div id="aiFloatingWidget" class="ai-floating-widget" title="Trợ lý ảo AI">
-      <span class="material-icons" style="font-size: 28px;">auto_awesome</span>
-    </div>
-
-    <div id="aiFloatingChatbox" class="ai-floating-chatbox">
-      <div class="ai-floating-header" id="aiFloatingHeader">
-        <div class="ai-avatar" style="width: 32px; height: 32px; font-size: 18px; border-radius: 8px;">✨</div>
-        <div class="ai-floating-header-info">
-          <span class="ai-floating-title">Trợ lý ảo Đội xe AI</span>
-          <span class="ai-floating-status">Gemini 3.5 Flash • Trực tuyến</span>
-        </div>
-        <button class="icon-btn" onclick="clearAiChat()" title="Xóa hội thoại" style="width: 32px; height: 32px; min-width: 32px; color: var(--ios-label-secondary); background: transparent;">
-          <span class="material-icons" style="font-size: 16px;">delete_outline</span>
-        </button>
-        <button class="icon-btn" id="closeAiChatBtn" title="Thu nhỏ" style="width: 32px; height: 32px; min-width: 32px; color: var(--ios-label-secondary); background: transparent;">
-          <span class="material-icons" style="font-size: 18px;">close</span>
-        </button>
-      </div>
-
-      <div id="aiChatMessages" class="ai-messages">
-        <div class="ai-msg bot">
-          <div class="ai-msg-content">Chào bạn! Tôi là trợ lý AI chuyên về đội xe. Tôi có dữ liệu về lịch sử bảo dưỡng và GPS thời gian thực. Bạn muốn hỏi gì không?</div>
-          <div class="ai-msg-time">Vừa xong</div>
-        </div>
-      </div>
-
-      <div class="ai-suggestions" id="aiSuggestions">
-        <button class="ai-chip" onclick="sendAiSuggestion('Top 5 xe tốn chi phí nhất?')">💰 Top 5 xe tốn phí</button>
-        <button class="ai-chip" onclick="sendAiSuggestion('Xe nào chạy nhiều km nhất hôm nay?')">🚗 Xe chạy nhiều hôm nay</button>
-        <button class="ai-chip" onclick="sendAiSuggestion('Tóm tắt tình trạng bảo dưỡng toàn đội xe')">📋 Tóm tắt bảo dưỡng</button>
-      </div>
-
-      <div class="ai-input-box">
-        <div class="ai-input-wrap">
-          <textarea id="aiInput" class="ai-textarea" placeholder="Hỏi về đội xe, chi phí, GPS..." rows="1"></textarea>
-          <button id="sendAiBtn" class="ai-send-btn" onclick="submitAiQuery()">
-            <span class="material-icons">send</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
     <!-- Settings Section -->
     <div id="settingsSection" class="tab-section settings-section hidden">
       <div class="settings-group">
@@ -256,6 +213,49 @@
   <button id="backToTopBtn" class="back-to-top hidden" onclick="scrollToTop()">
     <span class="material-icons">arrow_upward</span>
   </button>
+
+  <!-- Floating AI Assistant Widget & Chatbox -->
+  <div id="aiFloatingWidget" class="ai-floating-widget" title="Trợ lý ảo AI">
+    <span class="material-icons" style="font-size: 28px;">auto_awesome</span>
+  </div>
+
+  <div id="aiFloatingChatbox" class="ai-floating-chatbox">
+    <div class="ai-floating-header" id="aiFloatingHeader">
+      <div class="ai-avatar" style="width: 32px; height: 32px; font-size: 18px; border-radius: 8px;">✨</div>
+      <div class="ai-floating-header-info">
+        <span class="ai-floating-title">Trợ lý ảo Đội xe AI</span>
+        <span class="ai-floating-status">Gemini 3.5 Flash • Trực tuyến</span>
+      </div>
+      <button class="icon-btn" onclick="clearAiChat()" title="Xóa hội thoại" style="width: 32px; height: 32px; min-width: 32px; color: var(--ios-label-secondary); background: transparent;">
+        <span class="material-icons" style="font-size: 16px;">delete_outline</span>
+      </button>
+      <button class="icon-btn" id="closeAiChatBtn" title="Thu nhỏ" style="width: 32px; height: 32px; min-width: 32px; color: var(--ios-label-secondary); background: transparent;">
+        <span class="material-icons" style="font-size: 18px;">close</span>
+      </button>
+    </div>
+
+    <div id="aiChatMessages" class="ai-messages">
+      <div class="ai-msg bot">
+        <div class="ai-msg-content">Chào bạn! Tôi là trợ lý AI chuyên về đội xe. Tôi có dữ liệu về lịch sử bảo dưỡng và GPS thời gian thực. Bạn muốn hỏi gì không?</div>
+        <div class="ai-msg-time">Vừa xong</div>
+      </div>
+    </div>
+
+    <div class="ai-suggestions" id="aiSuggestions">
+      <button class="ai-chip" onclick="sendAiSuggestion('Top 5 xe tốn chi phí nhất?')">💰 Top 5 xe tốn phí</button>
+      <button class="ai-chip" onclick="sendAiSuggestion('Xe nào chạy nhiều km nhất hôm nay?')">🚗 Xe chạy nhiều hôm nay</button>
+      <button class="ai-chip" onclick="sendAiSuggestion('Tóm tắt tình trạng bảo dưỡng toàn đội xe')">📋 Tóm tắt bảo dưỡng</button>
+    </div>
+
+    <div class="ai-input-box">
+      <div class="ai-input-wrap">
+        <textarea id="aiInput" class="ai-textarea" placeholder="Hỏi về đội xe, chi phí, GPS..." rows="1"></textarea>
+        <button id="sendAiBtn" class="ai-send-btn" onclick="submitAiQuery()">
+          <span class="material-icons">send</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav">
