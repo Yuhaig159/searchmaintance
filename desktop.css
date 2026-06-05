@@ -1,0 +1,549 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESKTOP.CSS — Premium Desktop Experience
+   Designed for 1024px+ screens
+   
+   This file is loaded ONLY on desktop via <link media="(min-width:1024px)">
+   It completely overrides the mobile layout for a professional SaaS feel.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ────────────────────────────────────────────────────────────────────
+   1. PAGE ARCHITECTURE — Sidebar + Main Area (Two-Column Shell)
+   ──────────────────────────────────────────────────────────────────── */
+body {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--ios-bg);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   2. SIDEBAR — Replaces Bottom Nav
+   ──────────────────────────────────────────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 260px;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 0;
+  border: none;
+  border-right: 1px solid var(--ios-sep-light);
+  padding: 0;
+  gap: 0;
+  background: var(--ios-bg-secondary);
+  box-shadow: none;
+  z-index: 200;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  overflow: hidden;
+}
+
+/* Sidebar branding header */
+.bottom-nav::before {
+  content: '🚛  Fleet Manager';
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ios-text);
+  letter-spacing: 0.3px;
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid var(--ios-sep-light);
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .bottom-nav::before {
+  color: var(--ios-text);
+}
+
+/* Sidebar nav items */
+.nav-item {
+  flex-direction: row;
+  justify-content: flex-start;
+  max-width: none;
+  padding: 12px 20px;
+  margin: 2px 12px;
+  gap: 14px;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+  font-size: 15px;
+}
+
+.nav-item:hover {
+  background: var(--ios-fill-tertiary);
+}
+
+.nav-item .material-icons {
+  font-size: 22px !important;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.nav-label {
+  font-size: 15px;
+  font-weight: 600;
+  display: block;
+  letter-spacing: -0.1px;
+}
+
+/* Active state — filled pill */
+.nav-item.active {
+  background: var(--brand-green);
+  color: white !important;
+  box-shadow: 0 4px 16px rgba(28, 105, 91, 0.25);
+}
+
+.nav-item.active .material-icons {
+  color: white !important;
+  opacity: 1;
+}
+
+.nav-item.active .nav-label {
+  color: white !important;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   3. MAIN APP AREA — Right side of Sidebar
+   ──────────────────────────────────────────────────────────────────── */
+.app-section {
+  margin-left: 260px;  /* Push right of sidebar */
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  background: var(--ios-bg);
+}
+
+/* Premium thin scrollbar */
+.app-section::-webkit-scrollbar {
+  width: 6px;
+}
+.app-section::-webkit-scrollbar-track {
+  background: transparent;
+}
+.app-section::-webkit-scrollbar-thumb {
+  background: var(--ios-sep);
+  border-radius: 10px;
+}
+.app-section::-webkit-scrollbar-thumb:hover {
+  background: var(--ios-text-tertiary);
+}
+
+/* Disable the huge mesh gradient blobs on desktop — too distracting */
+.app-section::before,
+.app-section::after {
+  display: none;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   4. HERO SECTION — Centered search on desktop
+   ──────────────────────────────────────────────────────────────────── */
+#heroSection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+  padding: 40px 60px;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 640px;
+  width: 100%;
+}
+
+.hero-icon {
+  max-width: 260px;
+  margin-bottom: 20px;
+}
+
+.hero-title {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.hero-search-box {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 10px 10px 10px 28px;
+  border-radius: 60px;
+}
+
+.hero-input {
+  font-size: 18px;
+}
+
+.hero-search-btn {
+  width: 52px;
+  height: 52px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   5. APP HEADER — Floating pill-shaped toolbar
+   ──────────────────────────────────────────────────────────────────── */
+.app-header {
+  position: sticky;
+  top: 0;
+  margin: 0;
+  border-radius: 0;
+  padding: 14px 40px;
+  border-bottom: 1px solid var(--ios-sep-light);
+  box-shadow: 0 2px 12px var(--shadow-light);
+  z-index: 100;
+  backdrop-filter: blur(60px) saturate(180%);
+  -webkit-backdrop-filter: blur(60px) saturate(180%);
+}
+
+.plate-number {
+  font-size: 20px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   6. MAIN CONTENT — Constrained width, centered
+   ──────────────────────────────────────────────────────────────────── */
+.main-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 48px 80px;
+}
+
+.tab-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 48px 80px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   7. SUMMARY CARD — Horizontal 3-column on desktop
+   ──────────────────────────────────────────────────────────────────── */
+.summary-card {
+  grid-template-columns: 1fr 1fr auto;
+  grid-template-rows: auto;
+  padding: 20px 28px;
+  gap: 20px;
+  align-items: center;
+}
+
+.summary-item.right-align {
+  text-align: right;
+}
+
+.summary-btn {
+  grid-column: auto;
+  grid-row: auto;
+  padding: 12px 28px;
+  white-space: nowrap;
+  align-self: center;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   8. FLOATING SEARCH CHIP — Wider on desktop
+   ──────────────────────────────────────────────────────────────────── */
+.floating-search-chip {
+  max-width: 480px;
+  margin: 20px 0;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   9. RESULTS LIST — 2-column masonry grid
+   ──────────────────────────────────────────────────────────────────── */
+#resultsList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 8px 0 40px;
+}
+
+.card {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow:
+    0 16px 40px var(--shadow-medium),
+    0 6px 16px var(--shadow-light);
+  border-color: var(--ios-accent-green-border);
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card-header {
+  padding: 14px 18px;
+}
+
+.card-title {
+  font-size: 16px;
+}
+
+.card-km-value {
+  font-size: 20px;
+}
+
+.work-desc {
+  font-size: 14px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   10. DETAILS COLLAPSE — Wider table on desktop
+   ──────────────────────────────────────────────────────────────────── */
+.details-collapse {
+  border-radius: 20px;
+}
+
+.details-table td {
+  padding: 14px 20px;
+  font-size: 15px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   11. GPS SECTION — Grid layout for vehicle cards
+   ──────────────────────────────────────────────────────────────────── */
+.gps-summary-bar {
+  max-width: 640px;
+  margin: 0 auto 20px;
+  border-radius: 20px;
+  padding: 20px 32px;
+}
+
+.gps-stat-value {
+  font-size: 28px !important;
+}
+
+.gps-search-bar {
+  max-width: 480px;
+  margin: 0 auto 24px;
+}
+
+#gpsVehicleList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.gps-card {
+  margin: 0 !important;
+  border-radius: 16px;
+  transition: all 0.2s ease;
+}
+
+.gps-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--shadow-medium);
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   12. AI CHAT SECTION — Centered chat container
+   ──────────────────────────────────────────────────────────────────── */
+.ai-section {
+  max-width: 860px;
+  margin: 0 auto;
+  height: calc(100vh - 40px) !important;
+  padding: 20px 0 !important;
+}
+
+.ai-chat-container {
+  border-radius: 24px;
+  border: 1px solid var(--ios-sep-light);
+  box-shadow: 0 8px 32px var(--shadow-light);
+  overflow: hidden;
+  height: 100%;
+}
+
+.ai-header {
+  padding: 20px 28px;
+}
+
+.ai-messages {
+  padding: 28px 32px;
+}
+
+.ai-msg {
+  max-width: 75%;
+  font-size: 15px;
+  padding: 14px 20px;
+}
+
+.ai-suggestions {
+  padding: 0 28px 12px;
+}
+
+.ai-input-box {
+  padding: 16px 28px;
+}
+
+.ai-input-wrap {
+  border-radius: 28px;
+  padding: 8px 8px 8px 20px;
+}
+
+.ai-textarea {
+  font-size: 15px;
+}
+
+.ai-send-btn {
+  width: 40px;
+  height: 40px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   13. SETTINGS SECTION — Centered, constrained width
+   ──────────────────────────────────────────────────────────────────── */
+.settings-section {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.settings-group {
+  border-radius: 20px;
+}
+
+.settings-row {
+  padding: 18px 24px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   14. MODAL — Larger on desktop
+   ──────────────────────────────────────────────────────────────────── */
+.modal-content {
+  max-width: 640px;
+  border-radius: 24px;
+}
+
+.modal-body {
+  padding: 28px 32px;
+}
+
+.modal-table td {
+  padding: 18px 16px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   15. TOAST — Positioned higher, away from bottom nav
+   ──────────────────────────────────────────────────────────────────── */
+.toast {
+  bottom: 40px;
+  left: calc(260px + 50%);
+  transform: translateX(-50%);
+  border-radius: 16px;
+  font-size: 15px;
+  padding: 14px 28px;
+  box-shadow: 0 12px 40px var(--shadow-strong);
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   16. LOADING OVERLAY — Offset for sidebar
+   ──────────────────────────────────────────────────────────────────── */
+.loading-overlay {
+  left: 260px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   17. BACK TO TOP BUTTON — Reposition for desktop
+   ──────────────────────────────────────────────────────────────────── */
+.back-to-top {
+  right: 40px;
+  bottom: 40px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   18. EMPTY STATE — Centered elegantly
+   ──────────────────────────────────────────────────────────────────── */
+.empty-state {
+  min-height: calc(100vh - 120px);
+}
+
+.empty-icon {
+  width: 140px;
+  height: 140px;
+}
+
+.empty-icon .material-icons {
+  font-size: 72px;
+}
+
+.empty-title {
+  font-size: 28px;
+}
+
+.empty-text {
+  font-size: 17px;
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   19. ULTRA-WIDE (1600px+) — 3-column results grid
+   ──────────────────────────────────────────────────────────────────── */
+@media (min-width: 1600px) {
+  #resultsList {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .main-content,
+  .tab-section {
+    max-width: 1480px;
+    padding: 32px 64px 80px;
+  }
+
+  #gpsVehicleList {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+
+  .ai-section {
+    max-width: 960px;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────────
+   20. DARK MODE ADJUSTMENTS FOR DESKTOP
+   ──────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] .bottom-nav {
+  background: rgba(28, 28, 30, 0.95);
+  border-right-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .bottom-nav::before {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .nav-item.active {
+  background: var(--ios-accent-green);
+  box-shadow: 0 4px 20px rgba(48, 209, 88, 0.25);
+}
+
+[data-theme="dark"] .app-header {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .ai-chat-container {
+  border-color: rgba(255, 255, 255, 0.08);
+}
