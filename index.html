@@ -7,8 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="print" onload="this.media='all'">
-  <noscript><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></noscript>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <meta name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
@@ -127,42 +126,45 @@
       </div>
     </div>
 
-    <!-- AI Assistant Section -->
-    <div id="aiSection" class="tab-section ai-section hidden">
-      <div class="ai-chat-container">
-        <div class="ai-header">
-          <div class="ai-avatar">✨</div>
-          <div class="ai-header-info">
-            <div class="ai-title">Trợ lý Đội xe AI</div>
-            <div class="ai-status">Gemini 2.5 Flash • Đang trực tuyến</div>
-          </div>
-          <button class="icon-btn" onclick="clearAiChat()" title="Xóa lịch sử trò chuyện" style="width:36px;height:36px;min-width:36px;">
-            <span class="material-icons" style="font-size:18px;">delete_outline</span>
+    <!-- Floating AI Assistant Widget & Chatbox -->
+    <div id="aiFloatingWidget" class="ai-floating-widget" title="Trợ lý ảo AI">
+      <span class="material-icons" style="font-size: 28px;">auto_awesome</span>
+    </div>
+
+    <div id="aiFloatingChatbox" class="ai-floating-chatbox">
+      <div class="ai-floating-header" id="aiFloatingHeader">
+        <div class="ai-avatar" style="width: 32px; height: 32px; font-size: 18px; border-radius: 8px;">✨</div>
+        <div class="ai-floating-header-info">
+          <span class="ai-floating-title">Trợ lý ảo Đội xe AI</span>
+          <span class="ai-floating-status">Gemini 3.5 Flash • Trực tuyến</span>
+        </div>
+        <button class="icon-btn" onclick="clearAiChat()" title="Xóa hội thoại" style="width: 32px; height: 32px; min-width: 32px; color: var(--ios-label-secondary); background: transparent;">
+          <span class="material-icons" style="font-size: 16px;">delete_outline</span>
+        </button>
+        <button class="icon-btn" id="closeAiChatBtn" title="Thu nhỏ" style="width: 32px; height: 32px; min-width: 32px; color: var(--ios-label-secondary); background: transparent;">
+          <span class="material-icons" style="font-size: 18px;">close</span>
+        </button>
+      </div>
+
+      <div id="aiChatMessages" class="ai-messages">
+        <div class="ai-msg bot">
+          <div class="ai-msg-content">Chào bạn! Tôi là trợ lý AI chuyên về đội xe. Tôi có dữ liệu về lịch sử bảo dưỡng và GPS thời gian thực. Bạn muốn hỏi gì không?</div>
+          <div class="ai-msg-time">Vừa xong</div>
+        </div>
+      </div>
+
+      <div class="ai-suggestions" id="aiSuggestions">
+        <button class="ai-chip" onclick="sendAiSuggestion('Top 5 xe tốn chi phí nhất?')">💰 Top 5 xe tốn phí</button>
+        <button class="ai-chip" onclick="sendAiSuggestion('Xe nào chạy nhiều km nhất hôm nay?')">🚗 Xe chạy nhiều hôm nay</button>
+        <button class="ai-chip" onclick="sendAiSuggestion('Tóm tắt tình trạng bảo dưỡng toàn đội xe')">📋 Tóm tắt bảo dưỡng</button>
+      </div>
+
+      <div class="ai-input-box">
+        <div class="ai-input-wrap">
+          <textarea id="aiInput" class="ai-textarea" placeholder="Hỏi về đội xe, chi phí, GPS..." rows="1"></textarea>
+          <button id="sendAiBtn" class="ai-send-btn" onclick="submitAiQuery()">
+            <span class="material-icons">send</span>
           </button>
-        </div>
-        
-        <div id="aiChatMessages" class="ai-messages">
-          <div class="ai-msg bot">
-            <div class="ai-msg-content">Chào bạn! Tôi là trợ lý AI chuyên về đội xe. Tôi có dữ liệu về lịch sử bảo dưỡng và GPS thời gian thực. Bạn muốn hỏi gì không?</div>
-            <div class="ai-msg-time">Vừa xong</div>
-          </div>
-        </div>
-
-        <div class="ai-suggestions" id="aiSuggestions">
-          <button class="ai-chip" onclick="sendAiSuggestion('Top 5 xe tốn chi phí nhất?')">💰 Top 5 xe tốn phí</button>
-          <button class="ai-chip" onclick="sendAiSuggestion('Xe nào chạy nhiều km nhất hôm nay?')">🚗 Xe chạy nhiều hôm nay</button>
-          <button class="ai-chip" onclick="sendAiSuggestion('Tóm tắt tình trạng bảo dưỡng toàn đội xe')">📋 Tóm tắt bảo dưỡng</button>
-          <button class="ai-chip" onclick="sendAiSuggestion('Xe nào cần bảo dưỡng sớm nhất?')">⚠️ Cần bảo dưỡng gấp</button>
-          <button class="ai-chip" onclick="sendAiSuggestion('So sánh chi phí bảo dưỡng giữa các xe')">📊 So sánh chi phí</button>
-        </div>
-
-        <div class="ai-input-box">
-          <div class="ai-input-wrap">
-            <textarea id="aiInput" class="ai-textarea" placeholder="Hỏi về đội xe, chi phí, GPS..." rows="1"></textarea>
-            <button id="sendAiBtn" class="ai-send-btn" onclick="submitAiQuery()">
-              <span class="material-icons">send</span>
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -266,10 +268,6 @@
       <span class="nav-label">GPS</span>
     </button>
 
-    <button class="nav-item" data-section="ai" onclick="switchBottomNavTab('ai')">
-      <span class="material-icons">auto_awesome</span>
-      <span class="nav-label">Hỏi AI</span>
-    </button>
     <button class="nav-item" data-section="settings" onclick="switchBottomNavTab('settings')">
       <span class="material-icons">settings</span>
       <span class="nav-label">Cài đặt</span>
