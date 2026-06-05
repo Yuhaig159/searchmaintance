@@ -244,3 +244,161 @@
         console.error('Fetch Error:', err);
       });
   }
+
+  // Helper function to make element draggable (supports mouse & touch)
+  function makeElementDraggable(elmnt, dragAnchor, onReleaseCallback) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    var isDragging = false;
+    var startX = 0, startY = 0;
+
+    dragAnchor.addEventListener('mousedown', dragMouseDown);
+    dragAnchor.addEventListener('touchstart', dragTouchStart, { passive: false });
+
+    function dragMouseDown(e) {
+      if (e.target.closest('button') || e.target.closest('textarea')) return;
+      e = e || window.event;
+      e.preventDefault();
+      isDragging = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.addEventListener('mouseup', closeDragElement);
+      document.addEventListener('mousemove', elementDrag);
+    }
+
+    function dragTouchStart(e) {
+      if (e.target.closest('button') || e.target.closest('textarea')) return;
+      isDragging = false;
+      var touch = e.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+      pos3 = touch.clientX;
+      pos4 = touch.clientY;
+      document.addEventListener('touchend', closeDragElement);
+      document.addEventListener('touchmove', elementTouchDrag, { passive: false });
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      isDragging = true;
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      
+      let newTop = elmnt.offsetTop - pos2;
+      let newLeft = elmnt.offsetLeft - pos1;
+      
+      const maxLeft = window.innerWidth - elmnt.offsetWidth;
+      const maxTop = window.innerHeight - elmnt.offsetHeight;
+      
+      newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+      newTop = Math.max(0, Math.min(newTop, maxTop));
+      
+      elmnt.style.top = newTop + "px";
+      elmnt.style.left = newLeft + "px";
+      elmnt.style.bottom = "auto";
+      elmnt.style.right = "auto";
+    }
+
+    function elementTouchDrag(e) {
+      isDragging = true;
+      var touch = e.touches[0];
+      pos1 = pos3 - touch.clientX;
+      pos2 = pos4 - touch.clientY;
+      pos3 = touch.clientX;
+      pos4 = touch.clientY;
+      
+      let newTop = elmnt.offsetTop - pos2;
+      let newLeft = elmnt.offsetLeft - pos1;
+      
+      const maxLeft = window.innerWidth - elmnt.offsetWidth;
+      const maxTop = window.innerHeight - elmnt.offsetHeight;
+      
+      newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+      newTop = Math.max(0, Math.min(newTop, maxTop));
+      
+      elmnt.style.top = newTop + "px";
+      elmnt.style.left = newLeft + "px";
+      elmnt.style.bottom = "auto";
+      elmnt.style.right = "auto";
+    }
+
+    function closeDragElement(e) {
+      document.removeEventListener('mouseup', closeDragElement);
+      document.removeEventListener('mousemove', elementDrag);
+      document.removeEventListener('touchend', closeDragElement);
+      document.removeEventListener('touchmove', elementTouchDrag);
+      
+      const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || startX;
+      const endY = e.clientY || (e.changedTouches && e.changedTouches[0].clientY) || startY;
+      
+      const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+      if (onReleaseCallback) {
+        onReleaseCallback(isDragging && distance > 10);
+      }
+    }
+  }
+
+  // Self-initialize floating assistant
+  (function initFloatingAssistant() {
+    const widget = document.getElementById('aiFloatingWidget');
+    const chatbox = document.getElementById('aiFloatingChatbox');
+    const closeBtn = document.getElementById('closeAiChatBtn');
+    const header = document.getElementById('aiFloatingHeader');
+
+    if (!widget || !chatbox) return;
+
+    // Make Widget draggable
+    makeElementDraggable(widget, widget, function(wasDragged) {
+      if (!wasDragged) {
+        toggleChatbox();
+      }
+    });
+
+    // Make Chatbox draggable via its header
+    makeElementDraggable(chatbox, header);
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        chatbox.classList.remove('active');
+      });
+    }
+
+    // Initialize input actions
+    initAiTab();
+
+    function toggleChatbox() {
+      const isActive = chatbox.classList.contains('active');
+      if (!isActive) {
+        if (!chatbox.style.top) {
+          repositionChatbox();
+        }
+        chatbox.classList.add('active');
+        const input = document.getElementById('aiInput');
+        if (input) input.focus();
+      } else {
+        chatbox.classList.remove('active');
+      }
+    }
+
+    function repositionChatbox() {
+      const widgetRect = widget.getBoundingClientRect();
+      const chatboxWidth = 380;
+      const chatboxHeight = 520;
+      
+      let left = widgetRect.left + widgetRect.width / 2 - chatboxWidth / 2;
+      let top = widgetRect.top - chatboxHeight - 15;
+      
+      // Boundaries
+      left = Math.max(10, Math.min(left, window.innerWidth - chatboxWidth - 10));
+      top = Math.max(10, Math.min(top, window.innerHeight - chatboxHeight - 10));
+      
+      chatbox.style.left = left + 'px';
+      chatbox.style.top = top + 'px';
+      chatbox.style.bottom = 'auto';
+      chatbox.style.right = 'auto';
+    }
+  })();
