@@ -181,6 +181,19 @@
       `${m.role === 'user' ? 'Người dùng' : 'Trợ lý'}: ${m.text.substring(0, 200)}`
     ).join('\n');
 
+    // Build active plate context if user is viewing a specific plate
+    const activePlate = window.currentPlate || '';
+    let activePlateData = [];
+    if (activePlate && window.rawData && Array.isArray(window.rawData)) {
+      activePlateData = window.rawData.map(r => ({
+        date: r.date,
+        km: r.km,
+        category: r.category,
+        work: r.work,
+        cost: r.cost
+      }));
+    }
+
     const url = CONFIG.API_URL + (CONFIG.API_URL.includes('?') ? '&' : '?') +
       'action=askAi&query=' + encodeURIComponent(query);
 
@@ -190,7 +203,9 @@
       body: JSON.stringify({
         action: 'askAi',
         args: [query],
-        conversationContext: recentContext
+        conversationContext: recentContext,
+        activePlate: activePlate,
+        activePlateData: activePlateData
       })
     })
       .then(async res => {
