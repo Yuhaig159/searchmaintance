@@ -187,8 +187,13 @@
     const url = CONFIG.API_URL + (CONFIG.API_URL.includes('?') ? '&' : '?') +
       'action=askAi&query=' + encodeURIComponent(query);
 
+    // Thêm AbortController để timeout tránh kẹt trạng thái khi rớt mạng hoặc máy sleep
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // Timeout 30 giây
+
     fetch(url, {
       method: 'POST',
+      signal: controller.signal,
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         action: 'askAi',
@@ -198,6 +203,7 @@
       })
     })
       .then(async res => {
+        clearTimeout(timeoutId);
         const text = await res.text();
         try {
           return JSON.parse(text);
@@ -223,10 +229,13 @@
         }
       })
       .catch(err => {
+        clearTimeout(timeoutId);
         isAiLoading = false;
         removeAiTyping();
         let userMsg = '❌ ' + err.message;
-        if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+        if (err.name === 'AbortError') {
+          userMsg = '❌ Kết nối bị quá hạn (Timeout). Vui lòng thử lại sau.';
+        } else if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
           userMsg = '❌ Không thể kết nối tới Server. Kiểm tra kết nối Internet.';
         }
         appendAiMessage(userMsg, true);
