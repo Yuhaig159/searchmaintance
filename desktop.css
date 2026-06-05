@@ -454,7 +454,7 @@ body {
   max-width: 760px;
   margin: 0 auto;
   padding: 24px 16px 80px !important;
-  display: flex !important;
+  display: flex;
   flex-direction: column;
   gap: 24px;
   position: relative;
