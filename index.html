@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></noscript>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+
   <meta name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover">
 
@@ -92,50 +92,7 @@
       </div>
     </div>
 
-    <!-- Stats Section -->
-    <div id="statsSection" class="tab-section stats-section hidden">
-      <div class="stats-time-filter">
-        <button class="time-filter-btn active" data-months="all" onclick="filterStatsByTime('all')">Tất cả</button>
-        <button class="time-filter-btn" data-months="1" onclick="filterStatsByTime(1)">1 tháng</button>
-        <button class="time-filter-btn" data-months="3" onclick="filterStatsByTime(3)">3 tháng</button>
-        <button class="time-filter-btn" data-months="6" onclick="filterStatsByTime(6)">6 tháng</button>
-        <button class="time-filter-btn" data-months="12" onclick="filterStatsByTime(12)">1 năm</button>
-      </div>
-      <div class="stats-overview">
-        <div class="stat-card"><span class="stat-icon">🚗</span>
-          <div class="stat-value" id="statTotalVehicles">--</div>
-          <div class="stat-label">Tổng xe</div>
-        </div>
-        <div class="stat-card"><span class="stat-icon">🔧</span>
-          <div class="stat-value" id="statTotalServices">--</div>
-          <div class="stat-label">Tổng lần bảo dưỡng</div>
-        </div>
-        <div class="stat-card"><span class="stat-icon">📏</span>
-          <div class="stat-value" id="statAvgKm">--</div>
-          <div class="stat-label">KM trung bình/lần</div>
-        </div>
-        <div class="stat-card"><span class="stat-icon">📊</span>
-          <div class="stat-value" id="statMostActive">--</div>
-          <div class="stat-label">Xe hoạt động nhiều nhất</div>
-        </div>
-      </div>
-      <div class="stats-charts">
-        <div class="chart-card">
-          <h3 class="chart-title">Phân loại bảo dưỡng</h3><canvas id="maintenanceTypeChart"></canvas>
-        </div>
-        <div class="chart-card">
-          <h3 class="chart-title">Lịch sử bảo dưỡng theo tháng</h3><canvas id="timelineChart"></canvas>
-        </div>
-      </div>
-      <div class="stats-top-services">
-        <h3 class="section-title">Công việc phổ biến</h3>
-        <div id="topServicesList" class="top-services-list"></div>
-      </div>
-      <div id="statsEmptyState" class="stats-empty-state hidden"><span class="empty-icon">📊</span>
-        <h3>Chưa có dữ liệu thống kê</h3>
-        <p>Dữ liệu đang được tải...</p>
-      </div>
-    </div>
+
 
     <!-- GPS Live Status Section -->
     <div id="gpsSection" class="tab-section gps-section hidden">
@@ -302,10 +259,7 @@
       <span class="material-icons">gps_fixed</span>
       <span class="nav-label">GPS</span>
     </button>
-    <button class="nav-item" data-section="stats" onclick="switchBottomNavTab('stats')">
-      <span class="material-icons">analytics</span>
-      <span class="nav-label">Thống kê</span>
-    </button>
+
     <button class="nav-item" data-section="ai" onclick="switchBottomNavTab('ai')">
       <span class="material-icons">auto_awesome</span>
       <span class="nav-label">Hỏi AI</span>
