@@ -34,11 +34,12 @@ body {
   border-right: 1px solid var(--ios-sep-light);
   padding: 0;
   gap: 0;
-  background: var(--ios-bg-secondary);
-  box-shadow: none;
+  background: var(--glass-bg);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
   z-index: 200;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  backdrop-filter: blur(var(--blur-amount));
+  -webkit-backdrop-filter: blur(var(--blur-amount));
+  border-right: 1px solid var(--glass-border);
   overflow: hidden;
 }
 
@@ -96,9 +97,10 @@ body {
 
 /* Active state — filled pill */
 .nav-item.active {
-  background: var(--brand-green);
+  background: var(--gradient-green-orange);
   color: white !important;
-  box-shadow: 0 4px 16px rgba(28, 105, 91, 0.25);
+  box-shadow: 0 8px 24px rgba(28, 105, 91, 0.3);
+  transform: translateX(4px);
 }
 
 .nav-item.active .material-icons {
@@ -121,6 +123,11 @@ body {
   overflow-x: hidden;
   position: relative;
   background: var(--ios-bg);
+  /* Desktop premium subtle radial gradient */
+  background-image: 
+    radial-gradient(circle at 100% 0%, rgba(28, 105, 91, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 0% 100%, rgba(255, 159, 10, 0.05) 0%, transparent 40%);
+  background-attachment: fixed;
 }
 
 /* Premium thin scrollbar */
@@ -138,10 +145,12 @@ body {
   background: var(--ios-text-tertiary);
 }
 
-/* Disable the huge mesh gradient blobs on desktop — too distracting */
+/* Keep subtle mesh gradients on desktop but make them extremely soft and premium */
 .app-section::before,
 .app-section::after {
-  display: none;
+  display: block;
+  filter: blur(120px);
+  opacity: 0.4;
 }
 
 /* ────────────────────────────────────────────────────────────────────
@@ -172,19 +181,40 @@ body {
 }
 
 .hero-search-box {
-  max-width: 560px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 10px 10px 10px 28px;
+  padding: 10px 10px 10px 32px;
   border-radius: 60px;
+  background: var(--ios-surface-elevated);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.hero-search-box:focus-within {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 30px 60px rgba(28, 105, 91, 0.15), 0 0 0 4px var(--ios-accent-green-soft);
+  border-color: var(--brand-green);
 }
 
 .hero-input {
-  font-size: 18px;
+  font-size: 20px;
+  letter-spacing: 0.5px;
 }
 
 .hero-search-btn {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
+  background: var(--gradient-green-orange);
+  box-shadow: 0 4px 16px rgba(28, 105, 91, 0.3);
+  transition: all 0.3s ease;
+}
+
+.hero-search-btn:hover {
+  transform: scale(1.05) rotate(5deg);
+  box-shadow: 0 8px 24px rgba(255, 159, 10, 0.4);
 }
 
 /* ────────────────────────────────────────────────────────────────────
@@ -267,15 +297,18 @@ body {
   margin: 0;
   display: flex;
   flex-direction: column;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: var(--ios-card);
+  border: 1px solid var(--ios-sep-light);
+  box-shadow: 0 4px 12px var(--shadow-light);
 }
 
 .card:hover {
-  transform: translateY(-6px) scale(1.01);
+  transform: translateY(-8px) scale(1.02);
   box-shadow:
-    0 16px 40px var(--shadow-medium),
-    0 6px 16px var(--shadow-light);
-  border-color: var(--ios-accent-green-border);
+    0 24px 48px rgba(0, 0, 0, 0.08),
+    0 8px 16px var(--ios-accent-green-soft);
+  border-color: var(--brand-green);
 }
 
 .card-body {
@@ -612,7 +645,7 @@ body {
    20. DARK MODE ADJUSTMENTS FOR DESKTOP
    ──────────────────────────────────────────────────────────────────── */
 [data-theme="dark"] .bottom-nav {
-  background: rgba(28, 28, 30, 0.95);
+  background: rgba(28, 28, 30, 0.7);
   border-right-color: rgba(255, 255, 255, 0.08);
 }
 
@@ -625,7 +658,7 @@ body {
 }
 
 [data-theme="dark"] .nav-item.active {
-  background: var(--ios-accent-green);
+  background: var(--gradient-green-orange);
   box-shadow: 0 4px 20px rgba(48, 209, 88, 0.25);
 }
 
@@ -635,4 +668,10 @@ body {
 
 [data-theme="dark"] .ai-floating-chatbox {
   border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .hero-search-box {
+  background: rgba(44, 44, 46, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
