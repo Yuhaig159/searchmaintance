@@ -143,6 +143,15 @@ const DataCache = {
     } catch (e) {
       if (e.name === 'QuotaExceededError') localStorage.clear();
     }
+  },
+  clear: function () {
+    this._mem.clear();
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('cache_')) {
+        localStorage.removeItem(key);
+      }
+    }
   }
 };
 
@@ -626,12 +635,15 @@ function resetPagination() {
 
 function forceRefresh() {
   const btn = document.getElementById('refreshBtn');
-  btn.classList.add('loading');
+  if (btn) btn.classList.add('loading');
   showLoading();
+
+  // Clear client-side cache
+  DataCache.clear();
 
   google.script.run
     .withSuccessHandler(result => {
-      btn.classList.remove('loading');
+      if (btn) btn.classList.remove('loading');
       hideLoading();
       if (result.success) {
         showToast(`✅ ${result.message}`);
