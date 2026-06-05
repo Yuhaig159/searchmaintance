@@ -128,54 +128,89 @@
 
     <!-- Settings Section -->
     <div id="settingsSection" class="tab-section settings-section hidden">
+      <!-- Giao diện -->
       <div class="settings-group">
         <div class="settings-group-title">Giao diện</div>
         <div class="settings-row">
-          <div class="settings-row-left"><span class="settings-icon">🌙</span><span class="settings-row-label">Chế độ
-              tối</span></div>
-          <label class="toggle-switch"><input type="checkbox" id="darkModeToggle"
-              onchange="toggleThemeFromSettings(this.checked)"><span class="toggle-slider"></span></label>
+          <div class="settings-row-left">
+            <span class="settings-icon">🌙</span>
+            <span class="settings-row-label">Chế độ tối</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="darkModeToggle" onchange="toggleThemeFromSettings(this.checked)">
+            <span class="toggle-slider"></span>
+          </label>
         </div>
       </div>
+
+      <!-- Bảo dưỡng -->
       <div class="settings-group">
         <div class="settings-group-title">Bảo dưỡng</div>
         <div class="settings-row">
-          <div class="settings-row-left"><span class="settings-icon">📏</span><span class="settings-row-label">Khoảng
-              cách mặc định</span></div>
+          <div class="settings-row-left">
+            <span class="settings-icon">📏</span>
+            <span class="settings-row-label">Khoảng cách mặc định</span>
+          </div>
           <select id="defaultIntervalSelect" class="settings-select" onchange="saveDefaultInterval(this.value)">
             <option value="10000">10,000 KM</option>
             <option value="5000">5,000 KM</option>
           </select>
         </div>
         <div class="settings-row settings-row-col">
-          <div class="settings-row-left"><span class="settings-icon">⭐</span><span class="settings-row-label">Xe 5,000
-              KM (mỗi dòng 1 biển số)</span></div>
-          <textarea id="specialPlatesTextarea" class="settings-textarea" rows="4"
-            placeholder="VD:&#10;51K529.01&#10;51K723.57"></textarea>
-          <div class="settings-btn-row"><button class="settings-btn-sm" onclick="saveSpecialPlates()">💾
-              Lưu</button><button class="settings-btn-sm settings-btn-secondary" onclick="resetSpecialPlates()">↩ Mặc
-              định</button></div>
+          <div class="settings-row-left">
+            <span class="settings-icon">⭐</span>
+            <span class="settings-row-label">Xe 5,000 KM (mỗi dòng 1 biển số)</span>
+          </div>
+          <textarea id="specialPlatesTextarea" class="settings-textarea" rows="4" placeholder="VD:&#10;51K529.01&#10;51K723.57"></textarea>
+          <div class="settings-btn-row">
+            <button class="settings-btn-sm" onclick="saveSpecialPlates()">💾 Lưu</button>
+            <button class="settings-btn-sm settings-btn-secondary" onclick="resetSpecialPlates()">↩ Mặc định</button>
+          </div>
         </div>
       </div>
+
+      <!-- Dữ liệu -->
       <div class="settings-group">
         <div class="settings-group-title">Dữ liệu</div>
         <div class="settings-row">
-          <div class="settings-row-left"><span class="settings-icon">🔄</span><span class="settings-row-label">Làm mới
-              từ server</span></div><button class="settings-btn" onclick="forceRefresh()">Làm mới</button>
+          <div class="settings-row-left">
+            <span class="settings-icon">🔄</span>
+            <span class="settings-row-label">Làm mới từ server</span>
+          </div>
+          <button class="settings-btn" onclick="forceRefresh()">Làm mới</button>
         </div>
         <div class="settings-row">
-          <div class="settings-row-left"><span class="settings-icon">🗑️</span><span class="settings-row-label">Xóa dữ
-              liệu cục bộ</span></div><button class="settings-btn settings-btn-danger"
-            onclick="clearAppLocalStorage()">Xóa</button>
+          <div class="settings-row-left">
+            <span class="settings-icon">🗑️</span>
+            <span class="settings-row-label">Xóa dữ liệu cục bộ</span>
+          </div>
+          <button class="settings-btn settings-btn-danger" onclick="clearAppLocalStorage()">Xóa</button>
         </div>
       </div>
+
+      <!-- Thông tin -->
       <div class="settings-group">
         <div class="settings-group-title">Thông tin</div>
-        <div class="settings-row"><div class="settings-row-left"><span class="settings-icon">📱</span><span class="settings-row-label">Phiên bản</span></div><span class="settings-value-text">V128-AI</span></div>
-        <div class="settings-row"><div class="settings-row-left"><span class="settings-icon">📅</span><span class="settings-row-label">Cập nhật</span></div><span class="settings-value-text">09/04/2026</span></div>
         <div class="settings-row">
-          <div class="settings-row-left"><span class="settings-icon">🏢</span><span class="settings-row-label">Ứng
-              dụng</span></div><span class="settings-value-text">Tra Cứu Bảo Dưỡng Xe (Pro)</span>
+          <div class="settings-row-left">
+            <span class="settings-icon">📱</span>
+            <span class="settings-row-label">Phiên bản</span>
+          </div>
+          <span class="settings-value-text">V128-AI</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <span class="settings-icon">📅</span>
+            <span class="settings-row-label">Cập nhật</span>
+          </div>
+          <span class="settings-value-text">05/06/2026</span>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-left">
+            <span class="settings-icon">🏢</span>
+            <span class="settings-row-label">Ứng dụng</span>
+          </div>
+          <span class="settings-value-text">Tra Cứu Bảo Dưỡng Xe (Pro)</span>
         </div>
       </div>
     </div>
