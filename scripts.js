@@ -698,7 +698,7 @@ function MapsToReplacementCard(partName, km, date) {
 let scrollTimeout;
 let rafPending = false;
 
-window.onscroll = function () {
+function handleScroll() {
   if (rafPending) return;
   rafPending = true;
 
@@ -706,9 +706,19 @@ window.onscroll = function () {
     rafPending = false;
     const summary = document.getElementById('summaryContainer');
     const btn = document.getElementById('backToTopBtn');
-    if (!summary || !btn) return;
+    const mainContent = document.getElementById('mainContent');
+    if (!btn) return;
 
-    if (summary.getBoundingClientRect().bottom < 0) {
+    let shouldShow = false;
+    const scrollTop = mainContent && !mainContent.classList.contains('hidden') ? mainContent.scrollTop : window.scrollY;
+
+    if (scrollTop > 300) {
+      shouldShow = true;
+    } else if (summary && summary.getBoundingClientRect().bottom < 0) {
+      shouldShow = true;
+    }
+
+    if (shouldShow) {
       btn.classList.remove('hidden', 'ghost');
       clearTimeout(scrollTimeout);
       scrollTimeout = setTimeout(() => btn.classList.add('ghost'), 3000);
@@ -717,10 +727,28 @@ window.onscroll = function () {
       clearTimeout(scrollTimeout);
     }
   });
-};
+}
+
+window.addEventListener('scroll', handleScroll);
+
+function initScrollListener() {
+  const mainContent = document.getElementById('mainContent');
+  if (mainContent) mainContent.addEventListener('scroll', handleScroll);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initScrollListener);
+} else {
+  initScrollListener();
+}
 
 function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const mainContent = document.getElementById('mainContent');
+  if (mainContent && !mainContent.classList.contains('hidden')) {
+    mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
   if (window.navigator?.vibrate) window.navigator.vibrate(20);
 }
 
