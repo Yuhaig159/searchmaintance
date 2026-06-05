@@ -166,13 +166,36 @@ function loadLogo() {
 }
 
 function setupEventListeners() {
-  document.getElementById('heroInput').addEventListener('keypress', e => {
+  const heroInput = document.getElementById('heroInput');
+  heroInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') startSearch();
   });
 
-
-
-  // Quick search with clear button
+  // Real-time license plate formatting (e.g. 51K12345 -> 51K-123.45)
+  heroInput.addEventListener('input', e => {
+    let cursor = e.target.selectionStart;
+    let original = e.target.value;
+    let val = original.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    
+    const match = val.match(/^(\d{2}[A-Z]{1,2})(\d{1,5})$/);
+    if (match) {
+      let numPart = match[2];
+      if (numPart.length === 4) {
+        val = `${match[1]}-${numPart}`;
+      } else if (numPart.length === 5) {
+        val = `${match[1]}-${numPart.slice(0, 3)}.${numPart.slice(3)}`;
+      } else {
+        val = `${match[1]}-${numPart}`;
+      }
+    }
+    
+    if (val !== original) {
+      e.target.value = val;
+      // Adjust cursor intuitively (basic approach)
+      let diff = val.length - original.length;
+      e.target.setSelectionRange(cursor + diff, cursor + diff);
+    }
+  });  // Quick search with clear button
   const quickSearchInput = document.getElementById('quickSearchInput');
   const chipClear = document.querySelector('.chip-clear');
 
@@ -262,19 +285,47 @@ function startSearch() {
   const val = document.getElementById('heroInput').value.trim();
   if (!val) { showToast('⚠️ Vui lòng nhập biển số xe'); return; }
 
-  document.getElementById('heroSection').classList.add('hidden');
-  document.getElementById('appSection').classList.add('active');
-  doSearch(val);
+  // Haptic feedback
+  if (window.navigator?.vibrate) window.navigator.vibrate(50);
+
+  // Smooth animation out
+  const heroSection = document.getElementById('heroSection');
+  heroSection.style.opacity = '0';
+  heroSection.style.transform = 'translateY(-20px)';
+  heroSection.style.transition = 'all 0.3s ease-in-out';
+
+  setTimeout(() => {
+    heroSection.classList.add('hidden');
+    heroSection.style.opacity = '';
+    heroSection.style.transform = '';
+    document.getElementById('appSection').classList.add('active');
+    doSearch(val);
+  }, 300);
 }
 
 function backToHero() {
+  // Haptic feedback
+  if (window.navigator?.vibrate) window.navigator.vibrate(20);
+
   document.getElementById('heroInput').value = '';
   document.getElementById('currentPlate').textContent = '--';
   document.getElementById('appHeader').style.display = 'none';
   document.getElementById('mainContent').classList.add('hidden');
   document.getElementById('emptyState').classList.add('hidden');
   document.getElementById('appSection').classList.remove('active');
-  document.getElementById('heroSection').classList.remove('hidden');
+  
+  const heroSection = document.getElementById('heroSection');
+  heroSection.classList.remove('hidden');
+  
+  // Smooth animation in
+  heroSection.style.opacity = '0';
+  heroSection.style.transform = 'translateY(20px)';
+  
+  requestAnimationFrame(() => {
+    heroSection.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    heroSection.style.opacity = '1';
+    heroSection.style.transform = 'translateY(0)';
+  });
 
   rawData = [];
   currentPlate = '';
