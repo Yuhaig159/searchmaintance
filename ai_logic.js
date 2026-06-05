@@ -269,6 +269,7 @@
 
     function dragTouchStart(e) {
       if (e.target.closest('button') || e.target.closest('textarea')) return;
+      e.preventDefault(); // Ngăn trình duyệt tạo sự kiện chuột ảo (gây lỗi nhấn kép)
       isDragging = false;
       var touch = e.touches[0];
       startX = touch.clientX;
@@ -402,7 +403,7 @@
       
       const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
       if (onReleaseCallback) {
-        onReleaseCallback(isDragging && distance > 10);
+        onReleaseCallback(distance > 15);
       }
     }
   }
