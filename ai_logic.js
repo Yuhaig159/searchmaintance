@@ -297,10 +297,38 @@
       newLeft = Math.max(0, Math.min(newLeft, maxLeft));
       newTop = Math.max(0, Math.min(newTop, maxTop));
       
+      const deltaX = newLeft - elmnt.offsetLeft;
+      const deltaY = newTop - elmnt.offsetTop;
+
       elmnt.style.top = newTop + "px";
       elmnt.style.left = newLeft + "px";
       elmnt.style.bottom = "auto";
       elmnt.style.right = "auto";
+
+      // Link movement between widget and active chatbox
+      const widget = document.getElementById('aiFloatingWidget');
+      const chatbox = document.getElementById('aiFloatingChatbox');
+      if (widget && chatbox) {
+        if (elmnt === widget && chatbox.classList.contains('active')) {
+          let cbTop = chatbox.offsetTop + deltaY;
+          let cbLeft = chatbox.offsetLeft + deltaX;
+          cbLeft = Math.max(0, Math.min(cbLeft, window.innerWidth - chatbox.offsetWidth));
+          cbTop = Math.max(0, Math.min(cbTop, window.innerHeight - chatbox.offsetHeight));
+          chatbox.style.top = cbTop + "px";
+          chatbox.style.left = cbLeft + "px";
+          chatbox.style.bottom = "auto";
+          chatbox.style.right = "auto";
+        } else if (elmnt === chatbox) {
+          let wgTop = widget.offsetTop + deltaY;
+          let wgLeft = widget.offsetLeft + deltaX;
+          wgLeft = Math.max(0, Math.min(wgLeft, window.innerWidth - widget.offsetWidth));
+          wgTop = Math.max(0, Math.min(wgTop, window.innerHeight - widget.offsetHeight));
+          widget.style.top = wgTop + "px";
+          widget.style.left = wgLeft + "px";
+          widget.style.bottom = "auto";
+          widget.style.right = "auto";
+        }
+      }
     }
 
     function elementTouchDrag(e) {
@@ -320,10 +348,38 @@
       newLeft = Math.max(0, Math.min(newLeft, maxLeft));
       newTop = Math.max(0, Math.min(newTop, maxTop));
       
+      const deltaX = newLeft - elmnt.offsetLeft;
+      const deltaY = newTop - elmnt.offsetTop;
+
       elmnt.style.top = newTop + "px";
       elmnt.style.left = newLeft + "px";
       elmnt.style.bottom = "auto";
       elmnt.style.right = "auto";
+
+      // Link movement between widget and active chatbox
+      const widget = document.getElementById('aiFloatingWidget');
+      const chatbox = document.getElementById('aiFloatingChatbox');
+      if (widget && chatbox) {
+        if (elmnt === widget && chatbox.classList.contains('active')) {
+          let cbTop = chatbox.offsetTop + deltaY;
+          let cbLeft = chatbox.offsetLeft + deltaX;
+          cbLeft = Math.max(0, Math.min(cbLeft, window.innerWidth - chatbox.offsetWidth));
+          cbTop = Math.max(0, Math.min(cbTop, window.innerHeight - chatbox.offsetHeight));
+          chatbox.style.top = cbTop + "px";
+          chatbox.style.left = cbLeft + "px";
+          chatbox.style.bottom = "auto";
+          chatbox.style.right = "auto";
+        } else if (elmnt === chatbox) {
+          let wgTop = widget.offsetTop + deltaY;
+          let wgLeft = widget.offsetLeft + deltaX;
+          wgLeft = Math.max(0, Math.min(wgLeft, window.innerWidth - widget.offsetWidth));
+          wgTop = Math.max(0, Math.min(wgTop, window.innerHeight - widget.offsetHeight));
+          widget.style.top = wgTop + "px";
+          widget.style.left = wgLeft + "px";
+          widget.style.bottom = "auto";
+          widget.style.right = "auto";
+        }
+      }
     }
 
     function closeDragElement(e) {
