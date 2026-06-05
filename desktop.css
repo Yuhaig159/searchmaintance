@@ -313,11 +313,20 @@ body {
 /* ────────────────────────────────────────────────────────────────────
    11. GPS SECTION — Grid layout for vehicle cards
    ──────────────────────────────────────────────────────────────────── */
+.gps-section {
+  padding: 24px 0 80px !important;
+}
+
 .gps-summary-bar {
-  max-width: 640px;
-  margin: 0 auto 20px;
-  border-radius: 20px;
-  padding: 20px 32px;
+  display: flex;
+  max-width: 800px;
+  margin: 0 auto 32px;
+  border-radius: 24px;
+  padding: 24px 32px;
+  background: var(--ios-card);
+  border: 1px solid var(--ios-sep-light);
+  box-shadow: 0 4px 16px var(--shadow-light);
+  border-bottom: 1px solid var(--ios-sep-light) !important;
 }
 
 .gps-stat-value {
@@ -325,25 +334,41 @@ body {
 }
 
 .gps-search-bar {
+  position: static !important;
+  background: transparent !important;
+  border-bottom: none !important;
+  padding: 0 !important;
   max-width: 480px;
-  margin: 0 auto 24px;
+  margin: 0 auto 32px;
+}
+
+.gps-search-wrap {
+  background: var(--ios-card) !important;
+  border: 1px solid var(--ios-sep-light) !important;
+  box-shadow: 0 2px 8px var(--shadow-light) !important;
+  border-radius: 14px;
+  padding: 10px 16px !important;
 }
 
 #gpsVehicleList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 16px;
+  gap: 20px;
+  padding: 0 16px !important;
 }
 
 .gps-card {
   margin: 0 !important;
   border-radius: 16px;
-  transition: all 0.2s ease;
+  border: 1px solid var(--ios-sep-light) !important;
+  box-shadow: 0 2px 8px var(--shadow-light) !important;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
 .gps-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px var(--shadow-medium);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px var(--shadow-medium) !important;
+  border-color: var(--ios-accent-green-border) !important;
 }
 
 /* ────────────────────────────────────────────────────────────────────
@@ -404,16 +429,91 @@ body {
    13. SETTINGS SECTION — Centered, constrained width
    ──────────────────────────────────────────────────────────────────── */
 .settings-section {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
+  padding: 24px 16px 80px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .settings-group {
-  border-radius: 20px;
+  background: var(--ios-card) !important;
+  border-radius: 24px !important;
+  border: 1px solid var(--ios-sep-light) !important;
+  box-shadow: 0 4px 16px var(--shadow-light) !important;
+  overflow: hidden;
+}
+
+.settings-group-title {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  padding: 18px 24px 10px !important;
+  background: var(--ios-bg-secondary) !important;
+  border-bottom: 1px solid var(--ios-sep-light) !important;
 }
 
 .settings-row {
-  padding: 18px 24px;
+  padding: 18px 24px !important;
+  border-top: 1px solid var(--ios-sep-light) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.settings-row:hover {
+  background-color: var(--ios-fill-tertiary) !important;
+}
+
+.settings-row-label {
+  font-size: 15px !important;
+  font-weight: 600 !important;
+}
+
+.settings-select {
+  padding: 8px 14px !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--ios-sep) !important;
+  background: var(--ios-bg) !important;
+  font-size: 14px !important;
+  outline: none;
+  transition: all 0.2s ease !important;
+}
+
+.settings-select:focus {
+  border-color: var(--brand-green) !important;
+  box-shadow: 0 0 0 3px rgba(28, 105, 91, 0.15) !important;
+}
+
+.settings-textarea {
+  border-radius: 16px !important;
+  border: 1px solid var(--ios-sep) !important;
+  background: var(--ios-bg) !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  outline: none;
+  transition: all 0.2s ease !important;
+}
+
+.settings-textarea:focus {
+  border-color: var(--brand-green) !important;
+  box-shadow: 0 0 0 3px rgba(28, 105, 91, 0.15) !important;
+}
+
+.settings-btn, .settings-btn-sm {
+  padding: 10px 20px !important;
+  border-radius: 12px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+}
+
+.settings-btn:hover, .settings-btn-sm:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(28, 105, 91, 0.2) !important;
+}
+
+.settings-btn-danger:hover {
+  box-shadow: 0 4px 12px rgba(255, 59, 48, 0.2) !important;
 }
 
 /* ────────────────────────────────────────────────────────────────────
