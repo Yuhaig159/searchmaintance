@@ -3093,6 +3093,7 @@
       width: 48px;
       height: 48px;
       box-shadow: 0 6px 20px rgba(175, 82, 222, 0.4), 0 2px 6px rgba(0, 0, 0, 0.15);
+      z-index: 10005 !important;
     }
     .ai-floating-widget .material-icons {
       font-size: 24px !important;
@@ -3104,6 +3105,7 @@
       top: 90px !important;
       right: 16px !important;
       bottom: auto !important;
+      z-index: 10004 !important;
     }
     .ai-floating-chatbox::before,
     .ai-floating-chatbox::after {
