@@ -265,79 +265,9 @@
     <div class="loading-spinner"></div>
   </div>
 
-  <!-- AI QUOTE SCANNER MODAL (V128-AI UPGRADE) -->
-  <div id="scanReviewModal" class="modal hidden">
-    <div class="modal-overlay" onclick="closeScanReview()"></div>
-    <div class="modal-content scan-modal">
-      <div class="modal-header">
-        <h2 class="modal-title">KIỂM DUYỆT BÁO GIÁ AI</h2>
-        <div class="header-actions">
-           <button class="modal-close" onclick="closeScanReview()">
-            <span class="material-icons">close</span>
-          </button>
-        </div>
-      </div>
-      <div class="modal-body" style="flex:1; overflow:hidden; padding: 20px;">
-        <div class="scan-modal-grid">
-          <!-- Phía trái: Xem trước tệp -->
-          <div class="scan-preview-panel" id="scanPreviewPanel">
-            <div style="display:flex; align-items:center; justify-content:center; height:100%; color:var(--ios-text-tertiary);">
-              Đang tải bản xem trước...
-            </div>
-          </div>
 
-          <!-- Phía phải: Dữ liệu bóc tách -->
-          <div class="scan-data-panel">
-            <div class="scan-basic-info">
-              <div class="scan-input-group">
-                <label>Biển số</label>
-                <input type="text" id="scanPlate" placeholder="VD: 51K12345">
-              </div>
-              <div class="scan-input-group">
-                <label>Ngày</label>
-                <input type="text" id="scanDate" placeholder="DD/MM/YYYY">
-              </div>
-              <div class="scan-input-group">
-                <label>Số KM</label>
-                <input type="number" id="scanKm" placeholder="0">
-              </div>
-            </div>
-            
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-               <h3 class="scan-sub-title" style="margin:0;">Chi tiết hạng mục</h3>
-               <button class="settings-btn-sm" onclick="addScanItem()">
-                 <span class="material-icons" style="font-size:16px;">add</span> Thêm mới
-               </button>
-            </div>
 
-            <div id="scanItemsList" class="scan-items-list">
-              <!-- Hạng mục sẽ được render ở đây -->
-            </div>
-            
-            <div class="scan-total-bar">
-              <div class="scan-total-label">Tổng cộng thanh toán (sau thuế):</div>
-              <div class="scan-total-value">
-                <input type="number" id="scanGrandTotal" style="width:150px; text-align:right; border:none; background:transparent; font-size:20px; font-weight:800; color:var(--ios-accent-green);" oninput="updateScanTotalLabel()">
-                <span style="font-size:14px; margin-left:4px;">VNĐ</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="settings-btn settings-btn-secondary" onclick="closeScanReview()">Đóng</button>
-        <button class="settings-btn" id="saveScanBtn" onclick="submitScannedData()">
-          <span class="material-icons" style="font-size:18px;">save</span> Xác nhận lưu vào hệ thống
-        </button>
-      </div>
-    </div>
-  </div>
 
-  <!-- Nút quét báo giá nổi (Floating Action Button) -->
-  <input type="file" id="quoteFileInput" accept="image/*,application/pdf" class="hidden" onchange="handleQuoteFile(this)">
-  <button class="fab-btn" id="scanQuoteBtn" onclick="triggerQuoteScan()" title="Quét báo giá AI">
-    <span class="material-icons">photo_camera</span>
-  </button>
 
   <!-- REPLACEMENT DETAILS MODAL -->
   <div id="replacementModal" class="modal hidden">
@@ -358,7 +288,6 @@
   </div>
   <script src="scripts.js"></script>
   <script src="ai_logic.js"></script>
-  <script src="scanner_logic.js"></script>
   <button id="backToTopBtn" class="back-to-top hidden" onclick="scrollToTop()">
     <span class="material-icons">arrow_upward</span>
   </button>
