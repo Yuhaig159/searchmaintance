@@ -388,8 +388,17 @@
       document.removeEventListener('touchend', closeDragElement);
       document.removeEventListener('touchmove', elementTouchDrag);
       
-      const endX = e.clientX || (e.changedTouches && e.changedTouches[0].clientX) || startX;
-      const endY = e.clientY || (e.changedTouches && e.changedTouches[0].clientY) || startY;
+      let endX = startX;
+      let endY = startY;
+      if (e) {
+        if (typeof e.clientX === 'number') {
+          endX = e.clientX;
+          endY = e.clientY;
+        } else if (e.changedTouches && e.changedTouches.length > 0) {
+          endX = e.changedTouches[0].clientX;
+          endY = e.changedTouches[0].clientY;
+        }
+      }
       
       const distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
       if (onReleaseCallback) {
