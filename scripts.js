@@ -815,7 +815,7 @@ function switchBottomNavTab(section) {
   if (navItem) navItem.classList.add('active');
 
   // Hide all content sections
-  ['mainContent', 'heroSection', 'settingsSection', 'gpsSection', 'aiSection', 'emptyState'].forEach(id => {
+  ['mainContent', 'heroSection', 'settingsSection', 'gpsSection', 'emptyState'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
@@ -854,11 +854,6 @@ function switchBottomNavTab(section) {
       targetEl.classList.remove('hidden');
       headerTitle.textContent = 'Cài Đặt';
       initSettingsTab();
-    } else if (section === 'ai') {
-      targetEl = document.getElementById('aiSection');
-      targetEl.classList.remove('hidden');
-      headerTitle.textContent = 'Trợ Lý AI';
-      initAiTab();
     }
     if (targetEl) targetEl.scrollTop = 0;
   }
