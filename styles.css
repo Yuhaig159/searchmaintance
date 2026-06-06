@@ -842,18 +842,21 @@
 
   .card {
     background: var(--ios-card);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: 
-      0 8px 24px var(--shadow-light), 
-      0 2px 8px var(--shadow-medium),
-      inset 0 1px 1px rgba(255, 255, 255, 0.5);
-    border: 1px solid var(--ios-sep);
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
-    margin: 0 16px 16px 16px;
-    backdrop-filter: blur(80px) saturate(200%);
-    -webkit-backdrop-filter: blur(80px) saturate(200%);
+    border-radius: 24px;
+    margin-bottom: 16px;
+    padding: 20px;
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.5),
+      0 4px 16px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--ios-sep-light);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .card:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   /* Timeline dot */
@@ -1082,6 +1085,69 @@
     animation: spin 0.6s linear infinite;
   }
 
+  /* Background Dimmer for Bottom Sheet */
+  .bottom-sheet-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .bottom-sheet:not(.hidden) .bottom-sheet-overlay {
+    opacity: 1;
+  }
+
+  /* Bottom Sheet Container */
+  .bottom-sheet {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    pointer-events: none;
+  }
+
+  .bottom-sheet:not(.hidden) {
+    pointer-events: auto;
+  }
+
+  .bottom-sheet-content {
+    background: var(--ios-bg);
+    border-radius: 24px 24px 0 0;
+    padding: 0 16px 32px 16px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.15);
+    pointer-events: auto;
+  }
+
+  .bottom-sheet:not(.hidden) .bottom-sheet-content {
+    transform: translateY(0);
+  }
+
+  .bottom-sheet-drag-handle {
+    width: 36px;
+    height: 5px;
+    background: var(--ios-sep);
+    border-radius: 3px;
+    margin: 12px auto;
+  }
+
   /* ═══════════════════════════════════════════════════════════════════════
        8. POPUP MODAL - CHI TIẾT THAY THẾ GẦN NHẤT
        ═══════════════════════════════════════════════════════════════════════ */
@@ -1147,61 +1213,48 @@
 
   /* Modal Header */
   .modal-header {
-    background: #1C695B;
-    color: white;
-    padding: 10px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    position: relative;
-  }
-
-  .modal-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #FFB718, transparent);
+    align-items: center;
+    padding: 0 0 16px 0;
+    border-bottom: 1px solid var(--ios-sep-light);
+    margin-bottom: 12px;
   }
 
   .modal-title {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    color: var(--ios-text);
   }
 
-  .modal-close-btn {
-    background: rgba(255, 255, 255, 0.2);
+  .modal-close {
+    background: var(--ios-fill);
     border: none;
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
-    color: white;
+    color: var(--ios-text-secondary);
   }
 
-  .modal-close-btn:hover {
+  .modal-close:hover {
     background: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
   }
 
-  .modal-close-btn:active {
+  .modal-close:active {
     transform: scale(0.95);
   }
 
   /* Modal Body */
   .modal-body {
-    padding: 24px;
-    overflow-y: auto;
     flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .modal-body::-webkit-scrollbar {
@@ -1620,9 +1673,7 @@
     }
 
     .card-km {
-      min-width: 65px;
-      padding: 5px 9px;
-      border-radius: 7px;
+      min-width: 60px;
     }
 
     .card-km-value {
