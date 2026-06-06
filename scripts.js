@@ -1015,6 +1015,7 @@ function renderGpsVehicleList(vehicles) {
             <div class="gps-card-plate">${v.plate}</div>
             <div class="gps-card-meta">${statusIcon} ${statusText}</div>
             <div class="gps-card-update">Cập nhật: ${v.lastUpdate || '--'}</div>
+            ${v.statusOdo === 'Chưa nhập' ? '<div style="color:var(--brand-orange); font-size: 11px; margin-top: 4px; font-weight: 600;">⚠️ Chưa nhập Km Gốc</div>' : ''}
           </div>
           <div class="gps-card-right">
             <div class="gps-card-total-km">${v.estimatedTotal ? v.estimatedTotal.toLocaleString('vi-VN') : '--'}</div>
