@@ -185,7 +185,7 @@ function setupEventListeners() {
     let cursor = e.target.selectionStart;
     let original = e.target.value;
     let val = original.toUpperCase().replace(/[^A-Z0-9]/g, '');
-    
+
     const match = val.match(/^(\d{2}[A-Z]{1,2})(\d{1,5})$/);
     if (match) {
       let numPart = match[2];
@@ -197,7 +197,7 @@ function setupEventListeners() {
         val = `${match[1]}-${numPart}`;
       }
     }
-    
+
     if (val !== original) {
       e.target.value = val;
       // Adjust cursor intuitively (basic approach)
@@ -295,10 +295,10 @@ function startSearch() {
   if (!val) { showToast('⚠️ Vui lòng nhập biển số xe'); return; }
 
   if (window.navigator?.vibrate) window.navigator.vibrate(50);
-  
+
   document.getElementById('emptyState').classList.add('hidden');
   document.getElementById('mainContent').classList.remove('hidden');
-  
+
   doSearch(val);
 }
 
@@ -392,6 +392,12 @@ function closeReplacementModal() {
   // ⚡ V112: Khôi phục nền cũ
   document.getElementById('appSection').classList.remove('modal-blur-bg');
   document.querySelector('.bottom-nav').classList.remove('modal-blur-bg');
+
+  const backBtn = document.getElementById('backToTopBtn');
+  // Check if we should show back btn (if scrolled down)
+  if (backBtn && document.getElementById('mainContent').scrollTop > 200) {
+    backBtn.classList.remove('hidden');
+  }
 
   document.body.classList.remove('modal-open');
   document.documentElement.classList.remove('modal-open');
