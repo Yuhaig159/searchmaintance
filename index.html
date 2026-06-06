@@ -29,14 +29,15 @@
 
   <div id="appSection" class="app-section">
     <!-- App Header -->
-    <div class="app-header" id="appHeader" style="display: none;">
-      <!-- Nút Back, chỉ hiện khi đã search xe -->
-      <button class="icon-btn header-back-btn hidden" id="headerBackBtn" onclick="backToHero()" title="Quay lại">
-        <span class="material-icons" style="font-size: 20px;">arrow_back</span>
-      </button>
-
-      <div class="header-title">
-        <span class="plate-number" id="currentPlate">--</span>
+    <div class="app-header" id="appHeader">
+      <div class="header-title" style="flex: none; font-weight: 800; font-size: 22px; color: var(--ios-text);">Đội Xe</div>
+      
+      <div class="header-search-box" style="flex: 1; margin: 0 10px; display: flex; align-items: center; background: var(--ios-fill-secondary); border-radius: 12px; padding: 6px 10px;">
+        <span class="material-icons" style="font-size: 18px; color: var(--ios-text-secondary); margin-right: 6px;">search</span>
+        <input type="text" id="heroInput" placeholder="Tìm biển số..." autocomplete="off" style="border: none; background: transparent; width: 100%; outline: none; font-size: 16px; color: var(--ios-text); font-weight: 500;">
+        <button class="icon-btn" onclick="startSearch()" style="width: 28px; height: 28px; min-width: 28px; border: none; background: var(--ios-accent-green); color: white;">
+          <span class="material-icons" style="font-size: 16px;">arrow_forward</span>
+        </button>
       </div>
       
       <div class="header-actions">
@@ -46,33 +47,13 @@
       </div>
     </div>
 
-    <!-- Hero Section / Empty State Container -->
-    <div id="heroSection" class="empty-state" style="justify-content: center; min-height: 60vh;">
-      <div class="hero-content">
-        <div class="hero-icon" id="logoContainer">
-           <!-- Logo sẽ được tự động load từ Logo.html -->
-        </div>
-        <h1 class="hero-title">Tra Cứu Bảo Dưỡng</h1>
-        <div class="hero-search-box">
-          <input type="text" id="heroInput" class="hero-input" placeholder="Nhập biển số hoặc 6 số cuối..."
-            autocomplete="off">
-          <button class="hero-search-btn" onclick="startSearch()">
-            <span class="material-icons">search</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
     <!-- Empty State (No Data) -->
-    <div id="emptyState" class="empty-state hidden fade-in-up-spring">
-      <div class="empty-icon">
-        <span class="material-icons">search_off</span>
+    <div id="emptyState" class="empty-state">
+      <div class="empty-icon" style="background: transparent;">
+        <span class="material-icons" style="font-size: 80px; color: var(--ios-accent-green); opacity: 0.8;">directions_car</span>
       </div>
-      <h2 class="empty-title">Không tìm thấy dữ liệu</h2>
-      <p class="empty-text">Biển số này chưa có trong lịch sử bảo dưỡng.</p>
-      <button class="hero-search-btn" style="margin-top:20px; width:auto; padding:0 30px; border-radius:30px;" onclick="backToHero()">
-        Quay lại tìm kiếm
-      </button>
+      <h2 class="empty-title">Quản Lý Bảo Dưỡng</h2>
+      <p class="empty-text">Nhập biển số xe ở trên để xem lịch sử.</p>
     </div>
 
     <!-- History Tab: Main Content -->
@@ -80,7 +61,7 @@
       <div id="summaryContainer"></div>
       <div class="floating-search-chip">
         <span class="material-icons">filter_list</span>
-        <input type="text" id="quickSearchInput" class="chip-input" placeholder="Lọc nhanh..." autocomplete="off">
+        <input type="text" id="quickSearchInput" class="chip-input" placeholder="Lọc lịch sử..." autocomplete="off">
         <button class="chip-clear hidden" onclick="clearQuickSearch()">
           <span class="material-icons">close</span>
         </button>
@@ -225,12 +206,13 @@
 
 
 
-  <!-- REPLACEMENT DETAILS MODAL -->
-  <div id="replacementModal" class="modal hidden">
-    <div class="modal-overlay" onclick="closeReplacementModal()"></div>
-    <div class="modal-content">
+  <!-- REPLACEMENT DETAILS BOTTOM SHEET -->
+  <div id="replacementModal" class="bottom-sheet hidden">
+    <div class="bottom-sheet-overlay" onclick="closeReplacementModal()"></div>
+    <div class="bottom-sheet-content">
+      <div class="bottom-sheet-drag-handle"></div>
       <div class="modal-header">
-        <h2 class="modal-title">CHI TIẾT THAY THẾ GẦN NHẤT</h2>
+        <h2 class="modal-title">CHI TIẾT THAY THẾ</h2>
         <button class="modal-close" onclick="closeReplacementModal()">
           <span class="material-icons">close</span>
         </button>
