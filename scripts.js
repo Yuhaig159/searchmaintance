@@ -294,47 +294,20 @@ function startSearch() {
   const val = document.getElementById('heroInput').value.trim();
   if (!val) { showToast('⚠️ Vui lòng nhập biển số xe'); return; }
 
-  // Haptic feedback
   if (window.navigator?.vibrate) window.navigator.vibrate(50);
-
-  // Smooth animation out
-  const heroSection = document.getElementById('heroSection');
-  heroSection.style.opacity = '0';
-  heroSection.style.transform = 'translateY(-20px)';
-  heroSection.style.transition = 'all 0.3s ease-in-out';
-
-  setTimeout(() => {
-    heroSection.classList.add('hidden');
-    heroSection.style.opacity = '';
-    heroSection.style.transform = '';
-    document.getElementById('appSection').classList.add('active');
-    doSearch(val);
-  }, 300);
+  
+  document.getElementById('emptyState').classList.add('hidden');
+  document.getElementById('mainContent').classList.remove('hidden');
+  
+  doSearch(val);
 }
 
 function backToHero() {
-  // Haptic feedback
   if (window.navigator?.vibrate) window.navigator.vibrate(20);
 
   document.getElementById('heroInput').value = '';
-  document.getElementById('currentPlate').textContent = '--';
-  document.getElementById('appHeader').style.display = 'none';
   document.getElementById('mainContent').classList.add('hidden');
-  document.getElementById('emptyState').classList.add('hidden');
-  document.getElementById('appSection').classList.remove('active');
-  
-  const heroSection = document.getElementById('heroSection');
-  heroSection.classList.remove('hidden');
-  
-  // Smooth animation in
-  heroSection.style.opacity = '0';
-  heroSection.style.transform = 'translateY(20px)';
-  
-  requestAnimationFrame(() => {
-    heroSection.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-    heroSection.style.opacity = '1';
-    heroSection.style.transform = 'translateY(0)';
-  });
+  document.getElementById('emptyState').classList.remove('hidden');
 
   rawData = [];
   currentPlate = '';
@@ -350,12 +323,7 @@ function doSearch(plateVal) {
   if (!val) { showToast('⚠️ Vui lòng nhập biển số xe'); return; }
 
   currentPlate = val;
-
-  // Update plate number display in header
-  document.getElementById('appHeader').style.display = 'flex';
-  document.getElementById('currentPlate').textContent = val;
-  document.getElementById('headerBackBtn').classList.remove('hidden');
-  document.getElementById('refreshBtn').classList.remove('hidden');
+  document.getElementById('heroInput').value = val;
 
   // ⚡ INSTANT LOAD: Kiểm tra bộ nhớ đệm trước
   const cached = DataCache.get(val);
@@ -843,44 +811,28 @@ function switchBottomNavTab(section) {
   if (navItem) navItem.classList.add('active');
 
   // Hide all content sections
-  ['mainContent', 'heroSection', 'settingsSection', 'gpsSection', 'emptyState'].forEach(id => {
+  ['mainContent', 'settingsSection', 'gpsSection', 'emptyState'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
-
-  const appHeader = document.getElementById('appHeader');
-  const headerTitle = document.getElementById('currentPlate');
-  const backBtn = document.getElementById('headerBackBtn');
-  const refreshBtn = document.getElementById('refreshBtn');
 
   if (section === 'history') {
     if (rawData && rawData.length > 0 && currentPlate) {
       const el = document.getElementById('mainContent');
       el.classList.remove('hidden');
       el.scrollTop = 0;
-      appHeader.style.display = 'flex';
-      headerTitle.textContent = currentPlate;
-      backBtn.classList.remove('hidden');
-      refreshBtn.classList.remove('hidden');
     } else {
-      document.getElementById('heroSection').classList.remove('hidden');
-      appHeader.style.display = 'none';
+      document.getElementById('emptyState').classList.remove('hidden');
     }
   } else {
-    appHeader.style.display = 'flex';
-    backBtn.classList.add('hidden');
-    refreshBtn.classList.add('hidden');
-
     let targetEl = null;
     if (section === 'gps') {
       targetEl = document.getElementById('gpsSection');
       targetEl.classList.remove('hidden');
-      headerTitle.textContent = 'GPS Tracking';
       if (!currentGpsData) loadGpsData();
     } else if (section === 'settings') {
       targetEl = document.getElementById('settingsSection');
       targetEl.classList.remove('hidden');
-      headerTitle.textContent = 'Cài Đặt';
       initSettingsTab();
     }
     if (targetEl) targetEl.scrollTop = 0;
