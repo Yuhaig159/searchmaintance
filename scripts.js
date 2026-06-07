@@ -684,9 +684,11 @@ function handleScroll() {
     if (!btn) return;
 
     let shouldShow = false;
-    const scrollTop = mainContent && !mainContent.classList.contains('hidden') ? mainContent.scrollTop : window.scrollY;
+    const scrollPos = mainContent && !mainContent.classList.contains('hidden') 
+      ? Math.max(mainContent.scrollTop, window.scrollY) 
+      : window.scrollY;
 
-    if (scrollTop > 300) {
+    if (scrollPos > 300) {
       shouldShow = true;
     } else if (summary && summary.getBoundingClientRect().bottom < 0) {
       shouldShow = true;
@@ -718,11 +720,11 @@ if (document.readyState === 'loading') {
 
 function scrollToTop() {
   const mainContent = document.getElementById('mainContent');
-  if (mainContent && !mainContent.classList.contains('hidden')) {
+  if (mainContent) {
     mainContent.scrollTo({ top: 0, behavior: 'smooth' });
-  } else {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  
   if (window.navigator?.vibrate) window.navigator.vibrate(20);
 }
 
@@ -997,3 +999,4 @@ function filterGpsList() {
   const filtered = currentGpsData.vehicles.filter(v => v.plate.includes(query));
   renderGpsVehicleList(filtered);
 }
+
