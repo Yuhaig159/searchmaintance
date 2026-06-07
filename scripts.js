@@ -857,7 +857,7 @@ function switchBottomNavTab(section) {
     if (section === 'gps') {
       targetEl = document.getElementById('gpsSection');
       targetEl.classList.remove('hidden');
-      if (!currentGpsData) loadGpsData();
+      if (!currentFleetData) loadGpsData();
     } else if (section === 'settings') {
       targetEl = document.getElementById('settingsSection');
       targetEl.classList.remove('hidden');
