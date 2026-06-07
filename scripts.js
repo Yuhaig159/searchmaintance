@@ -302,16 +302,35 @@ function startSearch() {
   doSearch(val);
 }
 
+function toggleHeroClearBtn() {
+  const val = document.getElementById('heroInput').value;
+  const btn = document.getElementById('heroClearBtn');
+  if (btn) {
+    if (val.length > 0) {
+      btn.classList.remove('hidden');
+    } else {
+      btn.classList.add('hidden');
+    }
+  }
+}
+
 function backToHero() {
   if (window.navigator?.vibrate) window.navigator.vibrate(20);
 
   document.getElementById('heroInput').value = '';
-  document.getElementById('mainContent').classList.add('hidden');
-  document.getElementById('emptyState').classList.remove('hidden');
-
+  const clearBtn = document.getElementById('heroClearBtn');
+  if (clearBtn) clearBtn.classList.add('hidden');
+  
   rawData = [];
   currentPlate = '';
   resetPagination();
+
+  if (typeof switchBottomNavTab === 'function') {
+    switchBottomNavTab('history');
+  } else {
+    document.getElementById('mainContent').classList.add('hidden');
+    document.getElementById('emptyState').classList.remove('hidden');
+  }
 }
 
 function doSearch(plateVal) {
@@ -324,6 +343,7 @@ function doSearch(plateVal) {
 
   currentPlate = val;
   document.getElementById('heroInput').value = val;
+  toggleHeroClearBtn();
 
   // ⚡ INSTANT LOAD: Kiểm tra bộ nhớ đệm trước
   const cached = DataCache.get(val);
