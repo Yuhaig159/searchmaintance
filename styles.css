@@ -4,57 +4,57 @@
     --brand-white: #FFFFFF;
     --brand-black: #000000;
 
-    
+    /* Background & Surface - Improved depth */
     --ios-bg: #F5F5F7;
     --ios-bg-secondary: #E8E8ED;
     --ios-card: rgba(255, 255, 255, 0.85);
     --ios-surface-elevated: rgba(255, 255, 255, 0.95);
 
-    
+    /* Text Colors - Enhanced readability */
     --ios-text: #1D1D1F;
     --ios-text-secondary: rgba(29, 29, 31, 0.75);
     --ios-text-tertiary: rgba(29, 29, 31, 0.55);
     --ios-text-inverse: #FFFFFF;
 
-    
+    /* Accent Green - Vibrant & visible */
     --ios-accent-green: #1C695B;
     --ios-accent-green-hover: #155043;
     --ios-accent-green-soft: rgba(28, 105, 91, 0.12);
     --ios-accent-green-border: rgba(28, 105, 91, 0.3);
 
-    
+    /* Accent Orange - Bold & energetic */
     --ios-accent-orange: #FF9F0A;
     --ios-accent-orange-hover: #E68A00;
     --ios-accent-orange-soft: rgba(255, 159, 10, 0.12);
     --ios-accent-orange-border: rgba(255, 159, 10, 0.3);
 
-    
+    /* Borders & Dividers - Stronger definition */
     --ios-sep: rgba(0, 0, 0, 0.15);
     --ios-sep-light: rgba(0, 0, 0, 0.08);
     --ios-divider: rgba(0, 0, 0, 0.12);
 
-    
+    /* Shadows - Refined depth */
     --shadow-light: rgba(0, 0, 0, 0.08);
     --shadow-medium: rgba(0, 0, 0, 0.12);
     --shadow-strong: rgba(0, 0, 0, 0.18);
 
-    
+    /* Liquid Glass Effects */
     --glass-bg: rgba(255, 255, 255, 0.7);
     --glass-border: rgba(255, 255, 255, 0.3);
     --glass-shadow: rgba(0, 0, 0, 0.1);
     --blur-amount: 20px;
 
-    
+    /* Gradients */
     --gradient-green-orange: linear-gradient(135deg, #1C695B 0%, #FF9F0A 100%);
     --gradient-light: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 248, 250, 0.8) 100%);
     --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
 
-    
+    /* Status Colors */
     --ios-success: #1C695B;
     --ios-warning: #FF9F0A;
     --ios-error: #FF3B30;
 
-    
+    /* Typography */
     --font-xs: 10px;
     --font-sm: 12px;
     --font-base: 14px;
@@ -64,28 +64,30 @@
     --font-2xl: 32px;
     --font-3xl: 48px;
 
-    
+    /* Spacing */
     --space-xs: 4px;
     --space-sm: 8px;
     --space-md: 16px;
     --space-lg: 24px;
     --space-xl: 32px;
 
-    
+    /* Border Radius - Bolder iOS 18 / Bento Style */
     --radius-sm: 12px;
     --radius-md: 20px;
     --radius-lg: 32px;
     --radius-xl: 40px;
     --radius-round: 50%;
 
-    
+    /* Mesh Gradient Colors */
     --mesh-green: rgba(28, 105, 91, 0.25);
     --mesh-orange: rgba(255, 159, 10, 0.2);
   }
 
-  
+  /* -----------------------------------------------------------------------
+       iOS 26 SYSTEM COLORS - Official Apple Palette
+       ----------------------------------------------------------------------- */
   :root {
-    
+    /* iOS System Colors - Light Mode */
     --ios-system-red: #FF3B30;
     --ios-system-orange: #FF9500;
     --ios-system-yellow: #FFCC00;
@@ -99,7 +101,7 @@
     --ios-system-pink: #FF2D55;
     --ios-system-brown: #A2845E;
 
-    
+    /* iOS Gray Scale */
     --ios-gray: #8E8E93;
     --ios-gray-2: #AEAEB2;
     --ios-gray-3: #C7C7CC;
@@ -107,13 +109,13 @@
     --ios-gray-5: #E5E5EA;
     --ios-gray-6: #F2F2F7;
 
-    
+    /* iOS Label Colors */
     --ios-label: rgba(0, 0, 0, 0.85);
     --ios-label-secondary: rgba(60, 60, 67, 0.6);
     --ios-label-tertiary: rgba(60, 60, 67, 0.3);
     --ios-label-quaternary: rgba(60, 60, 67, 0.18);
 
-    
+    /* iOS Fill Colors */
     --ios-fill: rgba(120, 120, 128, 0.2);
     --ios-fill-secondary: rgba(120, 120, 128, 0.16);
     --ios-fill-tertiary: rgba(118, 118, 128, 0.12);
@@ -121,7 +123,7 @@
   }
 
   [data-theme="dark"] {
-    
+    /* iOS System Colors - Dark Mode */
     --ios-system-red: #FF453A;
     --ios-system-orange: #FF9F0A;
     --ios-system-yellow: #FFD60A;
@@ -135,7 +137,7 @@
     --ios-system-pink: #FF375F;
     --ios-system-brown: #AC8E68;
 
-    
+    /* iOS Gray Scale - Dark */
     --ios-gray: #8E8E93;
     --ios-gray-2: #636366;
     --ios-gray-3: #48484A;
@@ -143,24 +145,24 @@
     --ios-gray-5: #2C2C2E;
     --ios-gray-6: #1C1C1E;
 
-    
+    /* iOS Label Colors - Dark */
     --ios-label: rgba(255, 255, 255, 0.85);
     --ios-label-secondary: rgba(235, 235, 245, 0.6);
     --ios-label-tertiary: rgba(235, 235, 245, 0.3);
     --ios-label-quaternary: rgba(235, 235, 245, 0.18);
 
-    
+    /* iOS Fill Colors - Dark */
     --ios-fill: rgba(120, 120, 128, 0.36);
     --ios-fill-secondary: rgba(120, 120, 128, 0.32);
     --ios-fill-tertiary: rgba(118, 118, 128, 0.24);
     --ios-fill-quaternary: rgba(116, 116, 128, 0.18);
 
-    
+    /* Mesh Gradient Colors - Vibrant Dark Mode */
     --mesh-green: rgba(48, 209, 88, 0.18);
     --mesh-orange: rgba(255, 159, 10, 0.15);
   }
 
-  
+  /* Apply iOS system colors to components */
   .summary-btn {
     background: linear-gradient(135deg, var(--ios-system-orange) 0%, #FF8800 100%);
   }
@@ -183,56 +185,58 @@
     color: var(--ios-system-green);
   }
 
-  
+  /* V107: Removed old search-box and filter-input focus states */
 
-  
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       THEME TỐI - DARK MODE (Enhanced Contrast & Liquid Glass)
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
   [data-theme="dark"] {
-    
+    /* Background & Surface - Deep layers with better separation */
     --ios-bg: #000000;
     --ios-bg-secondary: #1C1C1E;
     --ios-card: rgba(28, 28, 30, 0.85);
     --ios-surface-elevated: rgba(44, 44, 46, 0.95);
 
-    
+    /* Text Colors - Enhanced visibility */
     --ios-text: #F5F5F7;
     --ios-text-secondary: rgba(245, 245, 247, 0.8);
     --ios-text-tertiary: rgba(245, 245, 247, 0.6);
     --ios-text-inverse: #000000;
 
-    
+    /* Accent Green - Brighter for dark mode */
     --ios-accent-green: #30D158;
     --ios-accent-green-hover: #32D760;
     --ios-accent-green-soft: rgba(48, 209, 88, 0.15);
     --ios-accent-green-border: rgba(48, 209, 88, 0.35);
 
-    
+    /* Accent Orange - Vibrant glow */
     --ios-accent-orange: #FF9F0A;
     --ios-accent-orange-hover: #FFB340;
     --ios-accent-orange-soft: rgba(255, 159, 10, 0.15);
     --ios-accent-orange-border: rgba(255, 159, 10, 0.35);
 
-    
+    /* Borders & Dividers - Visible separation */
     --ios-sep: rgba(255, 255, 255, 0.2);
     --ios-sep-light: rgba(255, 255, 255, 0.1);
     --ios-divider: rgba(255, 255, 255, 0.15);
 
-    
+    /* Shadows - Deeper for dark mode */
     --shadow-light: rgba(0, 0, 0, 0.4);
     --shadow-medium: rgba(0, 0, 0, 0.6);
     --shadow-strong: rgba(0, 0, 0, 0.8);
 
-    
+    /* Liquid Glass Effects - Dark variant */
     --glass-bg: rgba(28, 28, 30, 0.6);
     --glass-border: rgba(255, 255, 255, 0.15);
     --glass-shadow: rgba(0, 0, 0, 0.5);
     --blur-amount: 30px;
 
-    
+    /* Gradients */
     --gradient-green-orange: linear-gradient(135deg, #30D158 0%, #FF9F0A 100%);
     --gradient-light: linear-gradient(135deg, rgba(28, 28, 30, 0.9) 0%, rgba(44, 44, 46, 0.8) 100%);
     --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
 
-    
+    /* Status Colors */
     --ios-success: #30D158;
     --ios-warning: #FF9F0A;
     --ios-error: #FF453A;
@@ -260,7 +264,7 @@
     text-rendering: optimizeLegibility;
   }
 
-  
+  /* Blur background sections when modal is open */
   body.modal-open #heroSection,
   body.modal-open #appSection {
     filter: blur(8px);
@@ -280,24 +284,26 @@
     text-align: center;
   }
 
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+       3. HERO SECTION (Landing Page)
+       ═══════════════════════════════════════════════════════════════════════ */
 
-  
+  /* Hero Container */
   .hero-section {
     position: relative;
     min-height: 100vh;
-    
+    /* Cho phép chiếm toàn màn hình nếu chưa có kết quả */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     padding: 24px 16px 40px 16px;
-    
+    /* Loại bỏ gradient cũ, sử dụng màu nền đồng nhất với body */
     background: var(--ios-bg);
     overflow: hidden;
   }
 
-  
+  /* Hero Background Animation */
   .hero-bg {
     position: absolute;
     top: 0;
@@ -334,7 +340,7 @@
     animation-delay: 2s;
   }
 
-  
+  /* Hero Content */
   .hero-content {
     position: relative;
     z-index: 1;
@@ -344,7 +350,7 @@
     animation: fadeInUp 0.8s ease-out;
   }
 
-  
+  /* Hero Logo */
   .hero-icon {
     width: 100%;
     max-width: 280px;
@@ -370,7 +376,7 @@
     color: white;
   }
 
-  
+  /* Hero Typography */
   .hero-title {
     font-size: 36px;
     font-weight: 800;
@@ -389,7 +395,7 @@
     font-weight: 500;
   }
 
-  
+  /* Hero Search Box */
   .hero-search-box {
     background: var(--glass-bg);
     border-radius: 60px;
@@ -468,7 +474,7 @@
     overflow-x: hidden;
   }
 
-  
+  /* Animated Mesh Gradient Layer */
   .app-section::before,
   .app-section::after {
     content: '';
@@ -497,7 +503,7 @@
   }
 
   .app-section > * {
-    z-index: 10; 
+    z-index: 10; /* Đưa tất cả các thẻ nằm trên hệ thống mesh */
     position: relative;
   }
 
@@ -512,7 +518,7 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  
+  /* App Header - Premium Liquid Glass */
   .app-header {
     position: sticky;
     top: 0;
@@ -533,7 +539,7 @@
     -webkit-backdrop-filter: blur(80px) saturate(220%) contrast(110%);
   }
 
-  
+  /* Header Title - Plate Number Display */
   .header-title {
     flex: 1;
     display: flex;
@@ -604,7 +610,7 @@
     animation: spin 0.8s linear infinite;
   }
 
-  
+  /* Empty State */
   .empty-state {
     flex: 1;
     display: flex;
@@ -643,7 +649,7 @@
     color: var(--ios-text-secondary);
   }
 
-  
+  /* Main Content */
   .main-content {
     flex: 1;
     padding: 16px;
@@ -761,7 +767,7 @@
   .summary-btn:active { transform: scale(0.98); }
 
 
-  
+  /* Details Collapse (Dropdown) */
   .details-collapse {
     background: var(--ios-card);
     border-radius: var(--radius-lg);
@@ -853,7 +859,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
-  
+  /* Timeline dot */
   .card::before {
     display: none;
   }
@@ -1041,7 +1047,7 @@
     letter-spacing: 0.2px;
   }
 
-  
+  /* Load More Button */
   .load-more-container {
     text-align: center;
     padding: 24px 0;
@@ -1079,7 +1085,7 @@
     animation: spin 0.6s linear infinite;
   }
 
-  
+  /* Background Dimmer for Bottom Sheet */
   .bottom-sheet-overlay {
     position: fixed;
     top: 0;
@@ -1098,7 +1104,7 @@
     opacity: 1;
   }
 
-  
+  /* Bottom Sheet Container */
   .bottom-sheet {
     position: fixed;
     top: 0;
@@ -1144,9 +1150,11 @@
     margin: 12px auto;
   }
 
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+       8. POPUP MODAL - CHI TIẾT THAY THẾ GẦN NHẤT
+       ═══════════════════════════════════════════════════════════════════════ */
 
-  
+  /* Modal Overlay */
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -1170,7 +1178,7 @@
     visibility: visible;
   }
 
-  
+  /* Modal Container */
   .modal-container {
     background: var(--glass-bg);
     border-radius: 24px;
@@ -1205,7 +1213,7 @@
     -webkit-backdrop-filter: blur(var(--blur-amount));
   }
 
-  
+  /* Modal Header */
   .modal-header {
     display: flex;
     justify-content: space-between;
@@ -1243,7 +1251,7 @@
     transform: scale(0.95);
   }
 
-  
+  /* Modal Body */
   .modal-body {
     flex: 1;
     overflow-y: auto;
@@ -1269,7 +1277,7 @@
     background: var(--ios-text-tertiary);
   }
 
-  
+  /* Modal Table */
   .modal-table {
     width: 100%;
     border-collapse: collapse;
@@ -1299,7 +1307,7 @@
     transition: background 0.1s;
   }
 
-  
+  /* Đảm bảo chữ trắng/đen rõ ràng theo theme */
   [data-theme="dark"] .modal-table td {
     color: #FFFFFF;
   }
@@ -1328,7 +1336,7 @@
     display: block;
   }
 
-  
+  /* Modal Footer (Optional) */
   .modal-footer {
     padding: 20px 24px;
     border-top: 1px solid var(--ios-sep);
@@ -1359,9 +1367,11 @@
     transform: scale(0.95);
   }
 
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+       9. OVERLAYS & NOTIFICATIONS
+       ═══════════════════════════════════════════════════════════════════════ */
 
-  
+  /* Loading Overlay */
   .loading-overlay {
     position: fixed;
     top: 0;
@@ -1386,7 +1396,7 @@
     animation: spin 0.8s linear infinite;
   }
 
-  
+  /* Toast Notification */
   .toast {
     position: fixed;
     bottom: 32px;
@@ -1405,7 +1415,7 @@
     text-align: center;
   }
 
-  
+  /* Offline Mode Banner */
   .offline-mode::before {
     content: '📵 Chế độ Offline';
     position: fixed;
@@ -1508,20 +1518,20 @@
 
   @media (max-width: 768px) {
 
-    
+    /* Base adjustments */
     body {
       font-size: 15px;
     }
 
-    
+    /* Hero Section Adjustments */
     .hero-section {
       position: relative;
       min-height: 80vh;
-      
+      /* Chiếm toàn bộ chiều cao màn hình */
       display: flex;
       flex-direction: column;
       justify-content: center;
-      
+      /* Căn giữa nội dung theo chiều dọc */
       align-items: center;
       padding: 40px 20px;
       background: var(--ios-bg);
@@ -1570,7 +1580,7 @@
       font-size: 16px !important;
     }
 
-    
+    /* Summary Card Mobile - Elegant & Compact */
     #summaryContainer {
       margin-bottom: 14px;
     }
@@ -1617,7 +1627,7 @@
       border-radius: 10px;
     }
 
-    
+    /* Results List Mobile - Card margin optimization */
     .card {
       background: var(--glass-bg);
       border-radius: 18px;
@@ -1707,9 +1717,9 @@
       font-size: 7px;
     }
 
-    
+    /* Obsolete filter section mobile removed */
 
-    
+    /* Load More Button mobile */
     .load-more-container {
       padding: 16px 0;
     }
@@ -1721,7 +1731,7 @@
       min-width: 44px;
     }
 
-    
+    /* App header mobile */
     .app-header {
       border-bottom-width: 1.5px;
       gap: 8px;
@@ -1773,17 +1783,19 @@
       box-shadow: 0 2px 6px var(--shadow-light);
     }
 
-    
+    /* Main content spacing */
     .main-content {
       padding: 12px 16px;
     }
   }
 
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+       12. RESPONSIVE - iPHONE SPECIFIC (430px width - iPhone 15 Pro Max)
+       ═══════════════════════════════════════════════════════════════════════ */
   @media (max-width: 480px) {
 
-    
-    
+    /* Make things even more compact - iPhone optimization */
+    /* iPhone optimization removed redundant summary-card definition */
 
     .summary-item .label {
       font-size: 8px;
@@ -1836,8 +1848,10 @@
     }
   }
 
-  
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+       13. MODAL POPUP - CHI TIẾT THAY THẾ
+       ═══════════════════════════════════════════════════════════════════════ */
+  /* Scroll Lock for Background */
   html.modal-open,
   body.modal-open {
     overflow: hidden !important;
@@ -1882,7 +1896,7 @@
     width: 95%;
     max-width: 500px;
     max-height: 85vh;
-    overflow: hidden; 
+    overflow: hidden; /* Fixes white gaps by clipping children */
     box-shadow: 
       0 20px 40px rgba(0, 0, 0, 0.2), 
       0 0 0 1px var(--ios-sep-light);
@@ -1912,7 +1926,7 @@
     background: linear-gradient(135deg, #1C695B 0%, #155043 100%);
     color: white;
     flex-shrink: 0;
-    
+    /* Removed border-radius as parent clips it */
     position: relative;
     z-index: 1;
   }
@@ -2031,12 +2045,14 @@
     margin-top: 2px;
   }
 
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+       14. UTILITY CLASSES
+       ═══════════════════════════════════════════════════════════════════════ */
   .thin-border {
     border-bottom: 0.5px solid var(--ios-sep);
   }
 
-  
+  /* ⚡ V112 Background Focus Overrides */
   .modal-blur-bg {
     filter: blur(8px) brightness(0.6) !important;
     pointer-events: none !important;
@@ -2044,7 +2060,9 @@
     user-select: none !important;
   }
 
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+       15. PRINT STYLES
+       ═══════════════════════════════════════════════════════════════════════ */
   @media print {
 
     .hero-section,
@@ -2069,7 +2087,9 @@
     }
   }
 
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+       16. MOBILE MODAL OPTIMIZATION
+       ═══════════════════════════════════════════════════════════════════════ */
   @media (max-width: 768px) {
     .modal-content {
       max-width: 92vw;
@@ -2114,7 +2134,7 @@
     .modal-content {
       max-width: 96vw;
       max-height: 92vh;
-      border-radius: var(--radius-md); 
+      border-radius: var(--radius-md); /* Consistent rounding for all corners */
     }
 
     .modal-header {
@@ -2137,10 +2157,10 @@
   }
 
   @media (-webkit-min-device-pixel-ratio: 3) {
-    
+    /* CSS cho màn hình độ nét cao (Retina) */
   }
 
-  
+  /* Back to Top Button */
   .back-to-top {
     position: fixed;
     bottom: 110px;
@@ -2157,11 +2177,11 @@
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     z-index: 9999;
-    
+    /* Tăng tối đa để không bị che */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     outline: none;
     -webkit-tap-highlight-color: transparent;
-    
+    /* Xóa khung xanh khi chạm trên iPhone */
   }
 
   .back-to-top:hover {
@@ -2171,10 +2191,10 @@
   .back-to-top:active {
     transform: scale(0.9) translateY(-5px);
     background-color: var(--brand-orange);
-    
+    /* Đổi màu nhẹ khi bấm để biết đã nhận lệnh */
   }
 
-  
+  /* Hiệu ứng ẩn/hiện mượt mà */
   .back-to-top.hidden {
     opacity: 0;
     visibility: hidden;
@@ -2186,10 +2206,12 @@
     visibility: visible;
   }
 
-  
+  /* -----------------------------------------------------------------------
+       RESPONSIVE - iPhone 15 Pro Max Optimization (430x932px)
+       ----------------------------------------------------------------------- */
   @media (max-width: 430px) {
 
-    
+    /* Safe area support for iPhone 15 Pro Max */
     body {
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
@@ -2201,9 +2223,9 @@
       padding: max(24px, env(safe-area-inset-top)) 20px max(40px, env(safe-area-inset-bottom));
     }
 
-    
+    /* Safe area and compact overrides */
 
-    
+    /* Touch targets - minimum 44x44px for iOS */
     .icon-btn,
     .back-btn,
     .search-btn {
@@ -2211,7 +2233,7 @@
       min-height: 44px;
     }
 
-    
+    /* Enhanced card visibility */
     .card {
       margin: 0 12px 12px 12px;
       border-width: 2px;
@@ -2223,9 +2245,11 @@
     }
   }
 
-  
+  /* Desktop overrides now live in desktop.css */
 
-  
+  /* -----------------------------------------------------------------------
+       MOBILE ICON ALIGNMENT FIXES
+       ----------------------------------------------------------------------- */
   @media (max-width: 768px) {
     .app-header {
       padding: 8px 12px;
@@ -2257,7 +2281,7 @@
       flex-shrink: 0;
     }
 
-    
+    /* Ensure icons stay in bounds */
     .material-icons {
       font-size: 20px !important;
     }
@@ -2265,7 +2289,7 @@
 
   @media (max-width: 430px) {
 
-    
+    /* iPhone 15 Pro Max specific */
     .app-header {
       padding: 8px 10px;
       gap: 6px;
@@ -2288,7 +2312,7 @@
     }
   }
 
-  
+  /* Prevent horizontal scroll */
   body,
   html {
     overflow-x: hidden;
@@ -2301,10 +2325,10 @@
   }
 
 
-  
+  /* V107: Removed unused utility classes and duplicate !important overrides */
 
 
-  
+  /* Enhanced button states with Apple's spring animation */
   .back-btn,
   .icon-btn,
   .search-btn,
@@ -2343,7 +2367,7 @@
     transform: scale(0.92);
   }
 
-  
+  /* Apple's Focus Ring */
   .search-input:focus,
   .filter-input:focus {
     outline: none;
@@ -2352,12 +2376,12 @@
       0 2px 8px var(--shadow-light);
   }
 
-  
+  /* Smooth scroll behavior */
   html {
     scroll-behavior: smooth;
   }
 
-  
+  /* Apple's Pull-to-Refresh Indicator Style */
   .loading-spinner {
     border-width: 3px;
     border-style: solid;
@@ -2367,7 +2391,7 @@
   }
 
 
-  
+  /* V107: Removed iOS 26 Liquid Glass unused classes and duplicate overrides */
 
 
 
@@ -2379,9 +2403,11 @@
 
 
 
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+     NEW iOS 26 COMPONENTS - SEARCH MODAL, FLOATING CHIP, BOTTOM NAV
+     ═══════════════════════════════════════════════════════════════════════ */
 
-  
+  /* Search Modal - Full Screen Overlay */
   .search-modal {
     position: fixed;
     top: 0;
@@ -2470,7 +2496,7 @@
     opacity: 0.6;
   }
 
-  
+  /* Floating Search Chip - Sticky Filter */
   .floating-search-chip {
     position: sticky;
     top: 64px;
@@ -2543,7 +2569,7 @@
     transform: scale(0.9);
   }
 
-  
+  /* Infinite Scroll Trigger */
   .infinite-scroll-trigger {
     display: flex;
     align-items: center;
@@ -2567,7 +2593,7 @@
     font-weight: 500;
   }
 
-  
+  /* Bottom Navigation - iOS Floating Tab Bar (Bento style) */
   .bottom-nav {
     position: fixed;
     bottom: max(16px, env(safe-area-inset-bottom));
@@ -2631,12 +2657,12 @@
     transform: scale(0.95);
   }
 
-  
+  /* Adjust main content for bottom nav */
   .app-section {
     padding-bottom: 100px;
   }
 
-  
+  /* Hide old search box styles */
   .search-box {
     display: none !important;
   }
@@ -2645,14 +2671,16 @@
     display: none !important;
   }
 
-  
+  /* ═══════════════════════════════════════════════════════════════════════
+     STATS SECTION
+     ═══════════════════════════════════════════════════════════════════════ */
 
   .stats-section {
     padding-bottom: 90px;
     min-height: calc(100vh - 56px);
   }
 
-  
+  /* Time Filter */
   .stats-time-filter {
     display: flex;
     gap: 8px;
@@ -2693,7 +2721,7 @@
     transform: translateY(-2px);
   }
 
-  
+  /* Stats Overview Cards */
   .stats-overview {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -2741,7 +2769,7 @@
     font-weight: 600;
   }
 
-  
+  /* Charts */
   .stats-charts {
     padding: 0 16px;
     display: flex;
@@ -2773,7 +2801,7 @@
     max-height: 250px;
   }
 
-  
+  /* Top Services */
   .stats-top-services {
     padding: 16px;
   }
@@ -2831,7 +2859,7 @@
     margin-left: 12px;
   }
 
-  
+  /* Stats Empty State */
   .stats-empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -2857,7 +2885,7 @@
     margin: 0;
   }
 
-  
+  /* Tablet & Desktop */
   @media (min-width: 768px) {
     .stats-overview {
       grid-template-columns: repeat(4, 1fr);
@@ -2872,7 +2900,7 @@
     }
   }
 
-  
+  /* Tab sections inside appSection — fill flex column, scroll vertically */
   .tab-section {
     flex: 1;
     overflow-y: auto;
@@ -2880,7 +2908,7 @@
     padding-bottom: 80px;
   }
 
-  
+  /* ═══════════════════════════════════════════════════════ GPS SECTION */
   .gps-section { padding: 0 0 0; }
   .gps-summary-bar { display: flex; align-items: center; justify-content: space-around; background: var(--glass-bg); backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--ios-sep); padding: 14px 16px; }
   .gps-stat { flex: 1; text-align: center; display: flex; flex-direction: column; gap: 4px; }
@@ -2909,7 +2937,7 @@
   .gps-empty-state h3 { color: var(--ios-text); font-size: 18px; font-weight: 700; margin: 0; }
   .gps-empty-state p { font-size: 14px; margin: 0; }
 
-  
+  /* ═══════════════════════════════════════════════════════ SCHEDULE SECTION */
   .schedule-section { padding: 0 0 0; }
   .schedule-summary-bar { display: flex; align-items: center; justify-content: space-around; background: var(--glass-bg); backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--ios-sep); padding: 14px 16px; }
   .sched-stat { flex: 1; text-align: center; display: flex; flex-direction: column; gap: 4px; }
@@ -2950,7 +2978,7 @@
   .sched-empty-state h3 { color: var(--ios-text); font-size: 18px; }
   .sched-empty-state p { font-size: 14px; }
 
-  
+  /* ═══════════════════════════════════════════════════════ SETTINGS SECTION */
   .settings-section { padding: 16px 16px 0; display: flex; flex-direction: column; gap: 16px; }
   .settings-group { background: var(--ios-card); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px var(--shadow-light); border: 1px solid var(--ios-sep-light); }
   .settings-group-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--ios-text-secondary); padding: 10px 16px 6px; background: var(--ios-bg-secondary); }
@@ -2976,12 +3004,12 @@
   .settings-btn.settings-btn-danger { background: var(--ios-system-red); }
   .settings-btn:active, .settings-btn-sm:active { transform: scale(0.96); }
 
-  
+  /* ═══════════════════════════════════════════════════════ AI FLOATING ASSISTANT WIDGET */
   .ai-floating-widget {
     position: fixed;
     bottom: 90px;
     right: 24px;
-    width: 68px; 
+    width: 68px; /* Slightly larger for the robot shape */
     height: 68px;
     border-radius: 50%;
     background: transparent;
@@ -3044,7 +3072,7 @@
     transform: scale(1) translateY(0);
     pointer-events: auto;
   }
-  
+  /* Speech bubble arrow pointer */
   .ai-floating-chatbox::before {
     content: '';
     position: absolute;
@@ -3172,9 +3200,11 @@
     50% { opacity: 1; transform: translateY(-4px); }
   }
 
+/* ============================================================
+   AI QUOTE SCANNER UI (NEW V128-AI)
+   ============================================================ */
 
-
-
+/* Floating Action Button (FAB) */
 .fab-btn {
   position: fixed;
   bottom: 90px;
@@ -3202,7 +3232,7 @@
   font-size: 28px;
 }
 
-
+/* Scan Modal Specifics */
 .scan-modal {
   width: 95%;
   max-width: 600px;
@@ -3345,7 +3375,9 @@
   }
 }
 
-
+/* -----------------------------------------------------------------------
+   AI QUOTE SCANNER MODAL (V128-AI UPGRADE)
+   ----------------------------------------------------------------------- */
 .scan-modal {
     max-width: 1100px !important;
     width: 95vw !important;
@@ -3395,7 +3427,7 @@
     height: 100%;
 }
 
-
+/* Scrollbar for data panel */
 .scan-data-panel::-webkit-scrollbar { width: 6px; }
 .scan-data-panel::-webkit-scrollbar-thumb { background: var(--ios-sep); border-radius: 10px; }
 
@@ -3498,9 +3530,11 @@
     transform: scale(1.1);
 }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   V130 PREMIUM REDESIGN — Header, Empty State, Bottom Nav
+   ═══════════════════════════════════════════════════════════════════════ */
 
-
-
+/* ── Header Brand Logo ── */
 .header-brand {
   flex-shrink: 0;
   cursor: pointer;
@@ -3524,7 +3558,7 @@
   filter: drop-shadow(0 4px 16px rgba(28, 105, 91, 0.4));
 }
 
-
+/* ── Header Search Container ── */
 .header-search-container {
   flex: 1;
   margin: 0 10px;
@@ -3574,7 +3608,7 @@
   font-weight: 400;
 }
 
-
+/* Clear button */
 .header-clear-btn {
   border: none;
   background: var(--ios-fill);
@@ -3602,7 +3636,7 @@
   background: var(--ios-accent-green-soft);
 }
 
-
+/* Search Go button */
 .header-search-btn {
   width: 32px;
   height: 32px;
@@ -3633,7 +3667,7 @@
   transform: scale(0.9);
 }
 
-
+/* ── Empty State — Brand Showcase ── */
 .empty-state {
   flex: 1;
   display: flex;
@@ -3647,8 +3681,8 @@
 
 .empty-logo-container {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 160px;
+  height: 160px;
   margin-bottom: 28px;
 }
 
@@ -3723,7 +3757,7 @@
   font-size: 16px !important;
 }
 
-
+/* ── Bottom Nav — Enhanced with Pill Indicator ── */
 .nav-item.active {
   color: var(--brand-green);
   background: var(--ios-accent-green-soft);
@@ -3738,7 +3772,7 @@
   font-weight: 700;
 }
 
-
+/* ── Dark Mode Enhancements for New Components ── */
 [data-theme="dark"] .header-search-btn {
   background: linear-gradient(135deg, #30D158 0%, #1C695B 100%);
   box-shadow: 0 2px 8px rgba(48, 209, 88, 0.3);
@@ -3768,9 +3802,11 @@
   filter: drop-shadow(0 4px 16px rgba(48, 209, 88, 0.4));
 }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   V130.1 PREMIUM ENHANCEMENTS — Loading, Toast, Cards, Summary
+   ═══════════════════════════════════════════════════════════════════════ */
 
-
-
+/* ── Loading Overlay — Branded Dual-Ring Spinner ── */
 .loading-overlay {
   background: rgba(0, 0, 0, 0.35);
   backdrop-filter: blur(12px) saturate(150%);
@@ -3780,7 +3816,523 @@
 .loading-spinner {
   width: 48px;
   height: 48px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: var(--brand-green);
+  border-right-color: var(--brand-orange);
+  border-radius: 50%;
+  animation: spinBrand 0.9s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+  box-shadow: 0 0 24px rgba(28, 105, 91, 0.2);
+}
 
+@keyframes spinBrand {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Toast — Premium Frosted Glass ── */
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: var(--glass-bg);
+  backdrop-filter: blur(60px) saturate(200%);
+  -webkit-backdrop-filter: blur(60px) saturate(200%);
+  color: var(--ios-text);
+  padding: 12px 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px var(--shadow-medium),
+              inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--ios-sep);
+  border-left: 3px solid var(--brand-green);
+  font-weight: 600;
+  font-size: 14px;
+  z-index: 10000;
+  animation: toastSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 85%;
+  text-align: left;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes toastSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+/* ── Summary Card — Animated Shimmer + Refinements ── */
+.summary-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  animation: shimmer 4s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  50% { left: 150%; }
+  100% { left: 150%; }
+}
+
+.summary-card .summary-item .value {
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.summary-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.summary-btn:hover::before {
+  left: 100%;
+}
+
+/* ── History Cards — Enhanced Micro-interactions ── */
+.card {
+  position: relative;
+  overflow: hidden;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--brand-green) 0%, var(--brand-orange) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0 2px 2px 0;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+.card-header {
+  position: relative;
+}
+
+.card-km {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Card date typography refinement */
+.card-title {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Work Item Icon — Subtle Brand Animation ── */
+.work-item-icon {
+  transition: transform 0.2s ease;
+}
+
+.work-item:hover .work-item-icon {
+  transform: scale(1.15);
+}
+
+/* ── Settings Page — Premium Group Cards ── */
+.settings-section {
+  padding: 16px;
+  padding-bottom: 100px;
+}
+
+.settings-group {
+  background: var(--ios-card);
+  border-radius: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--ios-sep-light);
+  overflow: hidden;
+  box-shadow: 0 2px 8px var(--shadow-light);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.settings-group-title {
+  padding: 12px 16px 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ios-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.settings-row {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 0.5px solid var(--ios-sep-light);
+  transition: background 0.15s ease;
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-row:active {
+  background: var(--ios-fill-quaternary);
+}
+
+.settings-row-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.settings-icon {
+  font-size: 20px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-row-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ios-text);
+}
+
+.settings-value-text {
+  font-size: 14px;
+  color: var(--ios-text-secondary);
+  font-weight: 500;
+}
+
+/* Settings Toggle */
+.toggle-switch {
+  position: relative;
+  width: 51px;
+  height: 31px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--ios-fill);
+  border-radius: 31px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 27px;
+  height: 27px;
+  left: 2px;
+  bottom: 2px;
+  background: white;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--brand-green);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* Settings Buttons */
+.settings-btn {
+  padding: 8px 16px;
+  background: var(--ios-accent-green-soft);
+  color: var(--brand-green);
+  border: 1px solid var(--ios-accent-green-border);
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.settings-btn:active {
+  transform: scale(0.95);
+}
+
+.settings-btn-danger {
+  background: rgba(255, 59, 48, 0.08);
+  color: var(--ios-error);
+  border-color: rgba(255, 59, 48, 0.2);
+}
+
+.settings-select {
+  padding: 8px 12px;
+  background: var(--ios-fill-tertiary);
+  color: var(--ios-text);
+  border: 1px solid var(--ios-sep);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+/* Settings Column Layout */
+.settings-row-col {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.settings-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--ios-fill-tertiary);
+  color: var(--ios-text);
+  border: 1px solid var(--ios-sep);
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.settings-textarea:focus {
+  border-color: var(--ios-accent-green-border);
+  box-shadow: 0 0 0 3px var(--ios-accent-green-soft);
+}
+
+.settings-btn-row {
+  display: flex;
+  gap: 8px;
+}
+
+.settings-btn-sm {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  border: none;
+  background: var(--brand-green);
+  color: white;
+  transition: all 0.2s;
+}
+
+.settings-btn-sm:active {
+  transform: scale(0.97);
+}
+
+.settings-btn-secondary {
+  background: var(--ios-fill);
+  color: var(--ios-text-secondary);
+}
+
+/* ── GPS Section — Premium Stat Cards ── */
+.gps-summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 16px;
+  background: var(--ios-card);
+  border-radius: 16px;
+  margin: 16px;
+  border: 1px solid var(--ios-sep-light);
+  box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+.gps-stat-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ios-text);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.gps-stat-value.gps-active {
+  color: var(--brand-green);
+}
+
+.gps-stat-value.gps-total-km {
+  color: var(--brand-orange);
+}
+
+.gps-stat-label {
+  font-size: 11px;
+  color: var(--ios-text-secondary);
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-top: 2px;
+}
+
+.gps-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--ios-sep);
+}
+
+/* GPS Search */
+.gps-search-bar {
+  padding: 0 16px 12px;
+}
+
+.gps-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ios-fill-secondary);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.gps-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--ios-text);
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+}
+
+/* GPS Vehicle Card */
+.gps-card {
+  margin: 0 16px 10px;
+  background: var(--ios-card);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--ios-sep-light);
+  box-shadow: 0 2px 8px var(--shadow-light);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.gps-card-active {
+  border-left: 3px solid var(--brand-green);
+}
+
+.gps-card-idle {
+  border-left: 3px solid var(--ios-gray-4);
+}
+
+.gps-card-body {
+  flex: 1;
+}
+
+.gps-card-plate {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--ios-text);
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.gps-card-meta {
+  font-size: 13px;
+  color: var(--ios-text-secondary);
+  margin-top: 2px;
+}
+
+.gps-card-update {
+  font-size: 11px;
+  color: var(--ios-text-tertiary);
+  margin-top: 2px;
+}
+
+.gps-card-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.gps-card-total-km {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--brand-orange);
+  font-variant-numeric: tabular-nums;
+}
+
+.gps-card-total-label {
+  font-size: 10px;
+  color: var(--ios-text-tertiary);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* GPS Empty State */
+.gps-empty-state {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--ios-text-secondary);
+}
+
+.gps-empty-state h3 {
+  font-size: 18px;
+  margin: 12px 0 8px;
+  color: var(--ios-text);
+}
+
+.gps-empty-state p {
+  font-size: 14px;
+  color: var(--ios-text-tertiary);
+}
+
+.gps-vehicle-list {
+  padding-bottom: 80px;
+}
+
+
+
+
+/* ── Fleet Dashboard (Advanced GPS) ── */
 .fleet-section {
   padding-bottom: 90px;
 }
@@ -4024,7 +4576,7 @@
   margin-top: 4px;
 }
 
-
+/* Inline Editor */
 .fleet-editor {
   background: var(--ios-fill-secondary);
   border-radius: 12px;
@@ -4087,834 +4639,10 @@
   background: var(--brand-green);
   color: white;
 }
-  border-top-color: var(--brand-green);
-  border-right-color: var(--brand-orange);
-  border-radius: 50%;
-  animation: spinBrand 0.9s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
-  box-shadow: 0 0 24px rgba(28, 105, 91, 0.2);
-}
-
-@keyframes spinBrand {
-  to { transform: rotate(360deg); }
-}
-
-
-.toast {
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%) translateY(0);
-  background: var(--glass-bg);
-  backdrop-filter: blur(60px) saturate(200%);
-  -webkit-backdrop-filter: blur(60px) saturate(200%);
-  color: var(--ios-text);
-  padding: 12px 20px;
-  border-radius: 16px;
-  box-shadow: 0 8px 32px var(--shadow-medium),
-              inset 0 1px 1px rgba(255, 255, 255, 0.3);
-  border: 1px solid var(--ios-sep);
-  border-left: 3px solid var(--brand-green);
-  font-weight: 600;
-  font-size: 14px;
-  z-index: 10000;
-  animation: toastSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  max-width: 85%;
-  text-align: left;
-  transition: opacity 0.3s ease;
-}
-
-@keyframes toastSlideIn {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) translateY(20px) scale(0.92);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0) scale(1);
-  }
-}
-
-
-.summary-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.summary-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 60%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.08) 50%,
-    transparent 100%
-  );
-  animation: shimmer 4s ease-in-out infinite;
-  z-index: 0;
-  pointer-events: none;
-}
-
-@keyframes shimmer {
-  0% { left: -100%; }
-  50% { left: 150%; }
-  100% { left: 150%; }
-}
-
-.summary-card .summary-item .value {
-  font-variant-numeric: tabular-nums;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-}
-
-.summary-btn {
-  position: relative;
-  overflow: hidden;
-}
-
-.summary-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.summary-btn:hover::before {
-  left: 100%;
-}
-
-
-.card {
-  position: relative;
-  overflow: hidden;
-}
-
-.card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 100%;
-  background: linear-gradient(180deg, var(--brand-green) 0%, var(--brand-orange) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 0 2px 2px 0;
-}
-
-.card:hover::after {
-  opacity: 1;
-}
-
-.card-header {
-  position: relative;
-}
-
-.card-km {
-  font-variant-numeric: tabular-nums;
-}
-
-
-.card-title {
-  font-variant-numeric: tabular-nums;
-}
-
-
-.work-item-icon {
-  transition: transform 0.2s ease;
-}
-
-.work-item:hover .work-item-icon {
-  transform: scale(1.15);
-}
-
-
-.settings-section {
-  padding: 16px;
-  padding-bottom: 100px;
-}
-
-.settings-group {
-  background: var(--ios-card);
-  border-radius: 16px;
-  margin-bottom: 16px;
-  border: 1px solid var(--ios-sep-light);
-  overflow: hidden;
-  box-shadow: 0 2px 8px var(--shadow-light);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.settings-group-title {
-  padding: 12px 16px 6px;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--ios-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.settings-row {
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 0.5px solid var(--ios-sep-light);
-  transition: background 0.15s ease;
-}
-
-.settings-row:last-child {
-  border-bottom: none;
-}
-
-.settings-row:active {
-  background: var(--ios-fill-quaternary);
-}
-
-.settings-row-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-}
-
-.settings-icon {
-  font-size: 20px;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.settings-row-label {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ios-text);
-}
-
-.settings-value-text {
-  font-size: 14px;
-  color: var(--ios-text-secondary);
-  font-weight: 500;
-}
-
-
-.toggle-switch {
-  position: relative;
-  width: 51px;
-  height: 31px;
-  flex-shrink: 0;
-}
-
-.toggle-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.toggle-slider {
-  position: absolute;
-  inset: 0;
-  background: var(--ios-fill);
-  border-radius: 31px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.toggle-slider::before {
-  content: '';
-  position: absolute;
-  width: 27px;
-  height: 27px;
-  left: 2px;
-  bottom: 2px;
-  background: white;
-  border-radius: 50%;
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.toggle-switch input:checked + .toggle-slider {
-  background: var(--brand-green);
-}
-
-.toggle-switch input:checked + .toggle-slider::before {
-  transform: translateX(20px);
-}
-
-
-.settings-btn {
-  padding: 8px 16px;
-  background: var(--ios-accent-green-soft);
-  color: var(--brand-green);
-  border: 1px solid var(--ios-accent-green-border);
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.settings-btn:active {
-  transform: scale(0.95);
-}
-
-.settings-btn-danger {
-  background: rgba(255, 59, 48, 0.08);
-  color: var(--ios-error);
-  border-color: rgba(255, 59, 48, 0.2);
-}
-
-.settings-select {
-  padding: 8px 12px;
-  background: var(--ios-fill-tertiary);
-  color: var(--ios-text);
-  border: 1px solid var(--ios-sep);
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  outline: none;
-  font-family: inherit;
-  appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-}
-
-
-.settings-row-col {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 10px;
-}
-
-.settings-textarea {
-  width: 100%;
-  padding: 10px 14px;
-  background: var(--ios-fill-tertiary);
-  color: var(--ios-text);
-  border: 1px solid var(--ios-sep);
-  border-radius: 12px;
-  font-size: 14px;
-  font-family: inherit;
-  resize: vertical;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.settings-textarea:focus {
-  border-color: var(--ios-accent-green-border);
-  box-shadow: 0 0 0 3px var(--ios-accent-green-soft);
-}
-
-.settings-btn-row {
-  display: flex;
-  gap: 8px;
-}
-
-.settings-btn-sm {
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  border: none;
-  background: var(--brand-green);
-  color: white;
-  transition: all 0.2s;
-}
-
-.settings-btn-sm:active {
-  transform: scale(0.97);
-}
-
-.settings-btn-secondary {
-  background: var(--ios-fill);
-  color: var(--ios-text-secondary);
-}
-
-
-.gps-summary-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 16px;
-  background: var(--ios-card);
-  border-radius: 16px;
-  margin: 16px;
-  border: 1px solid var(--ios-sep-light);
-  box-shadow: 0 2px 8px var(--shadow-light);
-}
-
-.gps-stat-value {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--ios-text);
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
-.gps-stat-value.gps-active {
-  color: var(--brand-green);
-}
-
-.gps-stat-value.gps-total-km {
-  color: var(--brand-orange);
-}
-
-.gps-stat-label {
-  font-size: 11px;
-  color: var(--ios-text-secondary);
-  text-align: center;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin-top: 2px;
-}
-
-.gps-divider {
-  width: 1px;
-  height: 32px;
-  background: var(--ios-sep);
-}
-
-
-.gps-search-bar {
-  padding: 0 16px 12px;
-}
-
-.gps-search-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--ios-fill-secondary);
-  border-radius: 12px;
-  padding: 10px 14px;
-}
-
-.gps-search-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  color: var(--ios-text);
-  font-size: 15px;
-  outline: none;
-  font-family: inherit;
-}
-
-
-.gps-card {
-  margin: 0 16px 10px;
-  background: var(--ios-card);
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border: 1px solid var(--ios-sep-light);
-  box-shadow: 0 2px 8px var(--shadow-light);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.gps-card-active {
-  border-left: 3px solid var(--brand-green);
-}
-
-.gps-card-idle {
-  border-left: 3px solid var(--ios-gray-4);
-}
-
-.gps-card-body {
-  flex: 1;
-}
-
-.gps-card-plate {
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--ios-text);
-  letter-spacing: 0.5px;
-  font-variant-numeric: tabular-nums;
-}
-
-.gps-card-meta {
-  font-size: 13px;
-  color: var(--ios-text-secondary);
-  margin-top: 2px;
-}
-
-.gps-card-update {
-  font-size: 11px;
-  color: var(--ios-text-tertiary);
-  margin-top: 2px;
-}
-
-.gps-card-right {
-  text-align: right;
-  flex-shrink: 0;
-}
-
-.gps-card-total-km {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--brand-orange);
-  font-variant-numeric: tabular-nums;
-}
-
-.gps-card-total-label {
-  font-size: 10px;
-  color: var(--ios-text-tertiary);
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-
-.gps-empty-state {
-  text-align: center;
-  padding: 40px 24px;
-  color: var(--ios-text-secondary);
-}
-
-.gps-empty-state h3 {
-  font-size: 18px;
-  margin: 12px 0 8px;
-  color: var(--ios-text);
-}
-
-.gps-empty-state p {
-  font-size: 14px;
-  color: var(--ios-text-tertiary);
-}
-
-.gps-vehicle-list {
-  padding-bottom: 80px;
-}
-
-
-
-.fleet-section {
-  padding-bottom: 90px;
-}
-
-.fleet-summary-bar {
-  display: flex;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  gap: 8px;
-  padding: 16px;
-  background: var(--ios-card);
-  border-radius: 16px;
-  margin: 16px;
-  border: 1px solid var(--ios-sep-light);
-  box-shadow: 0 4px 12px var(--shadow-light);
-}
-
-.fleet-stat {
-  flex: 1 0 65px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 4px;
-  border-radius: 12px;
-  transition: background 0.2s;
-  cursor: pointer;
-}
-
-.fleet-stat:active {
-  background: var(--ios-fill-tertiary);
-}
-
-.fleet-stat-value {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--ios-text);
-  font-variant-numeric: tabular-nums;
-  line-height: 1.2;
-}
-
-.fleet-stat-label {
-  font-size: 10px;
-  color: var(--ios-text-secondary);
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-top: 4px;
-  text-align: center;
-}
-
-.fleet-danger { color: var(--ios-error); }
-.fleet-warning { color: var(--brand-orange); }
-.fleet-safe { color: var(--brand-green); }
 .fleet-info { color: #007AFF; }
-
-.fleet-controls {
-  position: sticky;
-  top: 60px;
-  z-index: 50;
-  background: var(--glass-bg);
-  backdrop-filter: blur(40px) saturate(200%);
-  -webkit-backdrop-filter: blur(40px) saturate(200%);
-  padding: 10px 16px 14px;
-  border-bottom: 1px solid var(--ios-sep-light);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.fleet-search-wrap {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--ios-fill-secondary);
-  border-radius: 12px;
-  padding: 10px 14px;
-}
-
-.fleet-search-input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  color: var(--ios-text);
-  font-size: 15px;
-  outline: none;
-}
-
-.fleet-filter-tabs {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.fleet-filter-tabs::-webkit-scrollbar { display: none; }
-
-.fleet-tab {
-  padding: 6px 14px;
-  border-radius: 16px;
-  background: var(--ios-fill-tertiary);
-  color: var(--ios-text-secondary);
-  font-size: 13px;
-  font-weight: 600;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.fleet-tab.active {
-  background: var(--ios-text);
-  color: var(--ios-bg);
-}
-
-.fleet-vehicle-list {
-  padding: 12px 16px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.fleet-card {
-  background: var(--ios-card);
-  border-radius: 16px;
-  padding: 14px 16px;
-  border: 1px solid var(--ios-sep-light);
-  box-shadow: 0 4px 16px var(--shadow-light);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.fleet-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.fleet-card-plate {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--ios-text);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.fleet-status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-.fleet-status-dot.overdue { background: var(--ios-error); box-shadow: 0 0 8px rgba(255, 59, 48, 0.4); }
-.fleet-status-dot.due_soon { background: var(--brand-orange); box-shadow: 0 0 8px rgba(255, 153, 0, 0.4); }
 .fleet-status-dot.pending { background: #007AFF; box-shadow: 0 0 8px rgba(0, 122, 255, 0.4); }
-.fleet-status-dot.ok { background: var(--brand-green); box-shadow: 0 0 8px rgba(28, 105, 91, 0.4); }
-
-.fleet-edit-btn {
-  background: var(--ios-fill-secondary);
-  color: var(--brand-green);
-  border: none;
-  border-radius: 10px;
-  padding: 4px 10px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.fleet-edit-btn:active { transform: scale(0.95); }
-
-.fleet-metrics {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  color: var(--ios-text-secondary);
-  margin-bottom: 12px;
-}
-
-.fleet-metric-val {
-  font-weight: 700;
-  color: var(--ios-text);
-}
-
-.fleet-progress-wrap {
-  margin-bottom: 12px;
-}
-
-.fleet-progress-bar {
-  height: 6px;
-  background: var(--ios-fill-tertiary);
-  border-radius: 3px;
-  overflow: hidden;
-  position: relative;
-}
-
-.fleet-progress-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.fleet-progress-fill.overdue { background: var(--ios-error); }
-.fleet-progress-fill.due_soon { background: linear-gradient(90deg, var(--brand-green), var(--brand-orange)); }
 .fleet-progress-fill.pending { background: #007AFF; }
-.fleet-progress-fill.ok { background: var(--brand-green); }
-
-.fleet-progress-labels {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--ios-text-tertiary);
-  margin-top: 6px;
-  font-weight: 500;
-}
-
-.fleet-alert {
-  font-size: 12px;
-  font-weight: 600;
-  padding: 6px 10px;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  display: inline-block;
-}
-
-.fleet-alert.overdue {
-  background: rgba(255, 59, 48, 0.1);
-  color: var(--ios-error);
-}
-
-.fleet-alert.due_soon {
-  background: rgba(255, 153, 0, 0.1);
-  color: var(--brand-orange);
-}
-
 .fleet-alert.pending {
   background: rgba(0, 122, 255, 0.1);
   color: #007AFF;
-}
-
-.fleet-card-footer {
-  font-size: 10px;
-  color: var(--ios-text-tertiary);
-  text-align: right;
-  border-top: 1px solid var(--ios-sep-light);
-  padding-top: 8px;
-  margin-top: 4px;
-}
-
-
-.fleet-editor {
-  background: var(--ios-fill-secondary);
-  border-radius: 12px;
-  padding: 12px;
-  margin-top: 12px;
-  animation: slideDown 0.3s ease-out;
-}
-
-.fleet-editor-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ios-text);
-  margin-bottom: 10px;
-}
-
-.fleet-editor-input-wrap {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.fleet-editor-input {
-  flex: 1;
-  background: var(--ios-bg);
-  border: 1px solid var(--ios-sep);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--ios-text);
-  outline: none;
-}
-
-.fleet-editor-input:focus {
-  border-color: var(--brand-green);
-  box-shadow: 0 0 0 3px var(--ios-accent-green-soft);
-}
-
-.fleet-editor-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.fleet-editor-btn {
-  flex: 1;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-}
-
-.fleet-editor-btn.cancel {
-  background: var(--ios-fill);
-  color: var(--ios-text-secondary);
-}
-
-.fleet-editor-btn.save {
-  background: var(--brand-green);
-  color: white;
 }
