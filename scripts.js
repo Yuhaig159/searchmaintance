@@ -1031,9 +1031,9 @@ function renderFleetVehicleList(vehicles) {
     let alertHtml = '';
     
     if (v.status === 'overdue') {
-      alertHtml = `<div class="fleet-alert overdue">⚠️ QUÁ HẠN ${kmRemainingText} KM — Cần bảo dưỡng!</div>`;
+      alertHtml = `<div class="fleet-alert overdue">⚠️ Quá hạn <span style="font-size: 15px; font-weight: 900; letter-spacing: 0.5px;">${kmRemainingText}</span> km — Cần bảo dưỡng!</div>`;
     } else if (v.status === 'due_soon') {
-      alertHtml = `<div class="fleet-alert due_soon">⏳ SẮP ĐẾN HẠN — Còn lại ${kmRemainingText} KM</div>`;
+      alertHtml = `<div class="fleet-alert due_soon">⏳ Sắp đến hạn — Còn lại <span style="font-size: 15px; font-weight: 900; letter-spacing: 0.5px;">${kmRemainingText}</span> km</div>`;
     } else if (v.status === 'pending') {
       alertHtml = `<div class="fleet-alert pending">📝 ĐÃ BẢO DƯỠNG — Đang chờ ký duyệt hồ sơ</div>`;
     }
@@ -1089,9 +1089,7 @@ function renderFleetVehicleList(vehicles) {
           </div>
         </div>
         
-        <div class="fleet-card-footer">
-           Cập nhật: ${v.lastUpdate || '--'} • ${odoStatus}
-        </div>
+
       </div>
     `;
   }).join('');
