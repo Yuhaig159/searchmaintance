@@ -1121,28 +1121,75 @@ function loadGpsData() {
     alertThreshold: getAlertThreshold()
   };
 
-  google.script.run
-    .withSuccessHandler(data => {
-      hideLoading();
-      if (!data || data.error || !data.success) {
-        emptyState.classList.remove('hidden');
-        emptyState.querySelector('h3').textContent = 'Chưa có dữ liệu';
-        emptyState.querySelector('p').textContent = data?.error || 'Vui lòng chạy Đồng bộ dữ liệu GPS trước.';
-        return;
+  Promise.all([
+    new Promise((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler(reject)
+        .getFleetDashboard(settings);
+    }),
+    new Promise((resolve, reject) => {
+      if (currentListData && currentListData.length > 0) {
+        resolve({ success: true, data: currentListData });
+      } else {
+        google.script.run
+          .withSuccessHandler(resolve)
+          .withFailureHandler(reject)
+          .getInfoCarData();
       }
-      emptyState.classList.add('hidden');
-      currentFleetData = data;
-      renderFleetSummary(data);
-      applyFleetFilters();
     })
-    .withFailureHandler(err => {
-      hideLoading();
+  ]).then(([data, infoData]) => {
+    hideLoading();
+    if (!data || data.error || !data.success) {
       emptyState.classList.remove('hidden');
-      emptyState.querySelector('h3').textContent = 'Lỗi kết nối';
-      emptyState.querySelector('p').textContent = err.message;
-      showToast('❌ Không thể tải dữ liệu Đội Xe');
-    })
-    .getFleetDashboard(settings);
+      emptyState.querySelector('h3').textContent = 'Chưa có dữ liệu';
+      emptyState.querySelector('p').textContent = data?.error || 'Vui lòng chạy Đồng bộ dữ liệu GPS trước.';
+      return;
+    }
+
+    // Merge missing plates from Info Car
+    const vehicleMap = {};
+    if (data.vehicles) {
+      data.vehicles.forEach(v => {
+        vehicleMap[v.plate.replace(/[\s\-\.]/g, '').toUpperCase()] = v;
+      });
+    }
+
+    if (infoData && infoData.success && infoData.data) {
+      infoData.data.forEach(info => {
+        const pNorm = info.plate.replace(/[\s\-\.]/g, '').toUpperCase();
+        if (pNorm && !vehicleMap[pNorm]) {
+          vehicleMap[pNorm] = {
+            plate: info.plate, // Use original plate format from Info Car
+            estimatedTotal: 0,
+            dayKm: 0,
+            statusOdo: 'Chưa có dữ liệu GPS',
+            lastUpdate: '',
+            status: 'unknown',
+            nextDueKm: null,
+            kmRemaining: null,
+            interval: settings.defaultInterval,
+            lastPeriodicKm: 0,
+            pendingAuth: false
+          };
+        }
+      });
+    }
+
+    data.vehicles = Object.values(vehicleMap);
+    data.total = data.vehicles.length;
+
+    emptyState.classList.add('hidden');
+    currentFleetData = data;
+    renderFleetSummary(data);
+    applyFleetFilters();
+  }).catch(err => {
+    hideLoading();
+    emptyState.classList.remove('hidden');
+    emptyState.querySelector('h3').textContent = 'Lỗi kết nối';
+    emptyState.querySelector('p').textContent = err.message;
+    showToast('❌ Không thể tải dữ liệu Đội Xe');
+  });
 }
 
 function renderFleetSummary(data) {
