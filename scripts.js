@@ -157,7 +157,6 @@ const DataCache = {
 
 (function init() {
   document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
-  if (localStorage.getItem('largeText') === 'true') document.body.classList.add('large-text');
   loadInitialData();
   setupEventListeners();
   setupNetworkListeners();
@@ -858,7 +857,7 @@ function switchBottomNavTab(section) {
     if (section === 'gps') {
       targetEl = document.getElementById('gpsSection');
       targetEl.classList.remove('hidden');
-      if (!currentFleetData) loadGpsData();
+      if (!currentGpsData) loadGpsData();
     } else if (section === 'settings') {
       targetEl = document.getElementById('settingsSection');
       targetEl.classList.remove('hidden');
@@ -881,47 +880,18 @@ function getDefaultInterval() {
   return parseInt(localStorage.getItem('defaultInterval') || '10000');
 }
 
-function getAlertThreshold() {
-  return parseInt(localStorage.getItem('alertThreshold') || '1500');
-}
-
-function getLargeText() {
-  return localStorage.getItem('largeText') === 'true';
-}
-
 function initSettingsTab() {
   // Dark mode toggle
   const isDark = document.body.getAttribute('data-theme') === 'dark';
   document.getElementById('darkModeToggle').checked = isDark;
 
-  // Large Text toggle
-  const largeTextToggle = document.getElementById('largeTextToggle');
-  if(largeTextToggle) largeTextToggle.checked = getLargeText();
-
   // Interval selector
   const interval = getDefaultInterval();
   document.getElementById('defaultIntervalSelect').value = String(interval);
 
-  // Alert Threshold selector
-  const threshold = getAlertThreshold();
-  const thresholdEl = document.getElementById('alertThresholdSelect');
-  if(thresholdEl) thresholdEl.value = String(threshold);
-
   // Special plates textarea
   const plates = getSpecialPlates();
   document.getElementById('specialPlatesTextarea').value = plates.join('\n');
-}
-
-function toggleLargeText(isLarge) {
-  localStorage.setItem('largeText', isLarge ? 'true' : 'false');
-  if (isLarge) document.body.classList.add('large-text');
-  else document.body.classList.remove('large-text');
-  showToast(isLarge ? 'Bật chế độ chữ to' : 'Tắt chế độ chữ to');
-}
-
-function saveAlertThreshold(val) {
-  localStorage.setItem('alertThreshold', val);
-  showToast(`💾 Đã lưu ngưỡng báo trước: ${Number(val).toLocaleString('vi-VN')} KM`);
 }
 
 function toggleThemeFromSettings(isDark) {
@@ -950,24 +920,19 @@ function resetSpecialPlates() {
 }
 
 function clearAppLocalStorage() {
-  if(confirm('Bạn có chắc muốn xóa toàn bộ cài đặt và bộ nhớ đệm cục bộ? Ứng dụng sẽ tải lại từ đầu.')) {
-    const theme = localStorage.getItem('theme');
-    const largeText = localStorage.getItem('largeText');
-    localStorage.clear();
-    sessionStorage.clear();
-    if (theme) localStorage.setItem('theme', theme);
-    if (largeText) localStorage.setItem('largeText', largeText);
-    showToast('🧹 Đã xóa rác thành công, đang tải lại...');
-    setTimeout(() => location.reload(), 800);
-  }
+  if (!confirm('Xóa toàn bộ dữ liệu cục bộ (theme, cài đặt)? Không ảnh hưởng dữ liệu server.')) return;
+  const theme = localStorage.getItem('theme');
+  localStorage.clear();
+  if (theme) localStorage.setItem('theme', theme);
+  showToast('🗑️ Đã xóa dữ liệu cục bộ');
+  initSettingsTab();
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
    GPS LIVE STATUS FEATURE
    ═══════════════════════════════════════════════════════════════════════ */
 
-let currentFleetData = null;
-let currentFleetFilter = 'all';
+let currentGpsData = null;
 
 function loadGpsData() {
   const emptyState = document.getElementById('gpsEmptyState');
@@ -975,229 +940,83 @@ function loadGpsData() {
 
   emptyState.classList.remove('hidden');
   emptyState.querySelector('h3').textContent = 'Đang tải...';
-  emptyState.querySelector('p').textContent = 'Đang lấy dữ liệu Đội xe từ server.';
+  emptyState.querySelector('p').textContent = 'Đang lấy dữ liệu GPS từ server.';
   vehicleList.innerHTML = '';
   showLoading();
-
-  const settings = {
-    specialPlates: getSpecialPlates(),
-    defaultInterval: getDefaultInterval(),
-    alertThreshold: getAlertThreshold()
-  };
 
   google.script.run
     .withSuccessHandler(data => {
       hideLoading();
       if (!data || data.error || !data.success) {
         emptyState.classList.remove('hidden');
-        emptyState.querySelector('h3').textContent = 'Chưa có dữ liệu';
-        emptyState.querySelector('p').textContent = data?.error || 'Vui lòng chạy Đồng bộ dữ liệu GPS trước.';
+        emptyState.querySelector('h3').textContent = 'Chưa có dữ liệu GPS';
+        emptyState.querySelector('p').textContent = data?.error || 'Hãy chạy Đồng bộ GPS từ Google Sheets.';
         return;
       }
       emptyState.classList.add('hidden');
-      currentFleetData = data;
-      renderFleetSummary(data);
-      applyFleetFilters();
+      currentGpsData = data;
+      renderGpsSummary(data);
+      renderGpsVehicleList(data.vehicles);
     })
     .withFailureHandler(err => {
       hideLoading();
       emptyState.classList.remove('hidden');
       emptyState.querySelector('h3').textContent = 'Lỗi kết nối';
       emptyState.querySelector('p').textContent = err.message;
-      showToast('❌ Không thể tải dữ liệu Đội Xe');
+      showToast('❌ Không thể tải dữ liệu GPS');
     })
-    .getFleetDashboard(settings);
+    .getLiveStatusData();
 }
 
-function renderFleetSummary(data) {
-  document.getElementById('fleetTotal').textContent = data.total || '--';
-  document.getElementById('fleetOverdue').textContent = data.overdueCount || '0';
-  document.getElementById('fleetDueSoon').textContent = data.dueSoonCount || '0';
-  document.getElementById('fleetPending').textContent = data.pendingCount || '0';
-  document.getElementById('fleetOk').textContent = data.okCount || '0';
+function renderGpsSummary(data) {
+  document.getElementById('gpsTotalVehicles').textContent = data.total || '--';
+  document.getElementById('gpsActiveCount').textContent = data.activeCount || '0';
+  document.getElementById('gpsTotalDayKm').textContent = data.totalDayKm ? data.totalDayKm.toLocaleString('vi-VN') : '--';
 }
 
-function setFleetFilter(filter) {
-  currentFleetFilter = filter;
-  document.querySelectorAll('.fleet-tab').forEach(t => t.classList.remove('active'));
-  document.querySelector(`.fleet-tab[data-filter="${filter}"]`).classList.add('active');
-  applyFleetFilters();
-}
-
-function applyFleetFilters() {
-  if (!currentFleetData || !currentFleetData.vehicles) return;
-  const query = document.getElementById('fleetSearchInput').value.replace(/[\s\-\.]/g, '').toUpperCase();
-  
-  let filtered = currentFleetData.vehicles;
-  
-  if (currentFleetFilter !== 'all') {
-    filtered = filtered.filter(v => v.status === currentFleetFilter);
-  }
-  
-  if (query) {
-    filtered = filtered.filter(v => v.plate.includes(query));
-  }
-  
-  renderFleetVehicleList(filtered);
-}
-
-function renderFleetVehicleList(vehicles) {
+function renderGpsVehicleList(vehicles) {
   const container = document.getElementById('gpsVehicleList');
   if (!vehicles || vehicles.length === 0) {
-    container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--ios-text-secondary)"><span class="material-icons" style="font-size:48px;opacity:0.5;margin-bottom:10px;display:block;">no_crash</span>Không tìm thấy xe phù hợp</div>';
+    container.innerHTML = '<p style="text-align:center;padding:20px;color:var(--ios-text-secondary)">Không có xe nào</p>';
     return;
   }
 
   const html = vehicles.map((v, index) => {
+    const isActive = v.dayKm > 0;
+    const statusClass = isActive ? 'gps-card-active' : 'gps-card-idle';
+    const statusIcon = isActive ? '🟢' : '⚪';
+    const statusText = isActive ? `${v.dayKm.toLocaleString('vi-VN')} km hôm nay` : 'Chưa di chuyển';
     const delay = index * 0.03;
-    
-    // Safety check for interval to prevent divide by zero
-    const interval = v.interval || 10000;
-    
-    // Calculate progress percentage (how much of the interval is consumed)
-    let progressPct = 0;
-    if (v.lastPeriodicKm > 0 && v.nextDueKm > 0) {
-       const consumed = v.estimatedTotal - v.lastPeriodicKm;
-       progressPct = Math.max(0, Math.min(100, (consumed / interval) * 100));
-    }
-    
-    // Format text
-    const kmRemainingText = v.kmRemaining !== null ? Math.abs(v.kmRemaining).toLocaleString('vi-VN') : '--';
-    let alertHtml = '';
-    
-    if (v.status === 'overdue') {
-      alertHtml = `<div class="fleet-alert overdue">⚠️ Quá hạn <span style="font-size: 15px; font-weight: 900; letter-spacing: 0.5px;">${kmRemainingText}</span> km — Cần bảo dưỡng!</div>`;
-    } else if (v.status === 'due_soon') {
-      alertHtml = `<div class="fleet-alert due_soon">⏳ Sắp đến hạn — Còn lại <span style="font-size: 15px; font-weight: 900; letter-spacing: 0.5px;">${kmRemainingText}</span> km</div>`;
-    } else if (v.status === 'pending') {
-      alertHtml = `<div class="fleet-alert pending">📝 ĐÃ BẢO DƯỠNG — Đang chờ ký duyệt hồ sơ</div>`;
-    }
-    
-    const odoStatus = v.statusOdo === 'Chưa nhập' ? '<span style="color:var(--brand-orange)">⚠️ Gốc trống</span>' : 'Đã Đbộ';
-    const pendingActionText = v.pendingAuth ? 'Hủy chờ duyệt' : 'Chờ duyệt';
-    const pendingActionIcon = v.pendingAuth ? 'close' : 'history_edu';
 
     return `
-      <div class="fleet-card fade-in-up-spring" style="animation-delay:${delay}s">
-        <div class="fleet-card-header">
-          <div class="fleet-card-plate">
-            <div class="fleet-status-dot ${v.status}"></div>
-            ${v.plate}
+        <div class="gps-card ${statusClass} fade-in-up-spring" style="animation-delay:${delay}s">
+          <div class="gps-card-status-indicator"></div>
+          <div class="gps-card-body">
+            <div class="gps-card-plate">${v.plate}</div>
+            <div class="gps-card-meta">${statusIcon} ${statusText}</div>
+            <div class="gps-card-update">Cập nhật: ${v.lastUpdate || '--'}</div>
+            ${v.statusOdo === 'Chưa nhập' ? '<div style="color:var(--brand-orange); font-size: 11px; margin-top: 4px; font-weight: 600;">⚠️ Chưa nhập Km Gốc</div>' : ''}
           </div>
-          <div style="display:flex;gap:6px;">
-            ${(v.status === 'overdue' || v.status === 'due_soon' || v.pendingAuth) ? 
-              `<button class="fleet-edit-btn" onclick="togglePendingStatus('${v.plate}', ${!v.pendingAuth})" style="${v.pendingAuth ? 'background:var(--ios-fill-tertiary);color:var(--ios-text-secondary)' : 'color:#007AFF'}">
-                <span class="material-icons" style="font-size:14px">${pendingActionIcon}</span> ${pendingActionText}
-               </button>` : ''}
-            <button class="fleet-edit-btn" onclick="showOdoEditor('${v.plate}', ${v.estimatedTotal})">
-              <span class="material-icons" style="font-size:14px">edit</span> Sửa Km
-            </button>
+          <div class="gps-card-right">
+            <div class="gps-card-total-km">${v.estimatedTotal ? v.estimatedTotal.toLocaleString('vi-VN') : '--'}</div>
+            <div class="gps-card-total-label">Km tổng</div>
           </div>
-        </div>
-        
-        <div class="fleet-metrics">
-          <div>Km hiện tại: <span class="fleet-metric-val">${v.estimatedTotal ? v.estimatedTotal.toLocaleString('vi-VN') : '--'}</span></div>
-          <div>Hôm nay: <span class="fleet-metric-val" style="color:var(--brand-green)">+${v.dayKm > 0 ? v.dayKm.toLocaleString('vi-VN') : '0'} km</span></div>
-        </div>
-        
-        <div class="fleet-progress-wrap">
-          <div class="fleet-progress-bar">
-            <div class="fleet-progress-fill ${v.status}" style="width: ${progressPct}%"></div>
-          </div>
-          <div class="fleet-progress-labels">
-            <span>BĐ cuối: ${v.lastPeriodicKm ? v.lastPeriodicKm.toLocaleString('vi-VN') : '---'}</span>
-            <span>Tiếp theo: ${v.nextDueKm ? v.nextDueKm.toLocaleString('vi-VN') : '---'} (${(v.interval/1000)}k)</span>
-          </div>
-        </div>
-        
-        ${alertHtml}
-        
-        <!-- Inline Editor Container (Hidden by default) -->
-        <div id="odoEditor_${v.plate}" class="fleet-editor hidden">
-          <div class="fleet-editor-title">Cập nhật Km thực tế — ${v.plate}</div>
-          <div class="fleet-editor-input-wrap">
-            <input type="number" id="odoInput_${v.plate}" class="fleet-editor-input" value="${v.estimatedTotal}" placeholder="Nhập số Km mới...">
-          </div>
-          <div class="fleet-editor-actions">
-            <button class="fleet-editor-btn cancel" onclick="cancelOdoEditor('${v.plate}')">Hủy</button>
-            <button class="fleet-editor-btn save" onclick="saveOdoEditor('${v.plate}')">Cập nhật ✓</button>
-          </div>
-        </div>
-        
-
-      </div>
-    `;
+        </div>`;
   }).join('');
 
   container.innerHTML = html;
 }
 
-// Inline Editor logic
-function showOdoEditor(plate, currentKm) {
-  const editor = document.getElementById(`odoEditor_${plate}`);
-  if (editor) {
-    editor.classList.remove('hidden');
-    const input = document.getElementById(`odoInput_${plate}`);
-    if (input) {
-      input.focus();
-      input.select();
-    }
-  }
-}
+function filterGpsList() {
+  if (!currentGpsData || !currentGpsData.vehicles) return;
+  const query = document.getElementById('gpsSearchInput').value.replace(/[\s\-\.]/g, '').toUpperCase();
 
-function cancelOdoEditor(plate) {
-  const editor = document.getElementById(`odoEditor_${plate}`);
-  if (editor) {
-    editor.classList.add('hidden');
-  }
-}
-
-function saveOdoEditor(plate) {
-  const input = document.getElementById(`odoInput_${plate}`);
-  if (!input) return;
-  
-  const newKm = parseInt(input.value);
-  if (isNaN(newKm) || newKm <= 0) {
-    showToast('❌ Vui lòng nhập số KM hợp lệ!');
+  if (!query) {
+    renderGpsVehicleList(currentGpsData.vehicles);
     return;
   }
-  
-  showLoading();
-  
-  google.script.run
-    .withSuccessHandler(success => {
-      hideLoading();
-      if (success) {
-        showToast('✅ Đã cập nhật ODO thành công');
-        cancelOdoEditor(plate);
-        // Tải lại danh sách xe để refresh dữ liệu
-        loadGpsData(); 
-      } else {
-        showToast('❌ Cập nhật thất bại. Vui lòng thử lại.');
-      }
-    })
-    .withFailureHandler(err => {
-      hideLoading();
-      showToast('❌ Lỗi: ' + err.message);
-    })
-    .updateManualOdo(plate, newKm);
+
+  const filtered = currentGpsData.vehicles.filter(v => v.plate.includes(query));
+  renderGpsVehicleList(filtered);
 }
 
-function togglePendingStatus(plate, isPending) {
-  showLoading();
-  google.script.run
-    .withSuccessHandler(success => {
-      hideLoading();
-      if (success) {
-        showToast(isPending ? '✅ Đã đánh dấu Chờ duyệt hồ sơ' : '✅ Đã hủy chờ duyệt');
-        loadGpsData();
-      } else {
-        showToast('❌ Cập nhật thất bại');
-      }
-    })
-    .withFailureHandler(err => {
-      hideLoading();
-      showToast('❌ Lỗi: ' + err.message);
-    })
-    .togglePendingAuth(plate, isPending);
-}
