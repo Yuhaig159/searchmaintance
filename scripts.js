@@ -157,6 +157,7 @@ const DataCache = {
 
 (function init() {
   document.body.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+  if (localStorage.getItem('largeText') === 'true') document.body.classList.add('large-text');
   loadInitialData();
   setupEventListeners();
   setupNetworkListeners();
@@ -880,18 +881,47 @@ function getDefaultInterval() {
   return parseInt(localStorage.getItem('defaultInterval') || '10000');
 }
 
+function getAlertThreshold() {
+  return parseInt(localStorage.getItem('alertThreshold') || '1500');
+}
+
+function getLargeText() {
+  return localStorage.getItem('largeText') === 'true';
+}
+
 function initSettingsTab() {
   // Dark mode toggle
   const isDark = document.body.getAttribute('data-theme') === 'dark';
   document.getElementById('darkModeToggle').checked = isDark;
 
+  // Large Text toggle
+  const largeTextToggle = document.getElementById('largeTextToggle');
+  if(largeTextToggle) largeTextToggle.checked = getLargeText();
+
   // Interval selector
   const interval = getDefaultInterval();
   document.getElementById('defaultIntervalSelect').value = String(interval);
 
+  // Alert Threshold selector
+  const threshold = getAlertThreshold();
+  const thresholdEl = document.getElementById('alertThresholdSelect');
+  if(thresholdEl) thresholdEl.value = String(threshold);
+
   // Special plates textarea
   const plates = getSpecialPlates();
   document.getElementById('specialPlatesTextarea').value = plates.join('\n');
+}
+
+function toggleLargeText(isLarge) {
+  localStorage.setItem('largeText', isLarge ? 'true' : 'false');
+  if (isLarge) document.body.classList.add('large-text');
+  else document.body.classList.remove('large-text');
+  showToast(isLarge ? 'Bật chế độ chữ to' : 'Tắt chế độ chữ to');
+}
+
+function saveAlertThreshold(val) {
+  localStorage.setItem('alertThreshold', val);
+  showToast(`💾 Đã lưu ngưỡng báo trước: ${Number(val).toLocaleString('vi-VN')} KM`);
 }
 
 function toggleThemeFromSettings(isDark) {
@@ -920,12 +950,16 @@ function resetSpecialPlates() {
 }
 
 function clearAppLocalStorage() {
-  if (!confirm('Xóa toàn bộ dữ liệu cục bộ (theme, cài đặt)? Không ảnh hưởng dữ liệu server.')) return;
-  const theme = localStorage.getItem('theme');
-  localStorage.clear();
-  if (theme) localStorage.setItem('theme', theme);
-  showToast('🗑️ Đã xóa dữ liệu cục bộ');
-  initSettingsTab();
+  if(confirm('Bạn có chắc muốn xóa toàn bộ cài đặt và bộ nhớ đệm cục bộ? Ứng dụng sẽ tải lại từ đầu.')) {
+    const theme = localStorage.getItem('theme');
+    const largeText = localStorage.getItem('largeText');
+    localStorage.clear();
+    sessionStorage.clear();
+    if (theme) localStorage.setItem('theme', theme);
+    if (largeText) localStorage.setItem('largeText', largeText);
+    showToast('🧹 Đã xóa rác thành công, đang tải lại...');
+    setTimeout(() => location.reload(), 800);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -947,7 +981,8 @@ function loadGpsData() {
 
   const settings = {
     specialPlates: getSpecialPlates(),
-    defaultInterval: getDefaultInterval()
+    defaultInterval: getDefaultInterval(),
+    alertThreshold: getAlertThreshold()
   };
 
   google.script.run
