@@ -978,6 +978,7 @@ function renderFleetSummary(data) {
   document.getElementById('fleetTotal').textContent = data.total || '--';
   document.getElementById('fleetOverdue').textContent = data.overdueCount || '0';
   document.getElementById('fleetDueSoon').textContent = data.dueSoonCount || '0';
+  document.getElementById('fleetPending').textContent = data.pendingCount || '0';
   document.getElementById('fleetOk').textContent = data.okCount || '0';
 }
 
@@ -1033,9 +1034,13 @@ function renderFleetVehicleList(vehicles) {
       alertHtml = `<div class="fleet-alert overdue">⚠️ QUÁ HẠN ${kmRemainingText} KM — Cần bảo dưỡng!</div>`;
     } else if (v.status === 'due_soon') {
       alertHtml = `<div class="fleet-alert due_soon">⏳ SẮP ĐẾN HẠN — Còn lại ${kmRemainingText} KM</div>`;
+    } else if (v.status === 'pending') {
+      alertHtml = `<div class="fleet-alert pending">📝 ĐÃ BẢO DƯỠNG — Đang chờ ký duyệt hồ sơ</div>`;
     }
     
     const odoStatus = v.statusOdo === 'Chưa nhập' ? '<span style="color:var(--brand-orange)">⚠️ Gốc trống</span>' : 'Đã Đbộ';
+    const pendingActionText = v.pendingAuth ? 'Hủy chờ duyệt' : 'Chờ duyệt';
+    const pendingActionIcon = v.pendingAuth ? 'close' : 'history_edu';
 
     return `
       <div class="fleet-card fade-in-up-spring" style="animation-delay:${delay}s">
@@ -1044,9 +1049,15 @@ function renderFleetVehicleList(vehicles) {
             <div class="fleet-status-dot ${v.status}"></div>
             ${v.plate}
           </div>
-          <button class="fleet-edit-btn" onclick="showOdoEditor('${v.plate}', ${v.estimatedTotal})">
-            <span class="material-icons" style="font-size:14px">edit</span> Sửa Km
-          </button>
+          <div style="display:flex;gap:6px;">
+            ${(v.status === 'overdue' || v.status === 'due_soon' || v.pendingAuth) ? 
+              `<button class="fleet-edit-btn" onclick="togglePendingStatus('${v.plate}', ${!v.pendingAuth})" style="${v.pendingAuth ? 'background:var(--ios-fill-tertiary);color:var(--ios-text-secondary)' : 'color:#007AFF'}">
+                <span class="material-icons" style="font-size:14px">${pendingActionIcon}</span> ${pendingActionText}
+               </button>` : ''}
+            <button class="fleet-edit-btn" onclick="showOdoEditor('${v.plate}', ${v.estimatedTotal})">
+              <span class="material-icons" style="font-size:14px">edit</span> Sửa Km
+            </button>
+          </div>
         </div>
         
         <div class="fleet-metrics">
@@ -1137,5 +1148,24 @@ function saveOdoEditor(plate) {
       showToast('❌ Lỗi: ' + err.message);
     })
     .updateManualOdo(plate, newKm);
+}
+
+function togglePendingStatus(plate, isPending) {
+  showLoading();
+  google.script.run
+    .withSuccessHandler(success => {
+      hideLoading();
+      if (success) {
+        showToast(isPending ? '✅ Đã đánh dấu Chờ duyệt hồ sơ' : '✅ Đã hủy chờ duyệt');
+        loadGpsData();
+      } else {
+        showToast('❌ Cập nhật thất bại');
+      }
+    })
+    .withFailureHandler(err => {
+      hideLoading();
+      showToast('❌ Lỗi: ' + err.message);
+    })
+    .togglePendingAuth(plate, isPending);
 }
 
