@@ -73,8 +73,14 @@
       </div>
     </div>
 
-    <!-- History Tab: Main Content -->
-    <div id="mainContent" class="main-content hidden">
+    <!-- History Detail View (Overlay) -->
+    <div id="historyDetailView" class="tab-section history-detail-view hidden">
+      <div class="history-detail-header" style="display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--ios-sep-light); background: var(--ios-bg);">
+        <button class="icon-btn" onclick="closeHistoryDetail()" style="margin-right: 12px; color: var(--ios-blue);">
+          <span class="material-icons">arrow_back_ios</span>
+        </button>
+        <h2 id="historyDetailTitle" style="font-size: 18px; font-weight: 600; margin: 0; flex: 1;">Lịch sử bảo dưỡng</h2>
+      </div>
       <div id="summaryContainer"></div>
       <div class="floating-search-chip">
         <span class="material-icons">filter_list</span>
@@ -90,10 +96,25 @@
       </div>
     </div>
 
+    <!-- Danh sách (List) Section -->
+    <div id="listSection" class="tab-section list-section hidden">
+      <div class="list-controls" style="position: sticky; top: 0; z-index: 10; background: var(--ios-bg); padding: 10px 16px; border-bottom: 1px solid var(--ios-sep-light);">
+        <div class="fleet-search-wrap">
+          <span class="material-icons" style="color:var(--ios-text-secondary);font-size:18px;">search</span>
+          <input type="text" id="listSearchInput" class="fleet-search-input" placeholder="Tìm biển số, tài xế..."
+            autocomplete="off" oninput="applyListFilters()">
+        </div>
+      </div>
+      <div id="infoCarList" class="fleet-vehicle-list"></div>
+      <div id="listEmptyState" class="gps-empty-state hidden">
+        <span style="font-size:48px;">📄</span>
+        <h3>Chưa có dữ liệu Danh sách</h3>
+        <p>Vui lòng thử lại sau.</p>
+      </div>
+    </div>
 
-
-    <!-- Fleet Dashboard Section (Formerly GPS) -->
-    <div id="gpsSection" class="tab-section fleet-section hidden">
+    <!-- Fleet Dashboard Section (Now Maintenance) -->
+    <div id="maintenanceSection" class="tab-section fleet-section hidden">
       <!-- 5-Box Summary Bar -->
       <div class="fleet-summary-bar">
         <div class="fleet-stat" onclick="filterFleet('all')">
@@ -134,9 +155,9 @@
         </div>
       </div>
 
-      <div id="gpsVehicleList" class="fleet-vehicle-list"></div>
+      <div id="maintenanceVehicleList" class="fleet-vehicle-list"></div>
 
-      <div id="gpsEmptyState" class="gps-empty-state hidden">
+      <div id="maintenanceEmptyState" class="gps-empty-state hidden">
         <span style="font-size:48px;">📊</span>
         <h3>Chưa có dữ liệu Đội Xe</h3>
         <p>Vui lòng thử lại sau hoặc đồng bộ dữ liệu.</p>
@@ -288,13 +309,13 @@
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav">
-    <button class="nav-item active" data-section="history" onclick="switchBottomNavTab('history')">
-      <span class="material-icons">history</span>
-      <span class="nav-label">Lịch sử</span>
+    <button class="nav-item active" data-section="maintenance" onclick="switchBottomNavTab('maintenance')">
+      <span class="material-icons">build</span>
+      <span class="nav-label">Bảo dưỡng</span>
     </button>
-    <button class="nav-item" data-section="gps" onclick="switchBottomNavTab('gps')">
-      <span class="material-icons">commute</span>
-      <span class="nav-label">Đội xe</span>
+    <button class="nav-item" data-section="list" onclick="switchBottomNavTab('list')">
+      <span class="material-icons">view_list</span>
+      <span class="nav-label">Danh sách</span>
     </button>
 
     <button class="nav-item" data-section="settings" onclick="switchBottomNavTab('settings')">
