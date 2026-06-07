@@ -4666,3 +4666,17 @@ body.large-text .fleet-metric-val {
 body.large-text .fleet-card-plate {
   font-size: 18px;
 }
+
+/* Sticky controls cho tab Bảo dưỡng */
+.fleet-controls {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--ios-bg);
+  border-bottom: 1px solid var(--ios-sep-light);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  padding: 10px 16px;
+}
+[data-theme="dark"] .fleet-controls {
+  background: #1c1c1e;
+}
