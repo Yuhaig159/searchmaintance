@@ -293,14 +293,17 @@ function hideLoading() {
 
 function startSearch() {
   const val = document.getElementById('heroInput').value.trim();
-  if (!val) { showToast('⚠️ Vui lòng nhập biển số xe'); return; }
+  if (!val) { showToast('⚠️ Vui lòng nhập biển số'); return; }
 
   if (window.navigator?.vibrate) window.navigator.vibrate(50);
 
-  document.getElementById('emptyState').classList.add('hidden');
-  document.getElementById('mainContent').classList.remove('hidden');
-
-  doSearch(val);
+  // Chuyển sang tab bảo dưỡng và lọc
+  switchBottomNavTab('maintenance');
+  const fleetSearchInput = document.getElementById('fleetSearchInput');
+  if (fleetSearchInput) {
+    fleetSearchInput.value = val.replace(/[\s\-\.]/g, '').toUpperCase();
+    applyFleetFilters();
+  }
 }
 
 function toggleHeroClearBtn() {
@@ -312,6 +315,20 @@ function toggleHeroClearBtn() {
     } else {
       btn.classList.add('hidden');
     }
+  }
+
+  // Lọc thời gian thực thẻ bảo dưỡng từ ô tìm kiếm Header
+  const normalizedVal = val.replace(/[\s\-\.]/g, '').toUpperCase();
+  const fleetSearchInput = document.getElementById('fleetSearchInput');
+  if (fleetSearchInput) {
+    fleetSearchInput.value = normalizedVal;
+    
+    // Nếu chưa ở tab Bảo dưỡng thì tự động chuyển sang khi gõ tìm kiếm
+    const maintenanceSection = document.getElementById('maintenanceSection');
+    if (maintenanceSection && maintenanceSection.classList.contains('hidden') && val.length > 0) {
+      switchBottomNavTab('maintenance');
+    }
+    applyFleetFilters();
   }
 }
 
@@ -326,12 +343,13 @@ function backToHero() {
   currentPlate = '';
   resetPagination();
 
-  if (typeof switchBottomNavTab === 'function') {
-    switchBottomNavTab('history');
-  } else {
-    document.getElementById('mainContent').classList.add('hidden');
-    document.getElementById('emptyState').classList.remove('hidden');
+  const fleetSearchInput = document.getElementById('fleetSearchInput');
+  if (fleetSearchInput) {
+    fleetSearchInput.value = '';
+    applyFleetFilters();
   }
+
+  switchBottomNavTab('maintenance');
 }
 
 function doSearch(plateVal) {
@@ -840,32 +858,148 @@ function switchBottomNavTab(section) {
   if (navItem) navItem.classList.add('active');
 
   // Hide all content sections
-  ['mainContent', 'settingsSection', 'gpsSection', 'emptyState'].forEach(id => {
+  ['historyDetailView', 'settingsSection', 'maintenanceSection', 'emptyState', 'listSection'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
 
-  if (section === 'history') {
-    if (rawData && rawData.length > 0 && currentPlate) {
-      const el = document.getElementById('mainContent');
-      el.classList.remove('hidden');
-      el.scrollTop = 0;
-    } else {
-      document.getElementById('emptyState').classList.remove('hidden');
-    }
-  } else {
-    let targetEl = null;
-    if (section === 'gps') {
-      targetEl = document.getElementById('gpsSection');
-      targetEl.classList.remove('hidden');
-      if (!currentFleetData) loadGpsData();
-    } else if (section === 'settings') {
-      targetEl = document.getElementById('settingsSection');
-      targetEl.classList.remove('hidden');
-      initSettingsTab();
-    }
-    if (targetEl) targetEl.scrollTop = 0;
+  let targetEl = null;
+  if (section === 'maintenance') {
+    targetEl = document.getElementById('maintenanceSection');
+    targetEl.classList.remove('hidden');
+    if (!currentFleetData) loadGpsData();
+  } else if (section === 'list') {
+    targetEl = document.getElementById('listSection');
+    targetEl.classList.remove('hidden');
+    if (!currentListData) loadInfoCarData();
+  } else if (section === 'settings') {
+    targetEl = document.getElementById('settingsSection');
+    targetEl.classList.remove('hidden');
+    initSettingsTab();
   }
+  if (targetEl) targetEl.scrollTop = 0;
+}
+
+// History Detail Modal Logic
+function openHistoryDetail(plate) {
+  document.getElementById('maintenanceSection').classList.add('hidden');
+  const historyView = document.getElementById('historyDetailView');
+  historyView.classList.remove('hidden');
+  document.getElementById('historyDetailTitle').textContent = `Lịch sử: ${plate}`;
+  
+  // Search data for this plate
+  doSearch(plate);
+}
+
+function closeHistoryDetail() {
+  document.getElementById('historyDetailView').classList.add('hidden');
+  document.getElementById('maintenanceSection').classList.remove('hidden');
+}
+
+// Danh sách Info Car
+let currentListData = null;
+let filteredListData = [];
+
+function loadInfoCarData() {
+  const emptyState = document.getElementById('listEmptyState');
+  const listContainer = document.getElementById('infoCarList');
+  
+  emptyState.classList.remove('hidden');
+  emptyState.querySelector('h3').textContent = 'Đang tải...';
+  emptyState.querySelector('p').textContent = 'Đang lấy dữ liệu Danh sách từ server.';
+  listContainer.innerHTML = '';
+  showLoading();
+
+  google.script.run
+    .withSuccessHandler(response => {
+      hideLoading();
+      if (!response || !response.success || !response.data) {
+        emptyState.classList.remove('hidden');
+        emptyState.querySelector('h3').textContent = 'Chưa có dữ liệu';
+        emptyState.querySelector('p').textContent = response?.error || 'Vui lòng kiểm tra lại sheet Info Car.';
+        return;
+      }
+      emptyState.classList.add('hidden');
+      currentListData = response.data;
+      applyListFilters();
+    })
+    .withFailureHandler(err => {
+      hideLoading();
+      emptyState.classList.remove('hidden');
+      emptyState.querySelector('h3').textContent = 'Lỗi kết nối';
+      emptyState.querySelector('p').textContent = err.message;
+      showToast('❌ Không thể tải dữ liệu Danh sách');
+    })
+    .getInfoCarData();
+}
+
+function applyListFilters() {
+  if (!currentListData) return;
+  const rawQuery = document.getElementById('listSearchInput').value;
+  const query = rawQuery.replace(/[\s\-\.]/g, '').toUpperCase();
+  
+  filteredListData = currentListData;
+  if (query) {
+    filteredListData = currentListData.filter(v => {
+      const plateMatch = v.plate.replace(/[\s\-\.]/g, '').toUpperCase().includes(query);
+      const driverMatch = v.driver.toUpperCase().includes(rawQuery.toUpperCase());
+      const ownerMatch = v.owner.toUpperCase().includes(rawQuery.toUpperCase());
+      return plateMatch || driverMatch || ownerMatch;
+    });
+  }
+  
+  renderInfoCarList(filteredListData);
+}
+
+function renderInfoCarList(vehicles) {
+  const container = document.getElementById('infoCarList');
+  const emptyState = document.getElementById('listEmptyState');
+  
+  if (!vehicles || vehicles.length === 0) {
+    container.innerHTML = '';
+    emptyState.classList.remove('hidden');
+    emptyState.querySelector('h3').textContent = 'Không tìm thấy xe';
+    emptyState.querySelector('p').textContent = 'Vui lòng thử từ khóa khác.';
+    return;
+  }
+  
+  emptyState.classList.add('hidden');
+  
+  const html = vehicles.map((v, index) => {
+    const delay = index * 0.03;
+    
+    // Nút gọi điện trực tiếp
+    let callBtnHtml = '';
+    if (v.phone) {
+      callBtnHtml = `
+        <a href="tel:${v.phone}" class="fleet-edit-btn" style="background: var(--brand-green); color: white; border: none; display: flex; align-items: center; gap: 4px; text-decoration: none;" onclick="event.stopPropagation()">
+          <span class="material-icons" style="font-size:14px">phone</span> Gọi điện
+        </a>
+      `;
+    }
+    
+    return `
+      <div class="fleet-card fade-in-up-spring" style="animation-delay:${delay}s">
+        <div class="fleet-card-header">
+          <div class="fleet-card-plate">
+            <span class="material-icons" style="color:var(--ios-blue); font-size:18px; margin-right: 4px;">directions_car</span>
+            ${v.plate}
+          </div>
+          <div style="display:flex;gap:6px;">
+            ${callBtnHtml}
+          </div>
+        </div>
+        
+        <div class="fleet-metrics" style="grid-template-columns: 1fr; gap: 4px; padding-top: 8px;">
+          <div style="font-size: 14px; color: var(--ios-text);">Người phụ trách: <span class="fleet-metric-val" style="font-weight: 600;">${v.owner || '---'}</span></div>
+          <div style="font-size: 14px; color: var(--ios-text);">Tài xế: <span class="fleet-metric-val" style="font-weight: 600;">${v.driver || '---'}</span></div>
+          <div style="font-size: 14px; color: var(--ios-text);">SĐT: <span class="fleet-metric-val" style="font-weight: 600; color: var(--ios-blue);">${v.phone || '---'}</span></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  container.innerHTML = html;
 }
 
 const DEFAULT_SPECIAL_PLATES = ['51K529.01', '51K723.57', '51K728.49', '51D729.70', '51K727.37'];
@@ -970,8 +1104,8 @@ let currentFleetData = null;
 let currentFleetFilter = 'all';
 
 function loadGpsData() {
-  const emptyState = document.getElementById('gpsEmptyState');
-  const vehicleList = document.getElementById('gpsVehicleList');
+  const emptyState = document.getElementById('maintenanceEmptyState');
+  const vehicleList = document.getElementById('maintenanceVehicleList');
 
   emptyState.classList.remove('hidden');
   emptyState.querySelector('h3').textContent = 'Đang tải...';
@@ -1042,7 +1176,7 @@ function applyFleetFilters() {
 }
 
 function renderFleetVehicleList(vehicles) {
-  const container = document.getElementById('gpsVehicleList');
+  const container = document.getElementById('maintenanceVehicleList');
   if (!vehicles || vehicles.length === 0) {
     container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--ios-text-secondary)"><span class="material-icons" style="font-size:48px;opacity:0.5;margin-bottom:10px;display:block;">no_crash</span>Không tìm thấy xe phù hợp</div>';
     return;
@@ -1078,7 +1212,7 @@ function renderFleetVehicleList(vehicles) {
     const pendingActionIcon = v.pendingAuth ? 'close' : 'history_edu';
 
     return `
-      <div class="fleet-card fade-in-up-spring" style="animation-delay:${delay}s">
+      <div class="fleet-card fade-in-up-spring" style="animation-delay:${delay}s; cursor: pointer;" onclick="openHistoryDetail('${v.plate}')">
         <div class="fleet-card-header">
           <div class="fleet-card-plate">
             <div class="fleet-status-dot ${v.status}"></div>
@@ -1086,10 +1220,10 @@ function renderFleetVehicleList(vehicles) {
           </div>
           <div style="display:flex;gap:6px;">
             ${(v.status === 'overdue' || v.status === 'due_soon' || v.pendingAuth) ? 
-              `<button class="fleet-edit-btn" onclick="togglePendingStatus('${v.plate}', ${!v.pendingAuth})" style="${v.pendingAuth ? 'background:var(--ios-fill-tertiary);color:var(--ios-text-secondary)' : 'color:#007AFF'}">
+              `<button class="fleet-edit-btn" onclick="event.stopPropagation(); togglePendingStatus('${v.plate}', ${!v.pendingAuth})" style="${v.pendingAuth ? 'background:var(--ios-fill-tertiary);color:var(--ios-text-secondary)' : 'color:#007AFF'}">
                 <span class="material-icons" style="font-size:14px">${pendingActionIcon}</span> ${pendingActionText}
                </button>` : ''}
-            <button class="fleet-edit-btn" onclick="showOdoEditor('${v.plate}', ${v.estimatedTotal})">
+            <button class="fleet-edit-btn" onclick="event.stopPropagation(); showOdoEditor('${v.plate}', ${v.estimatedTotal})">
               <span class="material-icons" style="font-size:14px">edit</span> Sửa Km
             </button>
           </div>
@@ -1113,7 +1247,7 @@ function renderFleetVehicleList(vehicles) {
         ${alertHtml}
         
         <!-- Inline Editor Container (Hidden by default) -->
-        <div id="odoEditor_${v.plate}" class="fleet-editor hidden">
+        <div id="odoEditor_${v.plate}" class="fleet-editor hidden" onclick="event.stopPropagation()">
           <div class="fleet-editor-title">Cập nhật Km thực tế — ${v.plate}</div>
           <div class="fleet-editor-input-wrap">
             <input type="number" id="odoInput_${v.plate}" class="fleet-editor-input" value="${v.estimatedTotal}" placeholder="Nhập số Km mới...">
@@ -1124,7 +1258,6 @@ function renderFleetVehicleList(vehicles) {
           </div>
         </div>
         
-
       </div>
     `;
   }).join('');
