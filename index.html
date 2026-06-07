@@ -30,11 +30,16 @@
   <div id="appSection" class="app-section">
     <!-- App Header -->
     <div class="app-header" id="appHeader">
-      <div class="header-title" style="flex: none; font-weight: 800; font-size: 22px; color: var(--ios-text);">Đội Xe</div>
+      <div class="header-title" onclick="backToHero()" style="flex: none; font-weight: 800; font-size: 22px; color: var(--ios-text); cursor: pointer; transition: opacity 0.2s;" onmousedown="this.style.opacity=0.5" onmouseup="this.style.opacity=1" onmouseleave="this.style.opacity=1">Đội Xe</div>
       
-      <div class="header-search-box" style="flex: 1; margin: 0 10px; display: flex; align-items: center; background: var(--ios-fill-secondary); border-radius: 12px; padding: 6px 10px;">
+      <div class="header-search-box" style="flex: 1; margin: 0 10px; display: flex; align-items: center; background: var(--ios-fill-secondary); border-radius: 12px; padding: 6px 10px; position: relative;">
         <span class="material-icons" style="font-size: 18px; color: var(--ios-text-secondary); margin-right: 6px;">search</span>
-        <input type="text" id="heroInput" placeholder="Tìm biển số..." autocomplete="off" style="border: none; background: transparent; width: 100%; outline: none; font-size: 16px; color: var(--ios-text); font-weight: 500;">
+        <input type="text" id="heroInput" placeholder="Tìm biển số..." autocomplete="off" oninput="toggleHeroClearBtn()" style="border: none; background: transparent; width: 100%; outline: none; font-size: 16px; color: var(--ios-text); font-weight: 500;">
+        
+        <button id="heroClearBtn" onclick="backToHero()" class="hidden" style="border: none; background: var(--ios-fill); color: var(--ios-text-secondary); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; margin-right: 8px; cursor: pointer; transition: all 0.2s;">
+          <span class="material-icons" style="font-size: 14px;">close</span>
+        </button>
+
         <button class="icon-btn" onclick="startSearch()" style="width: 28px; height: 28px; min-width: 28px; border: none; background: var(--ios-accent-green); color: white;">
           <span class="material-icons" style="font-size: 16px;">arrow_forward</span>
         </button>
