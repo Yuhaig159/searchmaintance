@@ -4635,3 +4635,314 @@
   padding-bottom: 80px;
 }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   FLEET DASHBOARD (V131)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.fleet-section {
+  padding-bottom: 90px;
+}
+
+.fleet-summary-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 16px;
+  background: var(--ios-card);
+  border-radius: 16px;
+  margin: 16px;
+  border: 1px solid var(--ios-sep-light);
+  box-shadow: 0 4px 12px var(--shadow-light);
+}
+
+.fleet-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border-radius: 12px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.fleet-stat:active {
+  background: var(--ios-fill-tertiary);
+}
+
+.fleet-stat-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ios-text);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.fleet-stat-label {
+  font-size: 10px;
+  color: var(--ios-text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.fleet-danger { color: var(--ios-error); }
+.fleet-warning { color: var(--brand-orange); }
+.fleet-safe { color: var(--brand-green); }
+
+.fleet-controls {
+  position: sticky;
+  top: 60px;
+  z-index: 50;
+  background: var(--glass-bg);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  padding: 10px 16px 14px;
+  border-bottom: 1px solid var(--ios-sep-light);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fleet-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ios-fill-secondary);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.fleet-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--ios-text);
+  font-size: 15px;
+  outline: none;
+}
+
+.fleet-filter-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fleet-filter-tabs::-webkit-scrollbar { display: none; }
+
+.fleet-tab {
+  padding: 6px 14px;
+  border-radius: 16px;
+  background: var(--ios-fill-tertiary);
+  color: var(--ios-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fleet-tab.active {
+  background: var(--ios-text);
+  color: var(--ios-bg);
+}
+
+.fleet-vehicle-list {
+  padding: 12px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fleet-card {
+  background: var(--ios-card);
+  border-radius: 16px;
+  padding: 14px 16px;
+  border: 1px solid var(--ios-sep-light);
+  box-shadow: 0 4px 16px var(--shadow-light);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.fleet-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.fleet-card-plate {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ios-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fleet-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.fleet-status-dot.overdue { background: var(--ios-error); box-shadow: 0 0 8px rgba(255, 59, 48, 0.4); }
+.fleet-status-dot.due_soon { background: var(--brand-orange); box-shadow: 0 0 8px rgba(255, 153, 0, 0.4); }
+.fleet-status-dot.ok { background: var(--brand-green); box-shadow: 0 0 8px rgba(28, 105, 91, 0.4); }
+
+.fleet-edit-btn {
+  background: var(--ios-fill-secondary);
+  color: var(--brand-green);
+  border: none;
+  border-radius: 10px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fleet-edit-btn:active { transform: scale(0.95); }
+
+.fleet-metrics {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--ios-text-secondary);
+  margin-bottom: 12px;
+}
+
+.fleet-metric-val {
+  font-weight: 700;
+  color: var(--ios-text);
+}
+
+.fleet-progress-wrap {
+  margin-bottom: 12px;
+}
+
+.fleet-progress-bar {
+  height: 6px;
+  background: var(--ios-fill-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.fleet-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fleet-progress-fill.overdue { background: var(--ios-error); }
+.fleet-progress-fill.due_soon { background: linear-gradient(90deg, var(--brand-green), var(--brand-orange)); }
+.fleet-progress-fill.ok { background: var(--brand-green); }
+
+.fleet-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--ios-text-tertiary);
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.fleet-alert {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.fleet-alert.overdue {
+  background: rgba(255, 59, 48, 0.1);
+  color: var(--ios-error);
+}
+
+.fleet-alert.due_soon {
+  background: rgba(255, 153, 0, 0.1);
+  color: var(--brand-orange);
+}
+
+.fleet-card-footer {
+  font-size: 10px;
+  color: var(--ios-text-tertiary);
+  text-align: right;
+  border-top: 1px solid var(--ios-sep-light);
+  padding-top: 8px;
+  margin-top: 4px;
+}
+
+/* Inline Editor */
+.fleet-editor {
+  background: var(--ios-fill-secondary);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.fleet-editor-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ios-text);
+  margin-bottom: 10px;
+}
+
+.fleet-editor-input-wrap {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.fleet-editor-input {
+  flex: 1;
+  background: var(--ios-bg);
+  border: 1px solid var(--ios-sep);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ios-text);
+  outline: none;
+}
+
+.fleet-editor-input:focus {
+  border-color: var(--brand-green);
+  box-shadow: 0 0 0 3px var(--ios-accent-green-soft);
+}
+
+.fleet-editor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.fleet-editor-btn {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+
+.fleet-editor-btn.cancel {
+  background: var(--ios-fill);
+  color: var(--ios-text-secondary);
+}
+
+.fleet-editor-btn.save {
+  background: var(--brand-green);
+  color: white;
+}
+
