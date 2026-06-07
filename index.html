@@ -32,23 +32,31 @@
     <div class="app-header" id="appHeader">
       <!-- Brand Logo Mark (extracted from Logo.html) -->
       <div class="header-brand" onclick="backToHero()" title="Trang chủ">
-        <svg class="header-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <svg class="header-logo" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#1C695B"/>
-              <stop offset="50%" stop-color="#14695C"/>
-              <stop offset="100%" stop-color="#0d463e"/>
-            </linearGradient>
-            <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#FCAF17"/>
-              <stop offset="100%" stop-color="#FF9F0A"/>
+            <linearGradient id="headerBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1C695B;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#0F3D35;stop-opacity:1" />
             </linearGradient>
           </defs>
-          <rect width="100" height="100" rx="22" fill="url(#logoGrad)"/>
-          <!-- Stylized "D" letter for Đội Xe -->
-          <path d="M 28 25 L 28 75 L 48 75 C 65 75 75 65 75 50 C 75 35 65 25 48 25 Z M 38 35 L 48 35 C 58 35 65 40 65 50 C 65 60 58 65 48 65 L 38 65 Z" fill="white" opacity="0.95"/>
-          <!-- Orange accent bar -->
-          <rect x="28" y="78" width="47" height="4" rx="2" fill="url(#accentGrad)"/>
+          <!-- Background Shape -->
+          <rect width="512" height="512" rx="100" fill="url(#headerBgGrad)"/>
+          
+          <!-- Stylized Car Body -->
+          <path d="M140 320 L140 280 Q140 240 180 240 L332 240 Q372 240 372 280 L372 320 Z" fill="#FFFFFF" />
+          <path d="M180 240 L210 180 Q220 160 250 160 L262 160 Q292 160 302 180 L332 240 Z" fill="#FFFFFF" opacity="0.9" />
+          
+          <!-- Wrench Accent (Maintenance) -->
+          <path d="M380 340 L440 400" stroke="#FCAF17" stroke-width="35" stroke-linecap="round" />
+          <circle cx="445" cy="405" r="35" fill="none" stroke="#FCAF17" stroke-width="25" />
+          <rect x="435" y="380" width="20" height="30" fill="#1C695B" transform="rotate(45 445 405)" />
+
+          <!-- Wheels -->
+          <circle cx="190" cy="320" r="25" fill="#FCAF17" />
+          <circle cx="320" cy="320" r="25" fill="#FCAF17" />
+          
+          <!-- Search Highlight -->
+          <circle cx="256" cy="256" r="140" stroke="#FCAF17" stroke-width="12" opacity="0.3" fill="none" />
         </svg>
       </div>
       
@@ -78,21 +86,31 @@
     <div id="emptyState" class="empty-state">
       <div class="empty-logo-container">
         <div class="empty-logo-glow"></div>
-        <svg class="empty-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <svg class="empty-logo-svg" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="emptyLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#1C695B"/>
-              <stop offset="50%" stop-color="#14695C"/>
-              <stop offset="100%" stop-color="#0d463e"/>
-            </linearGradient>
-            <linearGradient id="emptyAccentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#FCAF17"/>
-              <stop offset="100%" stop-color="#FF9F0A"/>
+            <linearGradient id="emptyBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1C695B;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#0F3D35;stop-opacity:1" />
             </linearGradient>
           </defs>
-          <rect width="100" height="100" rx="22" fill="url(#emptyLogoGrad)"/>
-          <path d="M 28 25 L 28 75 L 48 75 C 65 75 75 65 75 50 C 75 35 65 25 48 25 Z M 38 35 L 48 35 C 58 35 65 40 65 50 C 65 60 58 65 48 65 L 38 65 Z" fill="white" opacity="0.95"/>
-          <rect x="28" y="78" width="47" height="4" rx="2" fill="url(#emptyAccentGrad)"/>
+          <!-- Background Shape -->
+          <rect width="512" height="512" rx="100" fill="url(#emptyBgGrad)"/>
+          
+          <!-- Stylized Car Body -->
+          <path d="M140 320 L140 280 Q140 240 180 240 L332 240 Q372 240 372 280 L372 320 Z" fill="#FFFFFF" />
+          <path d="M180 240 L210 180 Q220 160 250 160 L262 160 Q292 160 302 180 L332 240 Z" fill="#FFFFFF" opacity="0.9" />
+          
+          <!-- Wrench Accent (Maintenance) -->
+          <path d="M380 340 L440 400" stroke="#FCAF17" stroke-width="35" stroke-linecap="round" />
+          <circle cx="445" cy="405" r="35" fill="none" stroke="#FCAF17" stroke-width="25" />
+          <rect x="435" y="380" width="20" height="30" fill="#1C695B" transform="rotate(45 445 405)" />
+
+          <!-- Wheels -->
+          <circle cx="190" cy="320" r="25" fill="#FCAF17" />
+          <circle cx="320" cy="320" r="25" fill="#FCAF17" />
+          
+          <!-- Search Highlight -->
+          <circle cx="256" cy="256" r="140" stroke="#FCAF17" stroke-width="12" opacity="0.3" fill="none" />
         </svg>
       </div>
       <h2 class="empty-title">Đội Xe — Tra Cứu Bảo Dưỡng</h2>
@@ -122,35 +140,48 @@
 
 
 
-    <!-- GPS Live Status Section -->
-    <div id="gpsSection" class="tab-section gps-section hidden">
-      <div class="gps-summary-bar">
-        <div class="gps-stat">
-          <div class="gps-stat-value" id="gpsTotalVehicles">--</div>
-          <div class="gps-stat-label">Tổng xe</div>
+    <!-- Fleet Dashboard Section (Formerly GPS) -->
+    <div id="gpsSection" class="tab-section fleet-section hidden">
+      <!-- 4-Box Summary Bar -->
+      <div class="fleet-summary-bar">
+        <div class="fleet-stat" onclick="filterFleet('all')">
+          <div class="fleet-stat-value" id="fleetTotal">--</div>
+          <div class="fleet-stat-label">Tổng xe</div>
         </div>
-        <div class="gps-divider"></div>
-        <div class="gps-stat">
-          <div class="gps-stat-value gps-active" id="gpsActiveCount">--</div>
-          <div class="gps-stat-label">Đang chạy</div>
+        <div class="fleet-stat" onclick="filterFleet('overdue')">
+          <div class="fleet-stat-value fleet-danger" id="fleetOverdue">--</div>
+          <div class="fleet-stat-label">Quá hạn</div>
         </div>
-        <div class="gps-divider"></div>
-        <div class="gps-stat">
-          <div class="gps-stat-value gps-total-km" id="gpsTotalDayKm">--</div>
-          <div class="gps-stat-label">Tổng Km hôm nay</div>
+        <div class="fleet-stat" onclick="filterFleet('due_soon')">
+          <div class="fleet-stat-value fleet-warning" id="fleetDueSoon">--</div>
+          <div class="fleet-stat-label">Sắp hạn</div>
+        </div>
+        <div class="fleet-stat" onclick="filterFleet('ok')">
+          <div class="fleet-stat-value fleet-safe" id="fleetOk">--</div>
+          <div class="fleet-stat-label">Bình thường</div>
         </div>
       </div>
-      <div class="gps-search-bar">
-        <div class="gps-search-wrap">
+
+      <!-- Quick Filter Tabs & Search -->
+      <div class="fleet-controls">
+        <div class="fleet-search-wrap">
           <span class="material-icons" style="color:var(--ios-text-secondary);font-size:18px;">search</span>
-          <input type="text" id="gpsSearchInput" class="gps-search-input" placeholder="Tìm biển số..." autocomplete="off" oninput="filterGpsList()">
+          <input type="text" id="fleetSearchInput" class="fleet-search-input" placeholder="Tìm biển số..." autocomplete="off" oninput="applyFleetFilters()">
+        </div>
+        <div class="fleet-filter-tabs">
+          <button class="fleet-tab active" data-filter="all" onclick="setFleetFilter('all')">Tất cả</button>
+          <button class="fleet-tab" data-filter="overdue" onclick="setFleetFilter('overdue')">Quá hạn</button>
+          <button class="fleet-tab" data-filter="due_soon" onclick="setFleetFilter('due_soon')">Sắp hạn</button>
+          <button class="fleet-tab" data-filter="ok" onclick="setFleetFilter('ok')">OK</button>
         </div>
       </div>
-      <div id="gpsVehicleList" class="gps-vehicle-list"></div>
+
+      <div id="gpsVehicleList" class="fleet-vehicle-list"></div>
+      
       <div id="gpsEmptyState" class="gps-empty-state hidden">
-        <span style="font-size:48px;">📡</span>
-        <h3>Chưa có dữ liệu GPS</h3>
-        <p>Chạy "Đồng bộ GPS" từ menu Quản Trị App trong Google Sheets.</p>
+        <span style="font-size:48px;">📊</span>
+        <h3>Chưa có dữ liệu Đội Xe</h3>
+        <p>Vui lòng thử lại sau hoặc đồng bộ dữ liệu.</p>
       </div>
     </div>
 
@@ -282,8 +313,8 @@
       <span class="nav-label">Lịch sử</span>
     </button>
     <button class="nav-item" data-section="gps" onclick="switchBottomNavTab('gps')">
-      <span class="material-icons">gps_fixed</span>
-      <span class="nav-label">GPS</span>
+      <span class="material-icons">commute</span>
+      <span class="nav-label">Đội xe</span>
     </button>
 
     <button class="nav-item" data-section="settings" onclick="switchBottomNavTab('settings')">
