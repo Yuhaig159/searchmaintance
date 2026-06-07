@@ -4644,8 +4644,10 @@
 }
 
 .fleet-summary-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   gap: 8px;
   padding: 16px;
   background: var(--ios-card);
@@ -4656,6 +4658,7 @@
 }
 
 .fleet-stat {
+  flex: 1 0 65px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4690,6 +4693,7 @@
 .fleet-danger { color: var(--ios-error); }
 .fleet-warning { color: var(--brand-orange); }
 .fleet-safe { color: var(--brand-green); }
+.fleet-info { color: #007AFF; }
 
 .fleet-controls {
   position: sticky;
@@ -4792,6 +4796,7 @@
 }
 .fleet-status-dot.overdue { background: var(--ios-error); box-shadow: 0 0 8px rgba(255, 59, 48, 0.4); }
 .fleet-status-dot.due_soon { background: var(--brand-orange); box-shadow: 0 0 8px rgba(255, 153, 0, 0.4); }
+.fleet-status-dot.pending { background: #007AFF; box-shadow: 0 0 8px rgba(0, 122, 255, 0.4); }
 .fleet-status-dot.ok { background: var(--brand-green); box-shadow: 0 0 8px rgba(28, 105, 91, 0.4); }
 
 .fleet-edit-btn {
@@ -4843,6 +4848,7 @@
 
 .fleet-progress-fill.overdue { background: var(--ios-error); }
 .fleet-progress-fill.due_soon { background: linear-gradient(90deg, var(--brand-green), var(--brand-orange)); }
+.fleet-progress-fill.pending { background: #007AFF; }
 .fleet-progress-fill.ok { background: var(--brand-green); }
 
 .fleet-progress-labels {
@@ -4871,6 +4877,11 @@
 .fleet-alert.due_soon {
   background: rgba(255, 153, 0, 0.1);
   color: var(--brand-orange);
+}
+
+.fleet-alert.pending {
+  background: rgba(0, 122, 255, 0.1);
+  color: #007AFF;
 }
 
 .fleet-card-footer {
