@@ -28,23 +28,45 @@
 <body data-theme="light">
 
   <div id="appSection" class="app-section">
-    <!-- App Header -->
+    <!-- App Header — Premium Brand Bar -->
     <div class="app-header" id="appHeader">
-      <div class="header-title" onclick="backToHero()" style="flex: none; font-weight: 800; font-size: 22px; color: var(--ios-text); cursor: pointer; transition: opacity 0.2s;" onmousedown="this.style.opacity=0.5" onmouseup="this.style.opacity=1" onmouseleave="this.style.opacity=1">Đội Xe</div>
+      <!-- Brand Logo Mark (extracted from Logo.html) -->
+      <div class="header-brand" onclick="backToHero()" title="Trang chủ">
+        <svg class="header-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1C695B"/>
+              <stop offset="50%" stop-color="#14695C"/>
+              <stop offset="100%" stop-color="#0d463e"/>
+            </linearGradient>
+            <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FCAF17"/>
+              <stop offset="100%" stop-color="#FF9F0A"/>
+            </linearGradient>
+          </defs>
+          <rect width="100" height="100" rx="22" fill="url(#logoGrad)"/>
+          <!-- Stylized "D" letter for Đội Xe -->
+          <path d="M 28 25 L 28 75 L 48 75 C 65 75 75 65 75 50 C 75 35 65 25 48 25 Z M 38 35 L 48 35 C 58 35 65 40 65 50 C 65 60 58 65 48 65 L 38 65 Z" fill="white" opacity="0.95"/>
+          <!-- Orange accent bar -->
+          <rect x="28" y="78" width="47" height="4" rx="2" fill="url(#accentGrad)"/>
+        </svg>
+      </div>
       
-      <div class="header-search-box" style="flex: 1; margin: 0 10px; display: flex; align-items: center; background: var(--ios-fill-secondary); border-radius: 12px; padding: 6px 10px; position: relative;">
-        <span class="material-icons" style="font-size: 18px; color: var(--ios-text-secondary); margin-right: 6px;">search</span>
-        <input type="text" id="heroInput" placeholder="Tìm biển số..." autocomplete="off" oninput="toggleHeroClearBtn()" style="border: none; background: transparent; width: 100%; outline: none; font-size: 16px; color: var(--ios-text); font-weight: 500;">
+      <!-- Search Bar -->
+      <div class="header-search-container">
+        <span class="material-icons header-search-icon">search</span>
+        <input type="text" id="heroInput" placeholder="Nhập biển số xe..." autocomplete="off" oninput="toggleHeroClearBtn()" onkeydown="if(event.key==='Enter')startSearch()">
         
-        <button id="heroClearBtn" onclick="backToHero()" class="hidden" style="border: none; background: var(--ios-fill); color: var(--ios-text-secondary); border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; margin-right: 8px; cursor: pointer; transition: all 0.2s;">
-          <span class="material-icons" style="font-size: 14px;">close</span>
+        <button id="heroClearBtn" onclick="backToHero()" class="header-clear-btn hidden">
+          <span class="material-icons">close</span>
         </button>
 
-        <button class="icon-btn" onclick="startSearch()" style="width: 28px; height: 28px; min-width: 28px; border: none; background: var(--ios-accent-green); color: white;">
-          <span class="material-icons" style="font-size: 16px;">arrow_forward</span>
+        <button class="header-search-btn" onclick="startSearch()" id="searchGoBtn">
+          <span class="material-icons">arrow_forward</span>
         </button>
       </div>
       
+      <!-- Actions -->
       <div class="header-actions">
         <button class="icon-btn" id="refreshBtn" onclick="forceRefresh()" title="Làm mới">
           <span class="material-icons" style="font-size: 20px;">sync</span>
@@ -52,13 +74,33 @@
       </div>
     </div>
 
-    <!-- Empty State (No Data) -->
+    <!-- Empty State — Brand Showcase -->
     <div id="emptyState" class="empty-state">
-      <div class="empty-icon" style="background: transparent;">
-        <span class="material-icons" style="font-size: 80px; color: var(--ios-accent-green); opacity: 0.8;">directions_car</span>
+      <div class="empty-logo-container">
+        <div class="empty-logo-glow"></div>
+        <svg class="empty-logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="emptyLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1C695B"/>
+              <stop offset="50%" stop-color="#14695C"/>
+              <stop offset="100%" stop-color="#0d463e"/>
+            </linearGradient>
+            <linearGradient id="emptyAccentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FCAF17"/>
+              <stop offset="100%" stop-color="#FF9F0A"/>
+            </linearGradient>
+          </defs>
+          <rect width="100" height="100" rx="22" fill="url(#emptyLogoGrad)"/>
+          <path d="M 28 25 L 28 75 L 48 75 C 65 75 75 65 75 50 C 75 35 65 25 48 25 Z M 38 35 L 48 35 C 58 35 65 40 65 50 C 65 60 58 65 48 65 L 38 65 Z" fill="white" opacity="0.95"/>
+          <rect x="28" y="78" width="47" height="4" rx="2" fill="url(#emptyAccentGrad)"/>
+        </svg>
       </div>
-      <h2 class="empty-title">Quản Lý Bảo Dưỡng</h2>
-      <p class="empty-text">Nhập biển số xe ở trên để xem lịch sử.</p>
+      <h2 class="empty-title">Đội Xe — Tra Cứu Bảo Dưỡng</h2>
+      <p class="empty-text">Nhập biển số xe ở thanh tìm kiếm phía trên<br>để xem toàn bộ lịch sử bảo dưỡng.</p>
+      <div class="empty-hint">
+        <span class="material-icons" style="font-size: 16px;">tips_and_updates</span>
+        <span>Nhấn vào logo bất kỳ lúc nào để quay về đây</span>
+      </div>
     </div>
 
     <!-- History Tab: Main Content -->
