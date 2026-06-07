@@ -4015,13 +4015,22 @@
 }
 
 .settings-icon {
-  font-size: 20px;
-  width: 28px;
-  height: 28px;
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 8px;
+  color: white;
 }
+
+.bg-blue { background: #007AFF; }
+.bg-orange { background: #FF9500; }
+.bg-green { background: #34C759; }
+.bg-red { background: #FF3B30; }
+.bg-gray { background: #8E8E93; }
+.bg-indigo { background: #5856D6; }
 
 .settings-row-label {
   font-size: 15px;
@@ -4645,4 +4654,15 @@
 .fleet-alert.pending {
   background: rgba(0, 122, 255, 0.1);
   color: #007AFF;
+}
+
+/* Large Text Mode */
+body.large-text {
+  font-size: 110%;
+}
+body.large-text .fleet-metric-val {
+  font-size: 20px;
+}
+body.large-text .fleet-card-plate {
+  font-size: 18px;
 }
