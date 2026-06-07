@@ -142,7 +142,7 @@
 
     <!-- Fleet Dashboard Section (Formerly GPS) -->
     <div id="gpsSection" class="tab-section fleet-section hidden">
-      <!-- 4-Box Summary Bar -->
+      <!-- 5-Box Summary Bar -->
       <div class="fleet-summary-bar">
         <div class="fleet-stat" onclick="filterFleet('all')">
           <div class="fleet-stat-value" id="fleetTotal">--</div>
@@ -155,6 +155,10 @@
         <div class="fleet-stat" onclick="filterFleet('due_soon')">
           <div class="fleet-stat-value fleet-warning" id="fleetDueSoon">--</div>
           <div class="fleet-stat-label">Sắp hạn</div>
+        </div>
+        <div class="fleet-stat" onclick="filterFleet('pending')">
+          <div class="fleet-stat-value fleet-info" id="fleetPending">--</div>
+          <div class="fleet-stat-label">Chờ ký</div>
         </div>
         <div class="fleet-stat" onclick="filterFleet('ok')">
           <div class="fleet-stat-value fleet-safe" id="fleetOk">--</div>
@@ -172,6 +176,7 @@
           <button class="fleet-tab active" data-filter="all" onclick="setFleetFilter('all')">Tất cả</button>
           <button class="fleet-tab" data-filter="overdue" onclick="setFleetFilter('overdue')">Quá hạn</button>
           <button class="fleet-tab" data-filter="due_soon" onclick="setFleetFilter('due_soon')">Sắp hạn</button>
+          <button class="fleet-tab" data-filter="pending" onclick="setFleetFilter('pending')">Chờ ký</button>
           <button class="fleet-tab" data-filter="ok" onclick="setFleetFilter('ok')">OK</button>
         </div>
       </div>
