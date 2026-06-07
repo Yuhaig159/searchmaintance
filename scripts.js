@@ -369,8 +369,6 @@ function doSearch(plateVal) {
   if (cached) {
     hideLoading();
     rawData = cached.data;
-    document.getElementById('emptyState').classList.add('hidden');
-    document.getElementById('mainContent').classList.remove('hidden');
     renderSummary(cached);
     renderUILazy();
     initInfiniteScroll();
@@ -388,8 +386,7 @@ function doSearch(plateVal) {
       if (response.error) {
         if (!cached) {
           showToast('❌ ' + response.error);
-          document.getElementById('emptyState').classList.remove('hidden');
-          document.getElementById('mainContent').classList.add('hidden');
+          closeHistoryDetail();
         }
         return;
       }
@@ -397,8 +394,6 @@ function doSearch(plateVal) {
       // Cập nhật Cache và UI
       DataCache.set(val, response);
       rawData = response.data;
-      document.getElementById('emptyState').classList.add('hidden');
-      document.getElementById('mainContent').classList.remove('hidden');
       renderSummary(response);
       renderUILazy();
       initInfiniteScroll();
@@ -434,7 +429,8 @@ function closeReplacementModal() {
 
   const backBtn = document.getElementById('backToTopBtn');
   // Check if we should show back btn (if scrolled down)
-  if (backBtn && document.getElementById('mainContent').scrollTop > 200) {
+  const activeSection = document.querySelector('.tab-section:not(.hidden)');
+  if (backBtn && activeSection && activeSection.scrollTop > 200) {
     backBtn.classList.remove('hidden');
   }
 
@@ -719,13 +715,15 @@ function handleScroll() {
     rafPending = false;
     const summary = document.getElementById('summaryContainer');
     const btn = document.getElementById('backToTopBtn');
-    const mainContent = document.getElementById('mainContent');
     if (!btn) return;
 
     let shouldShow = false;
-    const scrollPos = mainContent && !mainContent.classList.contains('hidden') 
-      ? Math.max(mainContent.scrollTop, window.scrollY) 
-      : window.scrollY;
+    let scrollPos = window.scrollY;
+    
+    const activeSection = document.querySelector('.tab-section:not(.hidden)');
+    if (activeSection) {
+      scrollPos = Math.max(activeSection.scrollTop, scrollPos);
+    }
 
     if (scrollPos > 300) {
       shouldShow = true;
@@ -747,8 +745,9 @@ function handleScroll() {
 window.addEventListener('scroll', handleScroll);
 
 function initScrollListener() {
-  const mainContent = document.getElementById('mainContent');
-  if (mainContent) mainContent.addEventListener('scroll', handleScroll);
+  document.querySelectorAll('.tab-section').forEach(el => {
+    el.addEventListener('scroll', handleScroll);
+  });
 }
 
 if (document.readyState === 'loading') {
@@ -758,11 +757,14 @@ if (document.readyState === 'loading') {
 }
 
 function scrollToTop() {
-  const mainContent = document.getElementById('mainContent');
-  if (mainContent) {
-    mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+  const activeSection = document.querySelector('.tab-section:not(.hidden)');
+  if (activeSection) {
+    activeSection.scrollTo({ top: 0, behavior: 'smooth' });
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  const btn = document.getElementById('backToTopBtn');
+  if (btn) btn.classList.add('hidden');
   
   if (window.navigator?.vibrate) window.navigator.vibrate(20);
 }
@@ -1207,7 +1209,7 @@ function renderFleetVehicleList(vehicles) {
       alertHtml = `<div class="fleet-alert pending">📝 ĐÃ BẢO DƯỠNG — Đang chờ ký duyệt hồ sơ</div>`;
     }
     
-    const odoStatus = v.statusOdo === 'Chưa nhập' ? '<span style="color:var(--brand-orange)">⚠️ Gốc trống</span>' : 'Đã Đbộ';
+    const odoStatus = v.statusOdo === 'Chưa nhập' ? '<span style="color:var(--brand-orange)">⚠️ Gốc trống</span>' : (v.statusOdo === 'Chưa có dữ liệu GPS' ? '<span style="color:var(--ios-text-secondary)">Không có GPS</span>' : 'Đã Đbộ');
     const pendingActionText = v.pendingAuth ? 'Hủy chờ duyệt' : 'Chờ duyệt';
     const pendingActionIcon = v.pendingAuth ? 'close' : 'history_edu';
 
