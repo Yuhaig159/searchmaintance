@@ -1296,22 +1296,22 @@ function renderInfoVehicleList(vehicles) {
                 
                 <div class="info-front-body">
                   <div class="info-role-row">
-                    <div class="info-role-icon">
-                      <span class="material-icons" style="font-size:20px;">admin_panel_settings</span>
+                    <div class="info-role-icon pic-icon">
+                      <span class="material-icons" style="font-size:20px;">manage_accounts</span>
                     </div>
                     <div class="info-role-text">
-                      <span class="info-role-title">Phụ trách</span>
+                      <span class="info-role-title">Người Phụ Trách</span>
                       <span class="info-role-name">${pic}</span>
                     </div>
                   </div>
                   
                   <div class="info-role-row">
-                    <div class="info-role-icon">
-                      <span class="material-icons" style="font-size:20px;">badge</span>
+                    <div class="info-role-icon driver-icon">
+                      <span class="material-icons" style="font-size:20px;">airline_seat_recline_normal</span>
                     </div>
                     <div class="info-role-text">
-                      <span class="info-role-title">Tài xế</span>
-                      <span class="info-role-name">${driver} ${phone !== '---' ? ` • ${phone}` : ''}</span>
+                      <span class="info-role-title">Tài Xế</span>
+                      <span class="info-role-name">${driver} ${phone !== '---' ? `<span class="driver-phone">• ${phone}</span>` : ''}</span>
                     </div>
                   </div>
                 </div>
