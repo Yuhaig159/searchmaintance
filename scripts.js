@@ -1177,7 +1177,7 @@ function togglePendingStatus(plate, isPending) {
 
 let currentInfoData = null;
 
-function loadInfoData() {
+async function loadInfoData() {
   const emptyState = document.getElementById('infoEmptyState');
   const vehicleList = document.getElementById('infoVehicleList');
 
@@ -1187,28 +1187,49 @@ function loadInfoData() {
   vehicleList.innerHTML = '';
   showLoading();
 
-  google.script.run
-    .withSuccessHandler(res => {
-      hideLoading();
-      if (!res || !res.success || !res.data || res.data.length === 0) {
-        emptyState.classList.remove('hidden');
-        emptyState.querySelector('h3').textContent = 'Chưa có dữ liệu';
-        emptyState.querySelector('p').textContent = res?.error || 'Không tìm thấy thông tin xe.';
-        return;
-      }
-      emptyState.classList.add('hidden');
-      currentInfoData = res.data;
-      applyInfoFilters();
-    })
-    .withFailureHandler(err => {
-      hideLoading();
+  try {
+    const infoPromise = new Promise((resolve, reject) => {
+      google.script.run.withSuccessHandler(resolve).withFailureHandler(reject).getInfoCarData();
+    });
+    
+    // Also fetch fleet data silently if not loaded to map ODO and Maint
+    let fleetPromise = Promise.resolve(currentFleetData);
+    if (!currentFleetData) {
+      const settings = {
+        specialPlates: typeof getSpecialPlates === 'function' ? getSpecialPlates() : [],
+        defaultInterval: typeof getDefaultInterval === 'function' ? getDefaultInterval() : 10000
+      };
+      fleetPromise = new Promise((resolve) => {
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(() => resolve(null)).getFleetDashboard(settings);
+      });
+    }
+
+    const [res, fleetRes] = await Promise.all([infoPromise, fleetPromise]);
+    
+    if (fleetRes && fleetRes.success) {
+      currentFleetData = fleetRes;
+    }
+
+    hideLoading();
+    if (!res || !res.success || !res.data || res.data.length === 0) {
       emptyState.classList.remove('hidden');
-      emptyState.querySelector('h3').textContent = 'Lỗi kết nối';
-      emptyState.querySelector('p').textContent = err.message;
-      showToast('❌ Không thể tải Thông tin xe');
-    })
-    .getInfoCarData();
+      emptyState.querySelector('h3').textContent = 'Chưa có dữ liệu';
+      emptyState.querySelector('p').textContent = res?.error || 'Không tìm thấy thông tin xe.';
+      return;
+    }
+    emptyState.classList.add('hidden');
+    currentInfoData = res.data;
+    applyInfoFilters();
+
+  } catch (err) {
+    hideLoading();
+    emptyState.classList.remove('hidden');
+    emptyState.querySelector('h3').textContent = 'Lỗi kết nối';
+    emptyState.querySelector('p').textContent = err.message;
+    showToast('❌ Không thể tải Thông tin xe');
+  }
 }
+
 
 function applyInfoFilters() {
   if (!currentInfoData) return;
@@ -1240,33 +1261,171 @@ function renderInfoVehicleList(vehicles) {
     return;
   }
 
+  const parseDaysRemaining = (dateStr) => {
+    if (!dateStr || dateStr === '---' || String(dateStr).trim() === '') return '---';
+    const parts = String(dateStr).split('/');
+    if (parts.length === 3) {
+       const d = new Date(parts[2], parts[1]-1, parts[0]);
+       if (!isNaN(d.getTime())) {
+          const diffMs = d.getTime() - Date.now();
+          const days = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+          return days;
+       }
+    }
+    return '---';
+  };
+
+  const getIconForKey = (key) => {
+    const k = key.toLowerCase();
+    if (k.includes('biển số') || k.includes('mã xe') || k.includes('xe')) return 'directions_car';
+    if (k.includes('hãng') || k.includes('model') || k.includes('loại')) return 'time_to_leave';
+    if (k.includes('chỗ')) return 'airline_seat_recline_normal';
+    if (k.includes('năm sx') || k.includes('năm')) return 'calendar_month';
+    if (k.includes('nhiên liệu') || k.includes('nl') || k.includes('xăng') || k.includes('dầu')) return 'local_gas_station';
+    if (k.includes('định mức') || k.includes('l/100km')) return 'speed';
+    if (k.includes('phụ trách') || k.includes('quản lý') || k.includes('tài xế')) return 'person';
+    if (k.includes('chức danh')) return 'badge';
+    if (k.includes('nhánh') || k.includes('vùng') || k.includes('bộ phận')) return 'domain';
+    if (k.includes('điện thoại') || k.includes('sđt')) return 'phone';
+    if (k.includes('stt')) return 'format_list_numbered';
+    return 'label';
+  };
+
+  // Ensure Bottom Sheet HTML exists in body
+  let sheetEl = document.getElementById('iosBottomSheet');
+  if (!sheetEl) {
+    sheetEl = document.createElement('div');
+    sheetEl.id = 'iosBottomSheet';
+    sheetEl.className = 'ios-bottom-sheet';
+    sheetEl.innerHTML = `
+      <div class="sheet-handle-wrap" onclick="closeBottomSheet()">
+        <div class="sheet-handle"></div>
+      </div>
+      <div class="sheet-header">
+        <div class="sheet-title" id="sheetPlate">51A-000.00</div>
+        <button class="sheet-close-btn" onclick="closeBottomSheet()">
+          <span class="material-icons" style="font-size:18px;">close</span>
+        </button>
+      </div>
+      <div class="sheet-scroll-content">
+        <div class="info-bento-grid" id="sheetBentoGrid"></div>
+      </div>
+      <div class="sheet-sticky-action-bar">
+        <button class="sheet-action-btn" onclick="showToast('Tính năng đang phát triển')">
+          <div class="sheet-action-icon"><span class="material-icons">payments</span></div>
+          Chi phí
+        </button>
+        <button class="sheet-action-btn" onclick="showToast('Tính năng đang phát triển')">
+          <div class="sheet-action-icon"><span class="material-icons">build</span></div>
+          Bảo dưỡng
+        </button>
+        <button class="sheet-action-btn" onclick="showToast('Tính năng đang phát triển')">
+          <div class="sheet-action-icon"><span class="material-icons">description</span></div>
+          Giấy tờ
+        </button>
+        <a href="tel:" id="sheetCallBtn" class="sheet-action-btn call">
+          <div class="sheet-action-icon"><span class="material-icons">call</span></div>
+          Gọi Tài Xế
+        </a>
+      </div>
+    `;
+    document.body.appendChild(sheetEl);
+  }
+
+  let overlay = document.getElementById('sheetOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'sheetOverlay';
+    overlay.className = 'info-overlay';
+    overlay.onclick = closeBottomSheet;
+    document.body.appendChild(overlay);
+  }
+
+  // Define toggle function in global scope if not exists
+  if (typeof window.openBottomSheet !== 'function') {
+    window.openBottomSheet = function(plate, bentoHtml, phone) {
+      document.getElementById('sheetPlate').textContent = plate;
+      document.getElementById('sheetBentoGrid').innerHTML = bentoHtml;
+      const callBtn = document.getElementById('sheetCallBtn');
+      if (phone && phone !== '---') {
+        callBtn.href = `tel:${phone}`;
+        callBtn.style.opacity = '1';
+        callBtn.style.pointerEvents = 'auto';
+      } else {
+        callBtn.href = '#';
+        callBtn.style.opacity = '0.5';
+        callBtn.style.pointerEvents = 'none';
+      }
+      document.getElementById('iosBottomSheet').classList.add('open');
+      document.getElementById('sheetOverlay').classList.add('active');
+    };
+    
+    window.closeBottomSheet = function() {
+      document.getElementById('iosBottomSheet').classList.remove('open');
+      document.getElementById('sheetOverlay').classList.remove('active');
+    };
+  }
+
   const html = vehicles.map((v, index) => {
     const delay = index * 0.03;
     
-    // Attempt to identify core fields
     const plate = getColValue(v, ['biển số', 'plate', 'xe']);
     const pic = getColValue(v, ['người phụ trách', 'pic', 'quản lý', 'phụ trách', 'nvpt', 'người quản lý']);
     const driver = getColValue(v, ['tài xế', 'driver', 'người lái', 'lái xe']);
     const phone = getColValue(v, ['điện thoại', 'sđt', 'phone', 'số đt']);
+    const brand = getColValue(v, ['hãng xe', 'hãng']);
+    const model = getColValue(v, ['model', 'loại xe']);
+    const year = getColValue(v, ['năm sx', 'năm']);
+    const seats = getColValue(v, ['số chỗ', 'chỗ']);
+    const fuel = getColValue(v, ['nhiên liệu', 'loại nl']);
     
-    const getIconForKey = (key) => {
-      const k = key.toLowerCase();
-      if (k.includes('biển số') || k.includes('mã xe') || k.includes('xe')) return 'directions_car';
-      if (k.includes('hãng') || k.includes('model') || k.includes('loại')) return 'time_to_leave';
-      if (k.includes('chỗ')) return 'airline_seat_recline_normal';
-      if (k.includes('năm sx') || k.includes('năm')) return 'calendar_month';
-      if (k.includes('nhiên liệu') || k.includes('nl') || k.includes('xăng') || k.includes('dầu')) return 'local_gas_station';
-      if (k.includes('định mức') || k.includes('l/100km')) return 'speed';
-      if (k.includes('phụ trách') || k.includes('quản lý') || k.includes('tài xế')) return 'person';
-      if (k.includes('chức danh')) return 'badge';
-      if (k.includes('nhánh') || k.includes('vùng') || k.includes('bộ phận')) return 'domain';
-      if (k.includes('điện thoại') || k.includes('sđt')) return 'phone';
-      if (k.includes('stt')) return 'format_list_numbered';
-      return 'label';
+    const regDateStr = getColValue(v, ['đăng kiểm', 'hạn đk', 'hết hạn đk']);
+    const insDateStr = getColValue(v, ['bảo hiểm', 'hạn bh', 'hết hạn bh']);
+    const regDays = parseDaysRemaining(regDateStr);
+    const insDays = parseDaysRemaining(insDateStr);
+
+    let fleetRecord = null;
+    if (currentFleetData && currentFleetData.vehicles) {
+      const normalizedPlate = String(plate).replace(/[\s\-\.]/g, '').toUpperCase();
+      fleetRecord = currentFleetData.vehicles.find(fv => fv.plate === normalizedPlate);
+    }
+
+    const odoDisplay = fleetRecord ? `${fleetRecord.estimatedTotal.toLocaleString()}` : '---';
+    const maintRemaining = (fleetRecord && fleetRecord.kmRemaining !== null) ? `${fleetRecord.kmRemaining.toLocaleString()}` : '---';
+    
+    let statusClass = 'status-healthy';
+    let statusDot = 'status-healthy';
+    
+    if (fleetRecord && fleetRecord.status === 'overdue') { statusClass = 'status-critical'; statusDot = 'status-critical'; }
+    else if (fleetRecord && fleetRecord.status === 'due_soon') { statusClass = 'status-warning'; statusDot = 'status-warning'; }
+    else if (typeof regDays === 'number' && regDays < 30) { statusClass = 'status-critical'; statusDot = 'status-critical'; }
+    else if (typeof insDays === 'number' && insDays < 30) { statusClass = 'status-critical'; statusDot = 'status-critical'; }
+    else if (typeof regDays === 'number' && regDays < 60) { statusClass = 'status-warning'; statusDot = 'status-warning'; }
+    else if (typeof insDays === 'number' && insDays < 60) { statusClass = 'status-warning'; statusDot = 'status-warning'; }
+
+    const formatKPIValue = (val, thresholdWarn, thresholdCrit) => {
+      if (val === '---') return '<span class="fleet-kpi-value">---</span>';
+      if (typeof val === 'number') {
+        let cls = '';
+        if (val < thresholdCrit) cls = 'critical';
+        else if (val < thresholdWarn) cls = 'warning';
+        return `<span class="fleet-kpi-value ${cls}">${val}d</span>`;
+      }
+      return `<span class="fleet-kpi-value">${val}</span>`;
     };
 
-    // Create detailed list of all columns in Bento Grid style
-    const detailsHtml = Object.keys(v).filter(k => v[k]).map(k => {
+    const formatMaintValue = (valStr, record) => {
+      if (valStr === '---') return '<span class="fleet-kpi-value">---</span>';
+      let cls = '';
+      if (record) {
+        if (record.status === 'overdue') cls = 'critical';
+        else if (record.status === 'due_soon') cls = 'warning';
+      }
+      return `<span class="fleet-kpi-value ${cls}">${valStr} km</span>`;
+    };
+
+    // Prepare bento html for bottom sheet
+    const bentoHtml = Object.keys(v).filter(k => v[k]).map(k => {
       const icon = getIconForKey(k);
       const isLong = String(v[k]).length > 20 || String(k).length > 15;
       return `
@@ -1281,59 +1440,49 @@ function renderInfoVehicleList(vehicles) {
         </div>
       `;
     }).join('');
+    
+    // Escape single quotes for inline onclick
+    const safeBento = bentoHtml.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
 
     return `
-      <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s" onclick="toggleInfoCard(this, event)">
-        <div class="info-card">
-          <div class="info-card-inner">
-            <!-- FRONT: Quick Info -->
-            <div class="info-card-front">
-              <div class="info-front-content">
-                <div class="info-front-header">
-                  <div class="info-plate-badge">${plate}</div>
-                  ${phone !== '---' ? `<a href="tel:${phone}" class="info-call-btn" onclick="event.stopPropagation();"><span class="material-icons" style="font-size:20px;">call</span></a>` : ''}
-                </div>
-                
-                <div class="info-front-body">
-                  <div class="info-role-row">
-                    <div class="info-role-icon pic-icon">
-                      <span class="material-icons" style="font-size:20px;">manage_accounts</span>
-                    </div>
-                    <div class="info-role-text">
-                      <span class="info-role-title">Người Phụ Trách</span>
-                      <span class="info-role-name">${pic}</span>
-                    </div>
-                  </div>
-                  
-                  <div class="info-role-row">
-                    <div class="info-role-icon driver-icon">
-                      <span class="material-icons" style="font-size:20px;">airline_seat_recline_normal</span>
-                    </div>
-                    <div class="info-role-text">
-                      <span class="info-role-title">Tài Xế</span>
-                      <span class="info-role-name">${driver} ${phone !== '---' ? `<span class="driver-phone">• ${phone}</span>` : ''}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="info-front-footer">
-                  <span class="material-icons" style="font-size:16px;">touch_app</span> Chạm để xem chi tiết
-                </div>
-              </div>
-            </div>
-            
-            <!-- BACK: Full Details -->
-            <div class="info-card-back">
-              <div class="info-card-header">
-                <div class="info-card-plate">${plate}</div>
-                <button class="info-close-btn" onclick="closeInfoCard(event)">
-                  <span class="material-icons" style="font-size:18px;">close</span>
-                </button>
-              </div>
-              <div class="info-bento-grid">
-                ${detailsHtml}
-              </div>
-            </div>
+      <div class="fleet-op-card ${statusClass} fade-in-up-spring" style="animation-delay:${delay}s" onclick="openBottomSheet('${plate}', '${safeBento}', '${phone}')">
+        <div class="fleet-op-header">
+          <div class="fleet-op-plate">
+            ${plate} <div class="status-dot ${statusDot}"></div>
+          </div>
+        </div>
+        
+        <div class="fleet-op-sub">
+          <span class="fleet-op-brand">${brand !== '---' ? brand : ''} ${model !== '---' ? model : ''}</span>
+          ${year !== '---' ? year : ''} ${seats !== '---' ? `• ${seats} Chỗ` : ''} ${fuel !== '---' ? `• ${fuel}` : ''}
+        </div>
+        
+        <div class="fleet-kpi-grid">
+          <div class="fleet-kpi-item">
+            <span class="fleet-kpi-label">ODO</span>
+            <span class="fleet-kpi-value" style="color:var(--ios-system-blue)">${odoDisplay}</span>
+          </div>
+          <div class="fleet-kpi-item">
+            <span class="fleet-kpi-label">Đ.Kiểm</span>
+            ${formatKPIValue(regDays, 60, 30)}
+          </div>
+          <div class="fleet-kpi-item">
+            <span class="fleet-kpi-label">B.Hiểm</span>
+            ${formatKPIValue(insDays, 60, 30)}
+          </div>
+          <div class="fleet-kpi-item">
+            <span class="fleet-kpi-label">Bảo Dưỡng</span>
+            ${formatMaintValue(maintRemaining, fleetRecord)}
+          </div>
+        </div>
+        
+        <div class="fleet-op-footer">
+          <div class="fleet-op-avatar">
+            <span class="material-icons" style="font-size:18px;">person</span>
+          </div>
+          <div class="fleet-op-pic">
+            <span class="fleet-op-pic-title">Người phụ trách</span>
+            <span class="fleet-op-pic-name">${pic !== '---' ? pic : (driver !== '---' ? driver : '---')}</span>
           </div>
         </div>
       </div>
@@ -1343,46 +1492,4 @@ function renderInfoVehicleList(vehicles) {
   container.innerHTML = html;
 }
 
-let activeInfoCard = null;
-
-function toggleInfoCard(containerEl, event) {
-  if (event) event.stopPropagation();
-  
-  if (activeInfoCard && activeInfoCard !== containerEl) {
-    activeInfoCard.classList.remove('expanded');
-    activeInfoCard.querySelector('.info-card').classList.remove('flipped');
-  }
-
-  const isExpanded = containerEl.classList.contains('expanded');
-  
-  if (isExpanded) {
-    closeInfoCard();
-  } else {
-    containerEl.classList.add('expanded');
-    containerEl.querySelector('.info-card').classList.add('flipped');
-    
-    // Create overlay if it doesn't exist
-    let overlay = document.getElementById('infoOverlay');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'infoOverlay';
-      overlay.className = 'info-overlay';
-      overlay.onclick = closeInfoCard;
-      document.getElementById('infoSection').appendChild(overlay);
-    }
-    overlay.classList.add('active');
-    
-    activeInfoCard = containerEl;
-  }
-}
-
-function closeInfoCard() {
-  if (activeInfoCard) {
-    activeInfoCard.classList.remove('expanded');
-    activeInfoCard.querySelector('.info-card').classList.remove('flipped');
-    activeInfoCard = null;
-  }
-  const overlay = document.getElementById('infoOverlay');
-  if (overlay) overlay.classList.remove('active');
-}
 
