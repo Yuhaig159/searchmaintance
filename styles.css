@@ -5735,4 +5735,5 @@
   .info-card-container.expanded .info-card-front,
   .info-card-container.expanded .info-card-back {
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+    background: var(--ios-bg);
   }
