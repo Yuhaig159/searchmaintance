@@ -1249,46 +1249,65 @@ function renderInfoVehicleList(vehicles) {
     const driver = getColValue(v, ['tài xế', 'driver', 'người lái', 'lái xe']);
     const phone = getColValue(v, ['điện thoại', 'sđt', 'phone', 'số đt']);
     
-    // Create detailed list of all columns
+    // Create detailed list of all columns in Bento Grid style
     const detailsHtml = Object.keys(v).filter(k => v[k]).map(k => {
-      return `<div class="info-detail-row">
-        <span class="info-detail-label">${k}</span>
-        <span class="info-detail-value">${v[k]}</span>
-      </div>`;
+      return `
+        <div class="info-bento-item">
+          <span class="info-bento-label">${k}</span>
+          <span class="info-bento-value">${v[k]}</span>
+        </div>
+      `;
     }).join('');
 
     return `
       <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s" onclick="toggleInfoCard(this, event)">
         <div class="info-card">
           <div class="info-card-inner">
+            <!-- FRONT: Quick Info -->
             <div class="info-card-front">
-              <div class="info-card-header">
-                <div class="info-card-plate">${plate}</div>
-                ${phone !== '---' ? `<a href="tel:${phone}" class="info-call-btn" onclick="event.stopPropagation();"><span class="material-icons" style="font-size:20px;">call</span></a>` : ''}
-              </div>
-              <div class="info-card-body">
-                <div class="info-row">
-                  <span class="info-label"><span class="material-icons" style="font-size:14px; vertical-align:middle; margin-right:4px;">person</span>Phụ trách:</span>
-                  <span class="info-value">${pic}</span>
+              <div class="info-front-content">
+                <div class="info-front-header">
+                  <div class="info-plate-badge">${plate}</div>
+                  ${phone !== '---' ? `<a href="tel:${phone}" class="info-call-btn" onclick="event.stopPropagation();"><span class="material-icons" style="font-size:20px;">call</span></a>` : ''}
                 </div>
-                <div class="info-row">
-                  <span class="info-label"><span class="material-icons" style="font-size:14px; vertical-align:middle; margin-right:4px;">badge</span>Tài xế:</span>
-                  <span class="info-value">${driver}</span>
+                
+                <div class="info-front-body">
+                  <div class="info-role-row">
+                    <div class="info-role-icon">
+                      <span class="material-icons" style="font-size:20px;">admin_panel_settings</span>
+                    </div>
+                    <div class="info-role-text">
+                      <span class="info-role-title">Phụ trách</span>
+                      <span class="info-role-name">${pic}</span>
+                    </div>
+                  </div>
+                  
+                  <div class="info-role-row">
+                    <div class="info-role-icon">
+                      <span class="material-icons" style="font-size:20px;">badge</span>
+                    </div>
+                    <div class="info-role-text">
+                      <span class="info-role-title">Tài xế</span>
+                      <span class="info-role-name">${driver} ${phone !== '---' ? ` • ${phone}` : ''}</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="info-row">
-                  <span class="info-label"><span class="material-icons" style="font-size:14px; vertical-align:middle; margin-right:4px;">phone</span>SĐT:</span>
-                  <span class="info-value">${phone}</span>
+
+                <div class="info-front-footer">
+                  <span class="material-icons" style="font-size:16px;">touch_app</span> Chạm để xem chi tiết
                 </div>
-              </div>
-              <div class="info-card-hint">
-                <span class="material-icons" style="font-size: 14px; vertical-align: middle;">touch_app</span> Chạm để xem chi tiết
               </div>
             </div>
+            
+            <!-- BACK: Full Details -->
             <div class="info-card-back">
               <div class="info-card-header">
                 <div class="info-card-plate">${plate}</div>
+                <button class="info-close-btn" onclick="closeInfoCard(event)">
+                  <span class="material-icons" style="font-size:18px;">close</span>
+                </button>
               </div>
-              <div class="info-card-details">
+              <div class="info-bento-grid">
                 ${detailsHtml}
               </div>
             </div>
