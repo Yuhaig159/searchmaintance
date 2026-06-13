@@ -1258,8 +1258,8 @@ function renderInfoVehicleList(vehicles) {
     }).join('');
 
     return `
-      <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s">
-        <div class="info-card" onclick="this.classList.toggle('flipped')">
+      <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s" onclick="toggleInfoCard(this, event)">
+        <div class="info-card">
           <div class="info-card-inner">
             <div class="info-card-front">
               <div class="info-card-header">
@@ -1300,3 +1300,47 @@ function renderInfoVehicleList(vehicles) {
 
   container.innerHTML = html;
 }
+
+let activeInfoCard = null;
+
+function toggleInfoCard(containerEl, event) {
+  if (event) event.stopPropagation();
+  
+  if (activeInfoCard && activeInfoCard !== containerEl) {
+    activeInfoCard.classList.remove('expanded');
+    activeInfoCard.querySelector('.info-card').classList.remove('flipped');
+  }
+
+  const isExpanded = containerEl.classList.contains('expanded');
+  
+  if (isExpanded) {
+    closeInfoCard();
+  } else {
+    containerEl.classList.add('expanded');
+    containerEl.querySelector('.info-card').classList.add('flipped');
+    
+    // Create overlay if it doesn't exist
+    let overlay = document.getElementById('infoOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'infoOverlay';
+      overlay.className = 'info-overlay';
+      overlay.onclick = closeInfoCard;
+      document.body.appendChild(overlay);
+    }
+    overlay.classList.add('active');
+    
+    activeInfoCard = containerEl;
+  }
+}
+
+function closeInfoCard() {
+  if (activeInfoCard) {
+    activeInfoCard.classList.remove('expanded');
+    activeInfoCard.querySelector('.info-card').classList.remove('flipped');
+    activeInfoCard = null;
+  }
+  const overlay = document.getElementById('infoOverlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
