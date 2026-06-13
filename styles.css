@@ -5507,7 +5507,7 @@
   .info-card-container {
     perspective: 1000px;
     height: auto;
-    min-height: 160px;
+    min-height: 180px;
   }
 
   .info-card {
@@ -5550,7 +5550,9 @@
 
   .info-card-back {
     transform: rotateY(180deg);
-    overflow-y: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   .info-card-header {
@@ -5563,9 +5565,10 @@
   }
 
   .info-card-plate {
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 800;
     color: var(--ios-text);
+    font-family: 'SF Mono', 'Courier New', monospace;
   }
 
   .info-call-btn {
@@ -5578,7 +5581,7 @@
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0, 168, 107, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 168, 107, 0.3);
     transition: transform 0.2s;
   }
 
@@ -5587,81 +5590,132 @@
   }
 
   .info-close-btn {
-    background: transparent;
+    background: var(--ios-fill-tertiary);
     border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
     color: var(--ios-text-secondary);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px;
   }
 
-  .info-card-body {
-    padding: 16px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  /* Modern Bento Grid for Details */
+  .info-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-  }
-
-  .info-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .info-label {
-    font-size: 14px;
-    color: var(--ios-text-secondary);
-  }
-
-  .info-value {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ios-text);
-    text-align: right;
-  }
-
-  .info-card-hint {
-    text-align: center;
-    font-size: 12px;
-    color: var(--ios-text-tertiary);
-    padding: 8px;
-    background: var(--ios-bg-secondary);
-    border-top: 1px solid var(--ios-sep);
-  }
-
-  .info-card-details {
     padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+    overflow-y: auto;
+    flex: 1;
   }
 
-  .info-detail-row {
+  .info-bento-item {
+    background: var(--ios-bg-secondary);
+    border-radius: 12px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     gap: 4px;
-    padding-bottom: 8px;
-    border-bottom: 1px dashed var(--ios-sep-light);
+    border: 1px solid var(--ios-sep-light);
   }
 
-  .info-detail-row:last-child {
-    border-bottom: none;
-  }
-
-  .info-detail-label {
-    font-size: 12px;
-    color: var(--ios-text-secondary);
+  .info-bento-label {
+    font-size: 11px;
+    color: var(--ios-text-tertiary);
     text-transform: uppercase;
+    font-weight: 700;
     letter-spacing: 0.5px;
   }
 
-  .info-detail-value {
+  .info-bento-value {
+    font-size: 13px;
+    color: var(--ios-text);
+    font-weight: 600;
+    word-break: break-word;
+  }
+
+  /* Front Card redesign elements */
+  .info-front-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 16px;
+  }
+
+  .info-front-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .info-plate-badge {
+    background: var(--ios-accent-orange-soft);
+    color: var(--ios-accent-orange);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 18px;
+    font-family: 'SF Mono', 'Courier New', monospace;
+    border: 1px solid var(--ios-accent-orange-border);
+  }
+
+  .info-front-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-role-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .info-role-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ios-fill-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ios-text-secondary);
+  }
+
+  .info-role-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-role-title {
+    font-size: 11px;
+    color: var(--ios-text-tertiary);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .info-role-name {
     font-size: 14px;
     color: var(--ios-text);
-    font-weight: 500;
+    font-weight: 600;
+  }
+
+  .info-front-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px dashed var(--ios-sep-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    color: var(--ios-accent-green);
+    font-size: 13px;
+    font-weight: 600;
   }
 
   .info-controls {
