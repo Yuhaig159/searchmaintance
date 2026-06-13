@@ -1443,8 +1443,8 @@ function renderInfoVehicleList(vehicles) {
       `;
     }).join('');
     
-    // Escape single quotes for inline onclick
-    const safeBento = bentoHtml.replace(/'/g, "&apos;").replace(/"/g, "&quot;");
+    // Escape single quotes and remove newlines for inline onclick
+    const safeBento = bentoHtml.replace(/'/g, "&apos;").replace(/"/g, "&quot;").replace(/\n/g, "").replace(/\r/g, "");
 
     return `
       <div class="fleet-op-card ${statusClass} fade-in-up-spring" style="animation-delay:${delay}s" onclick="openBottomSheet('${plate}', '${safeBento}', '${phone}')">
