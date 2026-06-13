@@ -5707,6 +5707,8 @@
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
+    transform: translateZ(0);
+    will-change: opacity, backdrop-filter;
   }
 
   .info-overlay.active {
@@ -5722,18 +5724,26 @@
     max-width: 400px;
     height: 70vh;
     max-height: 600px;
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 0);
     z-index: 9999;
     animation: popInCard 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    will-change: transform;
+    -webkit-font-smoothing: antialiased;
   }
 
   @keyframes popInCard {
-    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    0% { transform: translate3d(-50%, -50%, 0) scale(0.8); opacity: 0; }
+    100% { transform: translate3d(-50%, -50%, 0) scale(1); opacity: 1; }
   }
 
   .info-card-container.expanded .info-card-front,
   .info-card-container.expanded .info-card-back {
     box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
-    background: var(--ios-bg);
+    background: #ffffff !important;
+    border: none !important;
+  }
+
+  [data-theme="dark"] .info-card-container.expanded .info-card-front,
+  [data-theme="dark"] .info-card-container.expanded .info-card-back {
+    background: #1C1C1E !important;
   }
