@@ -224,7 +224,7 @@
   .info-role-icon {
     width: 36px;
     height: 36px;
-    border-radius: 50%;
+    border-radius: 12px; /* More modern than 50% */
     background: var(--ios-bg-secondary);
     display: flex;
     align-items: center;
@@ -232,23 +232,40 @@
     color: var(--ios-text-secondary);
   }
 
+  .pic-icon {
+    background: rgba(10, 132, 255, 0.12); /* Soft iOS Blue */
+    color: var(--ios-system-blue);
+  }
+
+  .driver-icon {
+    background: rgba(48, 209, 88, 0.12); /* Soft iOS Green */
+    color: var(--ios-system-green);
+  }
+
   .info-role-text {
     display: flex;
     flex-direction: column;
+    gap: 2px;
   }
 
   .info-role-title {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--ios-text-tertiary);
     text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.3px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
   }
 
   .info-role-name {
-    font-size: 14px;
+    font-size: 15px;
     color: var(--ios-text);
     font-weight: 600;
+  }
+
+  .driver-phone {
+    font-size: 13px;
+    color: var(--ios-text-secondary);
+    font-weight: 500;
   }
 
   .info-front-footer {
