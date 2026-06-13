@@ -1249,12 +1249,35 @@ function renderInfoVehicleList(vehicles) {
     const driver = getColValue(v, ['tài xế', 'driver', 'người lái', 'lái xe']);
     const phone = getColValue(v, ['điện thoại', 'sđt', 'phone', 'số đt']);
     
+    const getIconForKey = (key) => {
+      const k = key.toLowerCase();
+      if (k.includes('biển số') || k.includes('mã xe') || k.includes('xe')) return 'directions_car';
+      if (k.includes('hãng') || k.includes('model') || k.includes('loại')) return 'time_to_leave';
+      if (k.includes('chỗ')) return 'airline_seat_recline_normal';
+      if (k.includes('năm sx') || k.includes('năm')) return 'calendar_month';
+      if (k.includes('nhiên liệu') || k.includes('nl') || k.includes('xăng') || k.includes('dầu')) return 'local_gas_station';
+      if (k.includes('định mức') || k.includes('l/100km')) return 'speed';
+      if (k.includes('phụ trách') || k.includes('quản lý') || k.includes('tài xế')) return 'person';
+      if (k.includes('chức danh')) return 'badge';
+      if (k.includes('nhánh') || k.includes('vùng') || k.includes('bộ phận')) return 'domain';
+      if (k.includes('điện thoại') || k.includes('sđt')) return 'phone';
+      if (k.includes('stt')) return 'format_list_numbered';
+      return 'label';
+    };
+
     // Create detailed list of all columns in Bento Grid style
     const detailsHtml = Object.keys(v).filter(k => v[k]).map(k => {
+      const icon = getIconForKey(k);
+      const isLong = v[k].length > 20 || k.length > 15;
       return `
-        <div class="info-bento-item">
-          <span class="info-bento-label">${k}</span>
-          <span class="info-bento-value">${v[k]}</span>
+        <div class="info-bento-item" ${isLong ? 'style="grid-column: span 2;"' : ''}>
+          <div class="info-bento-icon-wrap">
+            <span class="material-icons info-bento-icon">${icon}</span>
+          </div>
+          <div class="info-bento-content">
+            <span class="info-bento-label">${k}</span>
+            <span class="info-bento-value">${v[k]}</span>
+          </div>
         </div>
       `;
     }).join('');
