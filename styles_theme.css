@@ -1,0 +1,97 @@
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       THEME TỐI - DARK MODE (Enhanced Contrast & Liquid Glass)
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+  [data-theme="dark"] {
+    /* Background & Surface - Deep layers with better separation */
+    --ios-bg: #000000;
+    --ios-bg-secondary: #1C1C1E;
+    --ios-card: rgba(28, 28, 30, 0.85);
+    --ios-surface-elevated: rgba(44, 44, 46, 0.95);
+
+    /* Text Colors - Enhanced visibility */
+    --ios-text: #F5F5F7;
+    --ios-text-secondary: rgba(245, 245, 247, 0.8);
+    --ios-text-tertiary: rgba(245, 245, 247, 0.6);
+    --ios-text-inverse: #000000;
+
+    /* Accent Green - Brighter for dark mode */
+    --ios-accent-green: #30D158;
+    --ios-accent-green-hover: #32D760;
+    --ios-accent-green-soft: rgba(48, 209, 88, 0.15);
+    --ios-accent-green-border: rgba(48, 209, 88, 0.35);
+
+    /* Accent Orange - Vibrant glow */
+    --ios-accent-orange: #FF9F0A;
+    --ios-accent-orange-hover: #FFB340;
+    --ios-accent-orange-soft: rgba(255, 159, 10, 0.15);
+    --ios-accent-orange-border: rgba(255, 159, 10, 0.35);
+
+    /* Borders & Dividers - Visible separation */
+    --ios-sep: rgba(255, 255, 255, 0.2);
+    --ios-sep-light: rgba(255, 255, 255, 0.1);
+    --ios-divider: rgba(255, 255, 255, 0.15);
+
+    /* Shadows - Deeper for dark mode */
+    --shadow-light: rgba(0, 0, 0, 0.4);
+    --shadow-medium: rgba(0, 0, 0, 0.6);
+    --shadow-strong: rgba(0, 0, 0, 0.8);
+
+    /* Liquid Glass Effects - Dark variant */
+    --glass-bg: rgba(28, 28, 30, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --glass-shadow: rgba(0, 0, 0, 0.5);
+    --blur-amount: 30px;
+
+    /* Gradients */
+    --gradient-green-orange: linear-gradient(135deg, #30D158 0%, #FF9F0A 100%);
+    --gradient-light: linear-gradient(135deg, rgba(28, 28, 30, 0.9) 0%, rgba(44, 44, 46, 0.8) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+
+    /* Status Colors */
+    --ios-success: #30D158;
+    --ios-warning: #FF9F0A;
+    --ios-error: #FF453A;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    background: var(--ios-bg);
+    color: var(--ios-text);
+    font-size: 17px;
+    line-height: 1.47059;
+    font-weight: 400;
+    letter-spacing: -0.022em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
+    min-height: 100vh;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Blur background sections when modal is open */
+  body.modal-open #heroSection,
+  body.modal-open #appSection {
+    filter: blur(8px);
+    pointer-events: none;
+    transition: filter 0.3s ease;
+  }
+
+  .modal.hidden {
+    display: none !important;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+

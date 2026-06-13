@@ -1,0 +1,15 @@
+  /* ═══════════════════════════════════════════════════════════════════════
+       14. UTILITY CLASSES
+       ═══════════════════════════════════════════════════════════════════════ */
+  .thin-border {
+    border-bottom: 0.5px solid var(--ios-sep);
+  }
+
+  /* ⚡ V112 Background Focus Overrides */
+  .modal-blur-bg {
+    filter: blur(8px) brightness(0.6) !important;
+    pointer-events: none !important;
+    transition: filter 0.3s ease, brightness 0.3s ease !important;
+    user-select: none !important;
+  }
+

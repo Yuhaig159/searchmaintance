@@ -1,0 +1,313 @@
+  /* ═══════════════════════════════════════════════════════════════════════
+     INFO CAR STYLES
+     ═══════════════════════════════════════════════════════════════════════ */
+  .info-section {
+    height: 100%;
+    overflow-y: auto;
+    background: var(--ios-bg-secondary);
+    padding-bottom: 80px;
+  }
+
+  .info-vehicle-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .info-card-container {
+    perspective: 1000px;
+    height: auto;
+    min-height: 180px;
+  }
+
+  .info-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+
+  .info-card.flipped .info-card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .info-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+
+  .info-card-front, .info-card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    background: var(--ios-card);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px var(--shadow-light);
+    border: 1px solid var(--ios-sep);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-card-back {
+    transform: rotateY(180deg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-card-header {
+    background: var(--ios-bg-secondary);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--ios-sep);
+  }
+
+  .info-card-plate {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ios-text);
+    font-family: 'SF Mono', 'Courier New', monospace;
+  }
+
+  .info-call-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--brand-green);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 168, 107, 0.3);
+    transition: transform 0.2s;
+  }
+
+  .info-call-btn:active {
+    transform: scale(0.9);
+  }
+
+  .info-close-btn {
+    background: var(--ios-bg-secondary);
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    color: var(--ios-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Modern Bento Grid for Details */
+  .info-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  .info-bento-item {
+    background: var(--ios-bg-secondary);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 1px solid var(--ios-sep-light);
+  }
+
+  .info-bento-label {
+    font-size: 11px;
+    color: var(--ios-text-tertiary);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .info-bento-value {
+    font-size: 13px;
+    color: var(--ios-text);
+    font-weight: 600;
+    word-break: break-word;
+  }
+
+  /* Front Card redesign elements */
+  .info-front-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 16px;
+  }
+
+  .info-front-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .info-plate-badge {
+    background: var(--ios-accent-orange-soft);
+    color: var(--ios-accent-orange);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 18px;
+    font-family: 'SF Mono', 'Courier New', monospace;
+    border: 1px solid var(--ios-accent-orange-border);
+  }
+
+  .info-front-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .info-role-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .info-role-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ios-bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ios-text-secondary);
+  }
+
+  .info-role-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-role-title {
+    font-size: 11px;
+    color: var(--ios-text-tertiary);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .info-role-name {
+    font-size: 14px;
+    color: var(--ios-text);
+    font-weight: 600;
+  }
+
+  .info-front-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px dashed var(--ios-sep-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    color: var(--ios-accent-green);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .info-controls {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--ios-bg-secondary);
+    padding: 12px 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .info-search-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--ios-card);
+    border: 1px solid var(--ios-sep);
+    border-radius: 10px;
+    padding: 8px 12px;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+
+  .info-search-input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    font-size: 16px;
+    color: var(--ios-text);
+    outline: none;
+  }
+
+  .info-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    transform: translateZ(0);
+    will-change: opacity, backdrop-filter;
+  }
+
+  .info-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .info-card-container.expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 90vw;
+    max-width: 400px;
+    height: 70vh;
+    max-height: 600px;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 9999;
+    animation: popInCard 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    will-change: transform;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @keyframes popInCard {
+    0% { transform: translate3d(-50%, -50%, 0) scale(0.8); opacity: 0; }
+    100% { transform: translate3d(-50%, -50%, 0) scale(1); opacity: 1; }
+  }
+
+  .info-card-container.expanded .info-card-front,
+  .info-card-container.expanded .info-card-back {
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+    background: #ffffff !important;
+    border: none !important;
+  }
+
+  [data-theme="dark"] .info-card-container.expanded .info-card-front,
+  [data-theme="dark"] .info-card-container.expanded .info-card-back {
+    background: #1C1C1E !important;
+  }

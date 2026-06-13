@@ -1,0 +1,27 @@
+  /* ═══════════════════════════════════════════════════════════════════════
+       15. PRINT STYLES
+       ═══════════════════════════════════════════════════════════════════════ */
+  @media print {
+
+    .hero-section,
+    .app-header,
+    .filter-section,
+    .loading-overlay,
+    .modal-overlay,
+    .toast,
+    .btn-load-more {
+      display: none !important;
+    }
+
+    .app-section {
+      display: block !important;
+    }
+
+    .card {
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: 1px solid #ccc;
+    }
+  }
+

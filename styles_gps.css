@@ -1,0 +1,190 @@
+  /* ═══════════════════════════════════════════════════════ GPS SECTION */
+  .gps-section {
+    padding: 0 0 0;
+  }
+
+  .gps-summary-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid var(--ios-sep);
+    padding: 14px 16px;
+  }
+
+  .gps-stat {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .gps-stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--ios-text);
+  }
+
+  .gps-stat-label {
+    font-size: 11px;
+    color: var(--ios-text-secondary);
+    font-weight: 600;
+  }
+
+  .gps-stat-value.gps-active {
+    color: var(--ios-system-green);
+  }
+
+  .gps-stat-value.gps-total-km {
+    color: var(--ios-system-blue);
+  }
+
+  .gps-divider {
+    width: 0.5px;
+    height: 40px;
+    background: var(--ios-sep);
+  }
+
+  .gps-search-bar {
+    padding: 12px 16px;
+    position: sticky;
+    top: 56px;
+    background: var(--ios-bg);
+    z-index: 50;
+    border-bottom: 0.5px solid var(--ios-sep-light);
+  }
+
+  .gps-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--ios-sep);
+    border-radius: 12px;
+    padding: 8px 12px;
+    backdrop-filter: blur(20px);
+  }
+
+  .gps-search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--ios-text);
+    font-size: 15px;
+    outline: none;
+    font-family: 'SF Mono', monospace;
+  }
+
+  .gps-vehicle-list {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .gps-card {
+    background: var(--ios-card);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 2px 8px var(--shadow-light);
+    border: 1px solid var(--ios-sep-light);
+    transition: all 0.2s ease;
+    backdrop-filter: blur(20px);
+  }
+
+  .gps-card:active {
+    transform: scale(0.98);
+  }
+
+  .gps-card-status-indicator {
+    width: 4px;
+    border-radius: 4px;
+    align-self: stretch;
+    min-height: 54px;
+    flex-shrink: 0;
+  }
+
+  .gps-card-active .gps-card-status-indicator {
+    background: var(--ios-system-green);
+    box-shadow: 0 0 8px rgba(52, 199, 89, 0.4);
+  }
+
+  .gps-card-idle .gps-card-status-indicator {
+    background: var(--ios-gray-3);
+  }
+
+  .gps-card-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .gps-card-plate {
+    font-size: 17px;
+    font-weight: 800;
+    font-family: 'SF Mono', monospace;
+    color: var(--ios-text);
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+
+  .gps-card-meta {
+    font-size: 13px;
+    color: var(--ios-text-secondary);
+    line-height: 1.6;
+    font-weight: 500;
+  }
+
+  .gps-card-update {
+    font-size: 10px;
+    color: var(--ios-text-tertiary);
+    margin-top: 2px;
+  }
+
+  .gps-card-right {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .gps-card-total-km {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ios-system-blue);
+    margin-bottom: 2px;
+  }
+
+  .gps-card-total-label {
+    font-size: 10px;
+    color: var(--ios-text-tertiary);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .gps-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    gap: 12px;
+    text-align: center;
+    color: var(--ios-text-secondary);
+  }
+
+  .gps-empty-state h3 {
+    color: var(--ios-text);
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .gps-empty-state p {
+    font-size: 14px;
+    margin: 0;
+  }
+

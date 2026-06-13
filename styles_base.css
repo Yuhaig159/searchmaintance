@@ -1,0 +1,189 @@
+  :root {
+    --brand-orange: #FCAF17;
+    --brand-green: #1C695B;
+    --brand-white: #FFFFFF;
+    --brand-black: #000000;
+
+    /* Background & Surface - Improved depth */
+    --ios-bg: #F5F5F7;
+    --ios-bg-secondary: #E8E8ED;
+    --ios-card: rgba(255, 255, 255, 0.85);
+    --ios-surface-elevated: rgba(255, 255, 255, 0.95);
+
+    /* Text Colors - Enhanced readability */
+    --ios-text: #1D1D1F;
+    --ios-text-secondary: rgba(29, 29, 31, 0.75);
+    --ios-text-tertiary: rgba(29, 29, 31, 0.55);
+    --ios-text-inverse: #FFFFFF;
+
+    /* Accent Green - Vibrant & visible */
+    --ios-accent-green: #1C695B;
+    --ios-accent-green-hover: #155043;
+    --ios-accent-green-soft: rgba(28, 105, 91, 0.12);
+    --ios-accent-green-border: rgba(28, 105, 91, 0.3);
+
+    /* Accent Orange - Bold & energetic */
+    --ios-accent-orange: #FF9F0A;
+    --ios-accent-orange-hover: #E68A00;
+    --ios-accent-orange-soft: rgba(255, 159, 10, 0.12);
+    --ios-accent-orange-border: rgba(255, 159, 10, 0.3);
+
+    /* Borders & Dividers - Stronger definition */
+    --ios-sep: rgba(0, 0, 0, 0.15);
+    --ios-sep-light: rgba(0, 0, 0, 0.08);
+    --ios-divider: rgba(0, 0, 0, 0.12);
+
+    /* Shadows - Refined depth */
+    --shadow-light: rgba(0, 0, 0, 0.08);
+    --shadow-medium: rgba(0, 0, 0, 0.12);
+    --shadow-strong: rgba(0, 0, 0, 0.18);
+
+    /* Liquid Glass Effects */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-shadow: rgba(0, 0, 0, 0.1);
+    --blur-amount: 20px;
+
+    /* Gradients */
+    --gradient-green-orange: linear-gradient(135deg, #1C695B 0%, #FF9F0A 100%);
+    --gradient-light: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 248, 250, 0.8) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
+
+    /* Status Colors */
+    --ios-success: #1C695B;
+    --ios-warning: #FF9F0A;
+    --ios-error: #FF3B30;
+
+    /* Typography */
+    --font-xs: 10px;
+    --font-sm: 12px;
+    --font-base: 14px;
+    --font-md: 16px;
+    --font-lg: 18px;
+    --font-xl: 24px;
+    --font-2xl: 32px;
+    --font-3xl: 48px;
+
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+
+    /* Border Radius - Bolder iOS 18 / Bento Style */
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 32px;
+    --radius-xl: 40px;
+    --radius-round: 50%;
+
+    /* Mesh Gradient Colors */
+    --mesh-green: rgba(28, 105, 91, 0.25);
+    --mesh-orange: rgba(255, 159, 10, 0.2);
+  }
+
+  /* -----------------------------------------------------------------------
+       iOS 26 SYSTEM COLORS - Official Apple Palette
+       ----------------------------------------------------------------------- */
+  :root {
+    /* iOS System Colors - Light Mode */
+    --ios-system-red: #FF3B30;
+    --ios-system-orange: #FF9500;
+    --ios-system-yellow: #FFCC00;
+    --ios-system-green: #34C759;
+    --ios-system-mint: #00C7BE;
+    --ios-system-teal: #30B0C7;
+    --ios-system-cyan: #32ADE6;
+    --ios-system-blue: #007AFF;
+    --ios-system-indigo: #5856D6;
+    --ios-system-purple: #AF52DE;
+    --ios-system-pink: #FF2D55;
+    --ios-system-brown: #A2845E;
+
+    /* iOS Gray Scale */
+    --ios-gray: #8E8E93;
+    --ios-gray-2: #AEAEB2;
+    --ios-gray-3: #C7C7CC;
+    --ios-gray-4: #D1D1D6;
+    --ios-gray-5: #E5E5EA;
+    --ios-gray-6: #F2F2F7;
+
+    /* iOS Label Colors */
+    --ios-label: rgba(0, 0, 0, 0.85);
+    --ios-label-secondary: rgba(60, 60, 67, 0.6);
+    --ios-label-tertiary: rgba(60, 60, 67, 0.3);
+    --ios-label-quaternary: rgba(60, 60, 67, 0.18);
+
+    /* iOS Fill Colors */
+    --ios-fill: rgba(120, 120, 128, 0.2);
+    --ios-fill-secondary: rgba(120, 120, 128, 0.16);
+    --ios-fill-tertiary: rgba(118, 118, 128, 0.12);
+    --ios-fill-quaternary: rgba(116, 116, 128, 0.08);
+  }
+
+  [data-theme="dark"] {
+    /* iOS System Colors - Dark Mode */
+    --ios-system-red: #FF453A;
+    --ios-system-orange: #FF9F0A;
+    --ios-system-yellow: #FFD60A;
+    --ios-system-green: #30D158;
+    --ios-system-mint: #63E6E2;
+    --ios-system-teal: #40C8E0;
+    --ios-system-cyan: #64D2FF;
+    --ios-system-blue: #0A84FF;
+    --ios-system-indigo: #5E5CE6;
+    --ios-system-purple: #BF5AF2;
+    --ios-system-pink: #FF375F;
+    --ios-system-brown: #AC8E68;
+
+    /* iOS Gray Scale - Dark */
+    --ios-gray: #8E8E93;
+    --ios-gray-2: #636366;
+    --ios-gray-3: #48484A;
+    --ios-gray-4: #3A3A3C;
+    --ios-gray-5: #2C2C2E;
+    --ios-gray-6: #1C1C1E;
+
+    /* iOS Label Colors - Dark */
+    --ios-label: rgba(255, 255, 255, 0.85);
+    --ios-label-secondary: rgba(235, 235, 245, 0.6);
+    --ios-label-tertiary: rgba(235, 235, 245, 0.3);
+    --ios-label-quaternary: rgba(235, 235, 245, 0.18);
+
+    /* iOS Fill Colors - Dark */
+    --ios-fill: rgba(120, 120, 128, 0.36);
+    --ios-fill-secondary: rgba(120, 120, 128, 0.32);
+    --ios-fill-tertiary: rgba(118, 118, 128, 0.24);
+    --ios-fill-quaternary: rgba(116, 116, 128, 0.18);
+
+    /* Mesh Gradient Colors - Vibrant Dark Mode */
+    --mesh-green: rgba(48, 209, 88, 0.18);
+    --mesh-orange: rgba(255, 159, 10, 0.15);
+  }
+
+  /* Apply iOS system colors to components */
+  .summary-btn {
+    background: linear-gradient(135deg, var(--ios-system-orange) 0%, #FF8800 100%);
+  }
+
+  .hero-search-btn {
+    background: var(--ios-accent-green);
+    box-shadow: 0 4px 12px rgba(28, 105, 91, 0.3);
+  }
+
+  [data-theme="dark"] .hero-search-btn {
+    background: var(--ios-system-green);
+    box-shadow: 0 4px 12px rgba(48, 209, 88, 0.3);
+  }
+
+  .search-btn {
+    color: var(--ios-accent-green);
+  }
+
+  [data-theme="dark"] .search-btn {
+    color: var(--ios-system-green);
+  }
+
+  /* V107: Removed old search-box and filter-input focus states */
+
