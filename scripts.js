@@ -1283,55 +1283,29 @@ function renderInfoVehicleList(vehicles) {
     }).join('');
 
     return `
-      <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s" onclick="toggleInfoCard(this, event)">
+      <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s" onclick="openVehicleDetail(${index})">
         <div class="info-card">
           <div class="info-card-inner">
-            <!-- FRONT: Quick Info -->
-            <div class="info-card-front">
-              <div class="info-front-content">
-                <div class="info-front-header">
-                  <div class="info-plate-badge">${plate}</div>
-                  ${phone !== '---' ? `<a href="tel:${phone}" class="info-call-btn" onclick="event.stopPropagation();"><span class="material-icons" style="font-size:20px;">call</span></a>` : ''}
-                </div>
-                
-                <div class="info-front-body">
-                  <div class="info-role-row">
-                    <div class="info-role-icon">
-                      <span class="material-icons" style="font-size:20px;">admin_panel_settings</span>
-                    </div>
-                    <div class="info-role-text">
-                      <span class="info-role-title">Phụ trách</span>
-                      <span class="info-role-name">${pic}</span>
-                    </div>
-                  </div>
-                  
-                  <div class="info-role-row">
-                    <div class="info-role-icon">
-                      <span class="material-icons" style="font-size:20px;">badge</span>
-                    </div>
-                    <div class="info-role-text">
-                      <span class="info-role-title">Tài xế</span>
-                      <span class="info-role-name">${driver} ${phone !== '---' ? ` • ${phone}` : ''}</span>
-                    </div>
+            <div class="info-card-front" style="padding: 16px;">
+              <div class="info-front-header">
+                <div class="info-plate-badge">${plate}</div>
+                ${phone !== '---' ? `<a href="tel:${phone}" class="info-call-btn" onclick="event.stopPropagation();"><span class="material-icons" style="font-size:20px;">call</span></a>` : ''}
+              </div>
+              <div class="info-front-body" style="margin-top:16px;">
+                <div class="info-role-row">
+                  <div class="info-role-icon"><span class="material-icons" style="font-size:20px;">admin_panel_settings</span></div>
+                  <div class="info-role-text">
+                    <span class="info-role-title">Phụ trách</span>
+                    <span class="info-role-name">${pic}</span>
                   </div>
                 </div>
-
-                <div class="info-front-footer">
-                  <span class="material-icons" style="font-size:16px;">touch_app</span> Chạm để xem chi tiết
+                <div class="info-role-row">
+                  <div class="info-role-icon"><span class="material-icons" style="font-size:20px;">badge</span></div>
+                  <div class="info-role-text">
+                    <span class="info-role-title">Tài xế</span>
+                    <span class="info-role-name">${driver} ${phone !== '---' ? ` • ${phone}` : ''}</span>
+                  </div>
                 </div>
-              </div>
-            </div>
-            
-            <!-- BACK: Full Details -->
-            <div class="info-card-back">
-              <div class="info-card-header">
-                <div class="info-card-plate">${plate}</div>
-                <button class="info-close-btn" onclick="closeInfoCard(event)">
-                  <span class="material-icons" style="font-size:18px;">close</span>
-                </button>
-              </div>
-              <div class="info-bento-grid">
-                ${detailsHtml}
               </div>
             </div>
           </div>
@@ -1341,48 +1315,213 @@ function renderInfoVehicleList(vehicles) {
   }).join('');
 
   container.innerHTML = html;
-}
-
-let activeInfoCard = null;
-
-function toggleInfoCard(containerEl, event) {
-  if (event) event.stopPropagation();
   
-  if (activeInfoCard && activeInfoCard !== containerEl) {
-    activeInfoCard.classList.remove('expanded');
-    activeInfoCard.querySelector('.info-card').classList.remove('flipped');
-  }
+  // Store globally for detail view
+  window._currentVehiclesData = vehicles;
+}
 
-  const isExpanded = containerEl.classList.contains('expanded');
+function getCarImage(model, brand) {
+  const q = (brand + ' ' + model).toLowerCase();
+  // Basic mock images. If a match is found, return a realistic URL or placeholder
+  if (q.includes('viloran')) return 'https://images.unsplash.com/photo-1616455579100-2ceaa4eb2d37?auto=format&fit=crop&w=800&q=80'; // Mock SUV/Van
+  if (q.includes('carnival')) return 'https://images.unsplash.com/photo-1619682817481-e994891cd1f5?auto=format&fit=crop&w=800&q=80';
+  if (q.includes('transit')) return 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80';
+  if (q.includes('sedona')) return 'https://images.unsplash.com/photo-1605810230434-7631ac76ec81?auto=format&fit=crop&w=800&q=80';
+  if (q.includes('innova')) return 'https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=800&q=80';
+  if (q.includes('camry')) return 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fd?auto=format&fit=crop&w=800&q=80';
+  // Fallback car image
+  return 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=800&q=80';
+}
+
+function openVehicleDetail(index) {
+  const v = window._currentVehiclesData[index];
+  if (!v) return;
+
+  const plate = getColValue(v, ['biển số', 'plate', 'xe']);
+  const pic = getColValue(v, ['người phụ trách', 'pic', 'quản lý', 'phụ trách', 'nvpt', 'người quản lý']);
+  const driver = getColValue(v, ['tài xế', 'driver', 'người lái', 'lái xe']);
+  const phone = getColValue(v, ['điện thoại', 'sđt', 'phone', 'số đt']);
+  const brand = getColValue(v, ['hãng xe', 'hãng']);
+  const model = getColValue(v, ['model', 'dòng xe']);
+  const seats = getColValue(v, ['số chỗ', 'chỗ']);
+  const fuel = getColValue(v, ['nhiên liệu', 'loại nl', 'xăng']);
+  const year = getColValue(v, ['năm sx', 'năm sản xuất', 'năm']);
   
-  if (isExpanded) {
-    closeInfoCard();
-  } else {
-    containerEl.classList.add('expanded');
-    containerEl.querySelector('.info-card').classList.add('flipped');
+  const imgUrl = getCarImage(model, brand);
+
+  const getIconForKey = (key) => {
+    const k = key.toLowerCase();
+    if (k.includes('biển số') || k.includes('mã xe') || k.includes('xe')) return 'directions_car';
+    if (k.includes('hãng') || k.includes('model') || k.includes('loại')) return 'time_to_leave';
+    if (k.includes('chỗ')) return 'airline_seat_recline_normal';
+    if (k.includes('năm sx') || k.includes('năm')) return 'calendar_month';
+    if (k.includes('nhiên liệu') || k.includes('nl') || k.includes('xăng') || k.includes('dầu')) return 'local_gas_station';
+    if (k.includes('định mức') || k.includes('l/100km')) return 'speed';
+    if (k.includes('phụ trách') || k.includes('quản lý') || k.includes('tài xế')) return 'person';
+    if (k.includes('chức danh')) return 'badge';
+    if (k.includes('nhánh') || k.includes('vùng') || k.includes('bộ phận')) return 'domain';
+    if (k.includes('điện thoại') || k.includes('sđt')) return 'phone';
+    if (k.includes('stt')) return 'format_list_numbered';
+    return 'label';
+  };
+
+  const bentoHtml = Object.keys(v).filter(k => v[k]).map(k => {
+    const icon = getIconForKey(k);
+    const isLong = v[k].length > 20 || k.length > 15;
+    return `
+      <div class="info-bento-item" ${isLong ? 'style="grid-column: span 2;"' : ''}>
+        <div class="info-bento-icon-wrap"><span class="material-icons info-bento-icon">${icon}</span></div>
+        <div class="info-bento-content">
+          <span class="info-bento-label">${k}</span>
+          <span class="info-bento-value">${v[k]}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const html = `
+    <div class="vd-header">
+      <button class="vd-back-btn" onclick="closeVehicleDetail()"><span class="material-icons">chevron_left</span></button>
+      <div class="vd-title">Thông tin xe</div>
+      <button class="vd-more-btn"><span class="material-icons">more_horiz</span></button>
+    </div>
     
-    // Create overlay if it doesn't exist
-    let overlay = document.getElementById('infoOverlay');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.id = 'infoOverlay';
-      overlay.className = 'info-overlay';
-      overlay.onclick = closeInfoCard;
-      document.getElementById('infoSection').appendChild(overlay);
-    }
-    overlay.classList.add('active');
+    <div class="vd-content">
+      <!-- Top Card -->
+      <div class="vd-car-hero">
+        <div class="vd-car-img-wrap"><img src="${imgUrl}" alt="Car" style="border-radius:12px; object-fit:cover;"></div>
+        <div class="vd-car-info">
+          <h2 class="vd-car-plate">${plate}</h2>
+          <p class="vd-car-model">${brand} ${model !== '---' ? model : ''}</p>
+          <p class="vd-car-meta">${year !== '---' ? year : '2024'} • ${seats !== '---' ? seats : 'N/A'} chỗ • ${fuel !== '---' ? fuel : 'N/A'}</p>
+          <span class="vd-status-pill"><span class="vd-status-dot"></span> Hoạt động</span>
+        </div>
+      </div>
+
+      <!-- TRẠNG THÁI -->
+      <div class="vd-section">
+        <div class="vd-section-header">
+          <h3>TRẠNG THÁI</h3>
+          <a href="#" class="vd-section-link">Xem chi tiết ></a>
+        </div>
+        <div class="vd-hz-scroll">
+          <div class="vd-status-card">
+            <div class="vd-sc-header">
+              <div class="vd-sc-icon green"><span class="material-icons" style="font-size:16px;">verified</span></div>
+              <span class="vd-sc-title">Đăng kiểm</span>
+            </div>
+            <div class="vd-sc-value green">Còn hạn</div>
+            <div class="vd-sc-desc">Hợp lệ</div>
+          </div>
+          <div class="vd-status-card">
+            <div class="vd-sc-header">
+              <div class="vd-sc-icon orange"><span class="material-icons" style="font-size:16px;">security</span></div>
+              <span class="vd-sc-title">Bảo hiểm</span>
+            </div>
+            <div class="vd-sc-value orange">Còn hạn</div>
+            <div class="vd-sc-desc">Hợp lệ</div>
+          </div>
+          <div class="vd-status-card">
+            <div class="vd-sc-header">
+              <div class="vd-sc-icon blue"><span class="material-icons" style="font-size:16px;">build</span></div>
+              <span class="vd-sc-title">Bảo dưỡng</span>
+            </div>
+            <div class="vd-sc-value blue">Ổn định</div>
+            <div class="vd-sc-desc">Sắp tới mốc</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ODO -->
+      <div class="vd-section">
+        <div class="vd-odo-card">
+          <div class="vd-odo-left">
+            <span class="vd-odo-title">ODO hiện tại</span>
+            <div class="vd-odo-val">-- <span class="vd-odo-unit">km</span></div>
+          </div>
+          <div class="vd-odo-chart"></div>
+        </div>
+      </div>
+
+      <!-- THÔNG TIN NHANH -->
+      <div class="vd-section">
+        <div class="vd-section-header">
+          <h3>THÔNG TIN NHANH</h3>
+        </div>
+        <div class="info-bento-grid" style="padding:0; background:transparent;">
+          ${bentoHtml}
+        </div>
+      </div>
+      
+      <!-- Accordions -->
+      <div class="vd-section">
+        <div class="vd-accordion">
+          <div class="vd-acc-item">
+            <div class="vd-acc-left"><span class="material-icons vd-acc-icon">directions_car</span><span class="vd-acc-text">Thông tin xe</span></div>
+            <span class="material-icons vd-acc-arrow">keyboard_arrow_down</span>
+          </div>
+          <div class="vd-acc-item">
+            <div class="vd-acc-left"><span class="material-icons vd-acc-icon">settings</span><span class="vd-acc-text">Thông tin kỹ thuật</span></div>
+            <span class="material-icons vd-acc-arrow">keyboard_arrow_down</span>
+          </div>
+          <div class="vd-acc-item">
+            <div class="vd-acc-left"><span class="material-icons vd-acc-icon">description</span><span class="vd-acc-text">Hồ sơ đăng ký</span></div>
+            <span class="material-icons vd-acc-arrow">keyboard_arrow_down</span>
+          </div>
+          <div class="vd-acc-item">
+            <div class="vd-acc-left"><span class="material-icons vd-acc-icon">verified_user</span><span class="vd-acc-text">Bảo hiểm</span></div>
+            <span class="material-icons vd-acc-arrow">keyboard_arrow_down</span>
+          </div>
+          <div class="vd-acc-item">
+            <div class="vd-acc-left"><span class="material-icons vd-acc-icon">history</span><span class="vd-acc-text">Lịch sử sửa chữa</span></div>
+            <span class="material-icons vd-acc-arrow">keyboard_arrow_down</span>
+          </div>
+        </div>
+      </div>
+    </div>
     
-    activeInfoCard = containerEl;
+    <div class="vd-bottom-bar">
+      <button class="vd-action-btn">
+        <div class="vd-action-icon-wrap"><span class="material-icons">attach_money</span></div>
+        <span class="vd-action-label">Chi phí</span>
+      </button>
+      <button class="vd-action-btn">
+        <div class="vd-action-icon-wrap"><span class="material-icons">calendar_today</span></div>
+        <span class="vd-action-label">Bảo trì</span>
+      </button>
+      <button class="vd-action-btn">
+        <div class="vd-action-icon-wrap"><span class="material-icons">build</span></div>
+        <span class="vd-action-label">Sửa chữa</span>
+      </button>
+      <button class="vd-action-btn">
+        <div class="vd-action-icon-wrap"><span class="material-icons">folder</span></div>
+        <span class="vd-action-label">Hồ sơ</span>
+      </button>
+    </div>
+  `;
+
+  let page = document.getElementById('vehicleDetailPage');
+  if (!page) {
+    page = document.createElement('div');
+    page.id = 'vehicleDetailPage';
+    page.className = 'vd-page';
+    document.body.appendChild(page);
+  }
+  page.innerHTML = html;
+  
+  // force layout
+  void page.offsetWidth;
+  page.classList.add('active');
+}
+
+function closeVehicleDetail() {
+  const page = document.getElementById('vehicleDetailPage');
+  if (page) {
+    page.classList.remove('active');
+    setTimeout(() => {
+      if (page.parentNode) page.parentNode.removeChild(page);
+    }, 400); // Wait for transition
   }
 }
 
-function closeInfoCard() {
-  if (activeInfoCard) {
-    activeInfoCard.classList.remove('expanded');
-    activeInfoCard.querySelector('.info-card').classList.remove('flipped');
-    activeInfoCard = null;
-  }
-  const overlay = document.getElementById('infoOverlay');
-  if (overlay) overlay.classList.remove('active');
-}
-
+// End of Info Car logic
