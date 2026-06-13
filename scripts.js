@@ -320,7 +320,7 @@ function backToHero() {
   document.getElementById('heroInput').value = '';
   const clearBtn = document.getElementById('heroClearBtn');
   if (clearBtn) clearBtn.classList.add('hidden');
-  
+
   rawData = [];
   currentPlate = '';
   resetPagination();
@@ -704,8 +704,8 @@ function handleScroll() {
     if (!btn) return;
 
     let shouldShow = false;
-    const scrollPos = mainContent && !mainContent.classList.contains('hidden') 
-      ? Math.max(mainContent.scrollTop, window.scrollY) 
+    const scrollPos = mainContent && !mainContent.classList.contains('hidden')
+      ? Math.max(mainContent.scrollTop, window.scrollY)
       : window.scrollY;
 
     if (scrollPos > 300) {
@@ -744,7 +744,7 @@ function scrollToTop() {
     mainContent.scrollTo({ top: 0, behavior: 'smooth' });
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  
+
   if (window.navigator?.vibrate) window.navigator.vibrate(20);
 }
 
@@ -839,7 +839,7 @@ function switchBottomNavTab(section) {
   if (navItem) navItem.classList.add('active');
 
   // Hide all content sections
-  ['mainContent', 'settingsSection', 'gpsSection', 'emptyState'].forEach(id => {
+  ['mainContent', 'settingsSection', 'gpsSection', 'infoSection', 'emptyState'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.add('hidden');
   });
@@ -858,6 +858,10 @@ function switchBottomNavTab(section) {
       targetEl = document.getElementById('gpsSection');
       targetEl.classList.remove('hidden');
       if (!currentFleetData) loadGpsData();
+    } else if (section === 'info') {
+      targetEl = document.getElementById('infoSection');
+      targetEl.classList.remove('hidden');
+      if (!currentInfoData) loadInfoData();
     } else if (section === 'settings') {
       targetEl = document.getElementById('settingsSection');
       targetEl.classList.remove('hidden');
@@ -992,17 +996,17 @@ function setFleetFilter(filter) {
 function applyFleetFilters() {
   if (!currentFleetData || !currentFleetData.vehicles) return;
   const query = document.getElementById('fleetSearchInput').value.replace(/[\s\-\.]/g, '').toUpperCase();
-  
+
   let filtered = currentFleetData.vehicles;
-  
+
   if (currentFleetFilter !== 'all') {
     filtered = filtered.filter(v => v.status === currentFleetFilter);
   }
-  
+
   if (query) {
     filtered = filtered.filter(v => v.plate.includes(query));
   }
-  
+
   renderFleetVehicleList(filtered);
 }
 
@@ -1015,21 +1019,21 @@ function renderFleetVehicleList(vehicles) {
 
   const html = vehicles.map((v, index) => {
     const delay = index * 0.03;
-    
+
     // Safety check for interval to prevent divide by zero
     const interval = v.interval || 10000;
-    
+
     // Calculate progress percentage (how much of the interval is consumed)
     let progressPct = 0;
     if (v.lastPeriodicKm > 0 && v.nextDueKm > 0) {
-       const consumed = v.estimatedTotal - v.lastPeriodicKm;
-       progressPct = Math.max(0, Math.min(100, (consumed / interval) * 100));
+      const consumed = v.estimatedTotal - v.lastPeriodicKm;
+      progressPct = Math.max(0, Math.min(100, (consumed / interval) * 100));
     }
-    
+
     // Format text
     const kmRemainingText = v.kmRemaining !== null ? Math.abs(v.kmRemaining).toLocaleString('vi-VN') : '--';
     let alertHtml = '';
-    
+
     if (v.status === 'overdue') {
       alertHtml = `<div class="fleet-alert overdue">⚠️ Quá hạn <span style="font-size: 15px; font-weight: 900; letter-spacing: 0.5px;">${kmRemainingText}</span> km — Cần bảo dưỡng!</div>`;
     } else if (v.status === 'due_soon') {
@@ -1037,7 +1041,7 @@ function renderFleetVehicleList(vehicles) {
     } else if (v.status === 'pending') {
       alertHtml = `<div class="fleet-alert pending">📝 ĐÃ BẢO DƯỠNG — Đang chờ ký duyệt hồ sơ</div>`;
     }
-    
+
     const odoStatus = v.statusOdo === 'Chưa nhập' ? '<span style="color:var(--brand-orange)">⚠️ Gốc trống</span>' : 'Đã Đbộ';
     const pendingActionText = v.pendingAuth ? 'Hủy chờ duyệt' : 'Chờ duyệt';
     const pendingActionIcon = v.pendingAuth ? 'close' : 'history_edu';
@@ -1050,8 +1054,8 @@ function renderFleetVehicleList(vehicles) {
             ${v.plate}
           </div>
           <div style="display:flex;gap:6px;">
-            ${(v.status === 'overdue' || v.status === 'due_soon' || v.pendingAuth) ? 
-              `<button class="fleet-edit-btn" onclick="togglePendingStatus('${v.plate}', ${!v.pendingAuth})" style="${v.pendingAuth ? 'background:var(--ios-fill-tertiary);color:var(--ios-text-secondary)' : 'color:#007AFF'}">
+            ${(v.status === 'overdue' || v.status === 'due_soon' || v.pendingAuth) ?
+        `<button class="fleet-edit-btn" onclick="togglePendingStatus('${v.plate}', ${!v.pendingAuth})" style="${v.pendingAuth ? 'background:var(--ios-fill-tertiary);color:var(--ios-text-secondary)' : 'color:#007AFF'}">
                 <span class="material-icons" style="font-size:14px">${pendingActionIcon}</span> ${pendingActionText}
                </button>` : ''}
             <button class="fleet-edit-btn" onclick="showOdoEditor('${v.plate}', ${v.estimatedTotal})">
@@ -1071,7 +1075,7 @@ function renderFleetVehicleList(vehicles) {
           </div>
           <div class="fleet-progress-labels">
             <span>BĐ cuối: ${v.lastPeriodicKm ? v.lastPeriodicKm.toLocaleString('vi-VN') : '---'}</span>
-            <span>Tiếp theo: ${v.nextDueKm ? v.nextDueKm.toLocaleString('vi-VN') : '---'} (${(v.interval/1000)}k)</span>
+            <span>Tiếp theo: ${v.nextDueKm ? v.nextDueKm.toLocaleString('vi-VN') : '---'} (${(v.interval / 1000)}k)</span>
           </div>
         </div>
         
@@ -1120,15 +1124,15 @@ function cancelOdoEditor(plate) {
 function saveOdoEditor(plate) {
   const input = document.getElementById(`odoInput_${plate}`);
   if (!input) return;
-  
+
   const newKm = parseInt(input.value);
   if (isNaN(newKm) || newKm <= 0) {
     showToast('❌ Vui lòng nhập số KM hợp lệ!');
     return;
   }
-  
+
   showLoading();
-  
+
   google.script.run
     .withSuccessHandler(success => {
       hideLoading();
@@ -1136,7 +1140,7 @@ function saveOdoEditor(plate) {
         showToast('✅ Đã cập nhật ODO thành công');
         cancelOdoEditor(plate);
         // Tải lại danh sách xe để refresh dữ liệu
-        loadGpsData(); 
+        loadGpsData();
       } else {
         showToast('❌ Cập nhật thất bại. Vui lòng thử lại.');
       }
@@ -1165,4 +1169,134 @@ function togglePendingStatus(plate, isPending) {
       showToast('❌ Lỗi: ' + err.message);
     })
     .togglePendingAuth(plate, isPending);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   INFO CAR FEATURE
+   ═══════════════════════════════════════════════════════════════════════ */
+
+let currentInfoData = null;
+
+function loadInfoData() {
+  const emptyState = document.getElementById('infoEmptyState');
+  const vehicleList = document.getElementById('infoVehicleList');
+
+  emptyState.classList.remove('hidden');
+  emptyState.querySelector('h3').textContent = 'Đang tải...';
+  emptyState.querySelector('p').textContent = 'Đang lấy dữ liệu Thông tin xe từ server.';
+  vehicleList.innerHTML = '';
+  showLoading();
+
+  google.script.run
+    .withSuccessHandler(res => {
+      hideLoading();
+      if (!res || !res.success || !res.data || res.data.length === 0) {
+        emptyState.classList.remove('hidden');
+        emptyState.querySelector('h3').textContent = 'Chưa có dữ liệu';
+        emptyState.querySelector('p').textContent = res?.error || 'Không tìm thấy thông tin xe.';
+        return;
+      }
+      emptyState.classList.add('hidden');
+      currentInfoData = res.data;
+      applyInfoFilters();
+    })
+    .withFailureHandler(err => {
+      hideLoading();
+      emptyState.classList.remove('hidden');
+      emptyState.querySelector('h3').textContent = 'Lỗi kết nối';
+      emptyState.querySelector('p').textContent = err.message;
+      showToast('❌ Không thể tải Thông tin xe');
+    })
+    .getInfoCarData();
+}
+
+function applyInfoFilters() {
+  if (!currentInfoData) return;
+  const query = document.getElementById('infoSearchInput').value.toLowerCase();
+  
+  let filtered = currentInfoData;
+  if (query) {
+    filtered = currentInfoData.filter(v => {
+      return Object.values(v).some(val => String(val).toLowerCase().includes(query));
+    });
+  }
+  
+  renderInfoVehicleList(filtered);
+}
+
+function getColValue(obj, keys) {
+  const objKeys = Object.keys(obj);
+  for (let key of keys) {
+    const found = objKeys.find(k => k.toLowerCase().includes(key.toLowerCase()));
+    if (found && obj[found]) return obj[found];
+  }
+  return '---';
+}
+
+function renderInfoVehicleList(vehicles) {
+  const container = document.getElementById('infoVehicleList');
+  if (!vehicles || vehicles.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--ios-text-secondary)"><span class="material-icons" style="font-size:48px;opacity:0.5;margin-bottom:10px;display:block;">no_crash</span>Không tìm thấy xe phù hợp</div>';
+    return;
+  }
+
+  const html = vehicles.map((v, index) => {
+    const delay = index * 0.03;
+    
+    // Attempt to identify core fields
+    const plate = getColValue(v, ['biển số', 'plate', 'xe']);
+    const pic = getColValue(v, ['người phụ trách', 'pic', 'quản lý', 'phụ trách', 'nvpt', 'người quản lý']);
+    const driver = getColValue(v, ['tài xế', 'driver', 'người lái', 'lái xe']);
+    const phone = getColValue(v, ['điện thoại', 'sđt', 'phone', 'số đt']);
+    
+    // Create detailed list of all columns
+    const detailsHtml = Object.keys(v).filter(k => v[k]).map(k => {
+      return `<div class="info-detail-row">
+        <span class="info-detail-label">${k}</span>
+        <span class="info-detail-value">${v[k]}</span>
+      </div>`;
+    }).join('');
+
+    return `
+      <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s">
+        <div class="info-card" onclick="this.classList.toggle('flipped')">
+          <div class="info-card-inner">
+            <div class="info-card-front">
+              <div class="info-card-header">
+                <div class="info-card-plate">${plate}</div>
+                ${phone !== '---' ? `<a href="tel:${phone}" class="info-call-btn" onclick="event.stopPropagation();"><span class="material-icons" style="font-size:20px;">call</span></a>` : ''}
+              </div>
+              <div class="info-card-body">
+                <div class="info-row">
+                  <span class="info-label"><span class="material-icons" style="font-size:14px; vertical-align:middle; margin-right:4px;">person</span>Phụ trách:</span>
+                  <span class="info-value">${pic}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"><span class="material-icons" style="font-size:14px; vertical-align:middle; margin-right:4px;">badge</span>Tài xế:</span>
+                  <span class="info-value">${driver}</span>
+                </div>
+                <div class="info-row">
+                  <span class="info-label"><span class="material-icons" style="font-size:14px; vertical-align:middle; margin-right:4px;">phone</span>SĐT:</span>
+                  <span class="info-value">${phone}</span>
+                </div>
+              </div>
+              <div class="info-card-hint">
+                <span class="material-icons" style="font-size: 14px; vertical-align: middle;">touch_app</span> Chạm để xem chi tiết
+              </div>
+            </div>
+            <div class="info-card-back">
+              <div class="info-card-header">
+                <div class="info-card-plate">${plate}</div>
+              </div>
+              <div class="info-card-details">
+                ${detailsHtml}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = html;
 }
