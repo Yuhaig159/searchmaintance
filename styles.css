@@ -5663,3 +5663,76 @@
     color: var(--ios-text);
     font-weight: 500;
   }
+
+  .info-controls {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--ios-bg-secondary);
+    padding: 12px 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .info-search-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--ios-card);
+    border: 1px solid var(--ios-sep);
+    border-radius: 10px;
+    padding: 8px 12px;
+    gap: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+
+  .info-search-input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    font-size: 16px;
+    color: var(--ios-text);
+    outline: none;
+  }
+
+  .info-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .info-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .info-card-container.expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 90vw;
+    max-width: 400px;
+    height: 70vh;
+    max-height: 600px;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    animation: popInCard 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  @keyframes popInCard {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+
+  .info-card-container.expanded .info-card-front,
+  .info-card-container.expanded .info-card-back {
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  }
