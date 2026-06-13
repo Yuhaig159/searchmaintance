@@ -1332,15 +1332,6 @@ function renderInfoVehicleList(vehicles) {
     document.body.appendChild(sheetEl);
   }
 
-  let overlay = document.getElementById('sheetOverlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'sheetOverlay';
-    overlay.className = 'info-overlay';
-    overlay.onclick = closeBottomSheet;
-    document.body.appendChild(overlay);
-  }
-
   // Define toggle function in global scope if not exists
   if (typeof window.openBottomSheet !== 'function') {
     window.openBottomSheet = function(plate, bentoHtml, phone) {
@@ -1365,6 +1356,17 @@ function renderInfoVehicleList(vehicles) {
       document.getElementById('sheetOverlay').classList.remove('active');
     };
   }
+
+  let overlay = document.getElementById('sheetOverlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'sheetOverlay';
+    overlay.className = 'info-overlay';
+    overlay.onclick = window.closeBottomSheet;
+    document.body.appendChild(overlay);
+  }
+
+
 
   const html = vehicles.map((v, index) => {
     const delay = index * 0.03;
