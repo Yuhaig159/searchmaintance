@@ -4167,7 +4167,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 12px;
-    background: var(--ios-fill-tertiary);
+    background: var(--ios-bg-secondary);
     padding: 16px;
     border-radius: var(--radius-md);
     margin-bottom: 20px;
@@ -4486,7 +4486,7 @@
     align-items: center;
     gap: 6px;
     padding: 8px 16px;
-    background: var(--ios-fill-tertiary);
+    background: var(--ios-bg-secondary);
     border-radius: 20px;
     color: var(--ios-text-tertiary);
     font-size: 12px;
@@ -4890,7 +4890,7 @@
 
   .settings-select {
     padding: 8px 12px;
-    background: var(--ios-fill-tertiary);
+    background: var(--ios-bg-secondary);
     color: var(--ios-text);
     border: 1px solid var(--ios-sep);
     border-radius: 10px;
@@ -4913,7 +4913,7 @@
   .settings-textarea {
     width: 100%;
     padding: 10px 14px;
-    background: var(--ios-fill-tertiary);
+    background: var(--ios-bg-secondary);
     color: var(--ios-text);
     border: 1px solid var(--ios-sep);
     border-radius: 12px;
@@ -5146,7 +5146,7 @@
   }
 
   .fleet-stat:active {
-    background: var(--ios-fill-tertiary);
+    background: var(--ios-bg-secondary);
   }
 
   .fleet-stat-value {
@@ -5225,7 +5225,7 @@
   .fleet-tab {
     padding: 6px 14px;
     border-radius: 16px;
-    background: var(--ios-fill-tertiary);
+    background: var(--ios-bg-secondary);
     color: var(--ios-text-secondary);
     font-size: 13px;
     font-weight: 600;
@@ -5332,7 +5332,7 @@
 
   .fleet-progress-bar {
     height: 6px;
-    background: var(--ios-fill-tertiary);
+    background: var(--ios-bg-secondary);
     border-radius: 3px;
     overflow: hidden;
     position: relative;
@@ -5590,7 +5590,7 @@
   }
 
   .info-close-btn {
-    background: var(--ios-fill-tertiary);
+    background: var(--ios-bg-secondary);
     border: none;
     border-radius: 50%;
     width: 28px;
@@ -5679,7 +5679,7 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: var(--ios-fill-tertiary);
+    background: var(--ios-bg-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
