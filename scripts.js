@@ -1326,7 +1326,7 @@ function toggleInfoCard(containerEl, event) {
       overlay.id = 'infoOverlay';
       overlay.className = 'info-overlay';
       overlay.onclick = closeInfoCard;
-      document.body.appendChild(overlay);
+      document.getElementById('infoSection').appendChild(overlay);
     }
     overlay.classList.add('active');
     
