@@ -1268,7 +1268,7 @@ function renderInfoVehicleList(vehicles) {
     // Create detailed list of all columns in Bento Grid style
     const detailsHtml = Object.keys(v).filter(k => v[k]).map(k => {
       const icon = getIconForKey(k);
-      const isLong = v[k].length > 20 || k.length > 15;
+      const isLong = String(v[k]).length > 20 || String(k).length > 15;
       return `
         <div class="info-bento-item" ${isLong ? 'style="grid-column: span 2;"' : ''}>
           <div class="info-bento-icon-wrap">
