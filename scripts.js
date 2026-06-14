@@ -1346,6 +1346,11 @@ function renderInfoVehicleList(vehicles) {
       `;
     }).join('');
 
+    // Detect status
+    const status = getColValue(v, ['trạng thái', 'tình trạng', 'status']);
+    const vehicleType = getColValue(v, ['loại xe', 'loại']);
+    const brand = getColValue(v, ['hãng xe', 'hãng']);
+
     return `
       <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s" onclick="toggleInfoCard(this, event)">
         <div class="info-card">
@@ -1355,7 +1360,10 @@ function renderInfoVehicleList(vehicles) {
               <div class="info-front-content">
                 <div class="info-front-header">
                   <div class="info-plate-badge">${plate}</div>
-                  ${phone !== '---' ? `<a href="tel:${phone}" class="info-call-btn" onclick="event.stopPropagation();"><span class="material-icons" style="font-size:20px;">call</span></a>` : ''}
+                  ${status !== '---' ? `<span class="info-status-pill ${status.toLowerCase().includes('chạy') || status.toLowerCase().includes('active') ? 'status-active' : 'status-inactive'}">
+                    <span class="material-icons" style="font-size:12px;">circle</span>
+                    ${status}
+                  </span>` : ''}
                 </div>
                 
                 <div class="info-front-body">
@@ -1377,11 +1385,12 @@ function renderInfoVehicleList(vehicles) {
                       <span class="info-role-title">Tài Xế</span>
                       <span class="info-role-name">${driver} ${phone !== '---' ? `<span class="driver-phone">• ${phone}</span>` : ''}</span>
                     </div>
+                    ${phone !== '---' ? `<a href="tel:${phone}" class="info-call-btn" onclick="event.stopPropagation();"><span class="material-icons" style="font-size:19px;">call</span></a>` : ''}
                   </div>
                 </div>
 
                 <div class="info-front-footer">
-                  <span class="material-icons" style="font-size:16px;">touch_app</span> Chạm để xem chi tiết
+                  <span class="material-icons">touch_app</span> Chạm để xem chi tiết
                 </div>
               </div>
             </div>
@@ -1390,9 +1399,12 @@ function renderInfoVehicleList(vehicles) {
             <div class="info-card-back" onclick="event.stopPropagation()">
               <div class="info-card-header">
                 <div class="info-card-plate">${plate}</div>
-                <button class="info-close-btn" onclick="closeInfoCard(event)">
-                  <span class="material-icons" style="font-size:18px;">close</span>
-                </button>
+                <div class="info-header-actions">
+                  ${phone !== '---' ? `<a href="tel:${phone}" class="info-call-btn" onclick="event.stopPropagation();" style="width:32px;height:32px;"><span class="material-icons" style="font-size:17px;">call</span></a>` : ''}
+                  <button class="info-close-btn" onclick="closeInfoCard(event)">
+                    <span class="material-icons" style="font-size:18px;">close</span>
+                  </button>
+                </div>
               </div>
               <div class="info-card-scroll-area">
                 ${detailsHtml}
