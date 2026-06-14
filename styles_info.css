@@ -124,39 +124,49 @@
   }
 
   .info-bento-section {
+    background: var(--ios-card);
+    border-radius: 20px;
+    box-shadow: 0 4px 16px var(--shadow-light);
+    border: 1px solid var(--ios-sep-light);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
   .info-bento-section-title {
     font-size: 13px;
     font-weight: 700;
-    color: var(--ios-text-secondary);
+    color: var(--ios-text);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 8px 4px;
+    padding: 16px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
     user-select: none;
-    transition: opacity 0.2s;
+    transition: background 0.2s;
   }
   
   .info-bento-section-title:active {
-    opacity: 0.6;
+    background: var(--ios-bg-secondary);
   }
 
   .section-chevron {
-    font-size: 20px;
+    font-size: 22px;
     transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
     color: var(--ios-text-tertiary);
   }
 
-  /* When expanded, chevron points up */
+  /* When expanded, chevron points up and add separator */
   .info-bento-section:not(.collapsed) .section-chevron {
     transform: rotate(180deg);
+  }
+  
+  .info-bento-section:not(.collapsed) .info-bento-section-title {
+    border-bottom: 1px solid var(--ios-sep-light);
+    color: var(--ios-text-secondary);
   }
 
   /* When collapsed, hide grid */
@@ -168,17 +178,23 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.02); /* Soft gray well for inner items */
+  }
+
+  [data-theme="dark"] .info-bento-grid {
+    background: rgba(255, 255, 255, 0.03);
   }
 
   .info-bento-item {
     background: var(--ios-card);
-    border-radius: 16px;
+    border-radius: 14px;
     padding: 12px 14px;
     display: flex;
     align-items: flex-start;
     gap: 12px;
     border: 1px solid var(--ios-sep-light);
-    box-shadow: 0 2px 8px var(--shadow-light);
+    box-shadow: 0 1px 5px var(--shadow-light);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
