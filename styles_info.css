@@ -113,14 +113,35 @@
   }
 
   /* Modern Bento Grid for Details */
+  .info-card-scroll-area {
+    overflow-y: auto;
+    flex: 1;
+    background: var(--ios-bg);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .info-bento-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .info-bento-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ios-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-left: 4px;
+  }
+
   .info-bento-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-    padding: 16px;
-    overflow-y: auto;
-    flex: 1;
-    background: var(--ios-bg); /* Soft background for the grid area */
   }
 
   .info-bento-item {
