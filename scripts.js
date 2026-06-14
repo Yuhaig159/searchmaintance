@@ -1314,15 +1314,6 @@ function renderInfoVehicleList(vehicles) {
       `;
     }).join('');
 
-    // Ensure toggleInfoSection is defined globally
-    if (typeof window.toggleInfoSection === 'undefined') {
-      window.toggleInfoSection = function(event, el) {
-        if (event) event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài gây đóng thẻ
-        const section = el.closest('.info-bento-section');
-        section.classList.toggle('collapsed');
-      };
-    }
-
     return `
       <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s" onclick="toggleInfoCard(this, event)">
         <div class="info-card">
@@ -1426,4 +1417,13 @@ function closeInfoCard() {
   const overlay = document.getElementById('infoOverlay');
   if (overlay) overlay.classList.remove('active');
 }
+
+// Global function to toggle accordion sections in Info Card
+window.toggleInfoSection = function(event, el) {
+  if (event) event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài gây đóng thẻ
+  const section = el.closest('.info-bento-section');
+  if (section) {
+    section.classList.toggle('collapsed');
+  }
+};
 
