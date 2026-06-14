@@ -1287,7 +1287,7 @@ function renderInfoVehicleList(vehicles) {
     const detailsHtml = Object.keys(groups).filter(g => groups[g].length > 0).map(gName => {
       const itemsHtml = groups[gName].map(k => {
         const icon = getIconForKey(k);
-        const isLong = String(v[k]).length > 20 || String(k).length > 15;
+        const isLong = k.toLowerCase().includes('phụ trách') || k.toLowerCase().includes('tài xế') || String(v[k]).length > 25 || String(k).length > 22;
         return `
           <div class="info-bento-item" ${isLong ? 'style="grid-column: span 2;"' : ''}>
             <div class="info-bento-icon-wrap">
