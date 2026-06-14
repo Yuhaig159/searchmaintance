@@ -1303,7 +1303,7 @@ function renderInfoVehicleList(vehicles) {
       
       return `
         <div class="info-bento-section collapsed">
-          <div class="info-bento-section-title" onclick="toggleInfoSection(this)">
+          <div class="info-bento-section-title" onclick="toggleInfoSection(event, this)">
             <span>${gName}</span>
             <span class="material-icons section-chevron">keyboard_arrow_down</span>
           </div>
@@ -1316,7 +1316,8 @@ function renderInfoVehicleList(vehicles) {
 
     // Ensure toggleInfoSection is defined globally
     if (typeof window.toggleInfoSection === 'undefined') {
-      window.toggleInfoSection = function(el) {
+      window.toggleInfoSection = function(event, el) {
+        if (event) event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài gây đóng thẻ
         const section = el.closest('.info-bento-section');
         section.classList.toggle('collapsed');
       };
@@ -1363,7 +1364,7 @@ function renderInfoVehicleList(vehicles) {
             </div>
             
             <!-- BACK: Full Details -->
-            <div class="info-card-back">
+            <div class="info-card-back" onclick="event.stopPropagation()">
               <div class="info-card-header">
                 <div class="info-card-plate">${plate}</div>
                 <button class="info-close-btn" onclick="closeInfoCard(event)">
