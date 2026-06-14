@@ -1265,18 +1265,47 @@ function renderInfoVehicleList(vehicles) {
       return 'label';
     };
 
-    // Create detailed list of all columns in Bento Grid style
-    const detailsHtml = Object.keys(v).filter(k => v[k]).map(k => {
-      const icon = getIconForKey(k);
-      const isLong = String(v[k]).length > 20 || String(k).length > 15;
-      return `
-        <div class="info-bento-item" ${isLong ? 'style="grid-column: span 2;"' : ''}>
-          <div class="info-bento-icon-wrap">
-            <span class="material-icons info-bento-icon">${icon}</span>
+    const getGroupForKey = (key) => {
+      const k = key.toLowerCase();
+      if (k.includes('loại xe') || k.includes('hãng') || k.includes('model') || k.includes('chỗ') || k.includes('năm sx') || k.includes('năm') || k.includes('nhiên liệu') || k.includes('nl') || k.includes('định mức')) {
+        return 'Thông số kỹ thuật';
+      }
+      if (k.includes('phụ trách') || k.includes('chức danh') || k.includes('nhánh') || k.includes('vùng') || k.includes('bộ phận') || k.includes('tài xế') || k.includes('điện thoại') || k.includes('sđt')) {
+        return 'Thông tin quản lý';
+      }
+      return 'Thông tin xe';
+    };
+
+    const groups = { 'Thông tin xe': [], 'Thông số kỹ thuật': [], 'Thông tin quản lý': [] };
+    Object.keys(v).filter(k => v[k]).forEach(k => {
+      const groupName = getGroupForKey(k);
+      if (!groups[groupName]) groups[groupName] = [];
+      groups[groupName].push(k);
+    });
+
+    // Create detailed list of all columns in Bento Grid style grouped by section
+    const detailsHtml = Object.keys(groups).filter(g => groups[g].length > 0).map(gName => {
+      const itemsHtml = groups[gName].map(k => {
+        const icon = getIconForKey(k);
+        const isLong = String(v[k]).length > 20 || String(k).length > 15;
+        return `
+          <div class="info-bento-item" ${isLong ? 'style="grid-column: span 2;"' : ''}>
+            <div class="info-bento-icon-wrap">
+              <span class="material-icons info-bento-icon">${icon}</span>
+            </div>
+            <div class="info-bento-content">
+              <span class="info-bento-label">${k}</span>
+              <span class="info-bento-value">${v[k]}</span>
+            </div>
           </div>
-          <div class="info-bento-content">
-            <span class="info-bento-label">${k}</span>
-            <span class="info-bento-value">${v[k]}</span>
+        `;
+      }).join('');
+      
+      return `
+        <div class="info-bento-section">
+          <div class="info-bento-section-title">${gName}</div>
+          <div class="info-bento-grid">
+            ${itemsHtml}
           </div>
         </div>
       `;
@@ -1330,7 +1359,7 @@ function renderInfoVehicleList(vehicles) {
                   <span class="material-icons" style="font-size:18px;">close</span>
                 </button>
               </div>
-              <div class="info-bento-grid">
+              <div class="info-card-scroll-area">
                 ${detailsHtml}
               </div>
             </div>
