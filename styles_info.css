@@ -135,7 +135,33 @@
     color: var(--ios-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding-left: 4px;
+    padding: 8px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+  }
+  
+  .info-bento-section-title:active {
+    opacity: 0.6;
+  }
+
+  .section-chevron {
+    font-size: 20px;
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    color: var(--ios-text-tertiary);
+  }
+
+  /* When expanded, chevron points up */
+  .info-bento-section:not(.collapsed) .section-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* When collapsed, hide grid */
+  .info-bento-section.collapsed .info-bento-grid {
+    display: none !important;
   }
 
   .info-bento-grid {
