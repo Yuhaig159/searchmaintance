@@ -1302,14 +1302,25 @@ function renderInfoVehicleList(vehicles) {
       }).join('');
       
       return `
-        <div class="info-bento-section">
-          <div class="info-bento-section-title">${gName}</div>
+        <div class="info-bento-section collapsed">
+          <div class="info-bento-section-title" onclick="toggleInfoSection(this)">
+            <span>${gName}</span>
+            <span class="material-icons section-chevron">keyboard_arrow_down</span>
+          </div>
           <div class="info-bento-grid">
             ${itemsHtml}
           </div>
         </div>
       `;
     }).join('');
+
+    // Ensure toggleInfoSection is defined globally
+    if (typeof window.toggleInfoSection === 'undefined') {
+      window.toggleInfoSection = function(el) {
+        const section = el.closest('.info-bento-section');
+        section.classList.toggle('collapsed');
+      };
+    }
 
     return `
       <div class="info-card-container fade-in-up-spring" style="animation-delay:${delay}s" onclick="toggleInfoCard(this, event)">
