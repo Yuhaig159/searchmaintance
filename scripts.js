@@ -1251,18 +1251,45 @@ function renderInfoVehicleList(vehicles) {
     
     const getIconForKey = (key) => {
       const k = key.toLowerCase();
-      if (k.includes('biển số') || k.includes('mã xe') || k.includes('xe')) return 'directions_car';
-      if (k.includes('hãng') || k.includes('model') || k.includes('loại')) return 'time_to_leave';
-      if (k.includes('chỗ')) return 'airline_seat_recline_normal';
-      if (k.includes('năm sx') || k.includes('năm')) return 'calendar_month';
-      if (k.includes('nhiên liệu') || k.includes('nl') || k.includes('xăng') || k.includes('dầu')) return 'local_gas_station';
+      // === Thông tin xe ===
+      if (k.includes('stt')) return 'tag';
+      if (k.includes('mã xe') || k.includes('mã số nv')) return 'qr_code_2';
+      if (k.includes('biển số') || k.includes('biển')) return 'directions_car';
+      if (k.includes('số chỗ') || k.includes('chỗ')) return 'event_seat';
+      if (k.includes('khu vực')) return 'map';
+      if (k.includes('địa bàn')) return 'pin_drop';
+      if (k.includes('định vị')) return 'gps_fixed';
+      // === Thông số kỹ thuật ===
+      if (k.includes('loại xe')) return 'commute';
+      if (k.includes('hãng')) return 'factory';
+      if (k.includes('model')) return 'build_circle';
+      if (k.includes('năm sx') || k.includes('năm')) return 'event';
+      if (k.includes('nhiên liệu') || k.includes('loại nl')) return 'local_gas_station';
       if (k.includes('định mức') || k.includes('l/100km')) return 'speed';
-      if (k.includes('phụ trách') || k.includes('quản lý') || k.includes('tài xế')) return 'person';
-      if (k.includes('chức danh')) return 'badge';
-      if (k.includes('nhánh') || k.includes('vùng') || k.includes('bộ phận')) return 'domain';
-      if (k.includes('điện thoại') || k.includes('sđt')) return 'phone';
-      if (k.includes('stt')) return 'format_list_numbered';
-      return 'label';
+      // === Thông tin quản lý ===
+      if (k.includes('phụ trách')) return 'manage_accounts';
+      if (k.includes('tài xế')) return 'airline_seat_recline_normal';
+      if (k.includes('chức danh')) return 'work';
+      if (k.includes('nhánh')) return 'account_tree';
+      if (k.includes('vùng') || k.includes('bộ phận')) return 'corporate_fare';
+      if (k.includes('điện thoại') || k.includes('sđt')) return 'phone_iphone';
+      return 'info_outline';
+    };
+
+    // Color class per group
+    const getGroupColorClass = (groupName) => {
+      if (groupName === 'Thông tin xe') return 'icon-group-blue';
+      if (groupName === 'Thông số kỹ thuật') return 'icon-group-orange';
+      if (groupName === 'Thông tin quản lý') return 'icon-group-purple';
+      return '';
+    };
+
+    // Section title icon
+    const getSectionIcon = (groupName) => {
+      if (groupName === 'Thông tin xe') return 'directions_car';
+      if (groupName === 'Thông số kỹ thuật') return 'settings';
+      if (groupName === 'Thông tin quản lý') return 'groups';
+      return 'info';
     };
 
     const getGroupForKey = (key) => {
@@ -1285,12 +1312,14 @@ function renderInfoVehicleList(vehicles) {
 
     // Create detailed list of all columns in Bento Grid style grouped by section
     const detailsHtml = Object.keys(groups).filter(g => groups[g].length > 0).map(gName => {
+      const colorClass = getGroupColorClass(gName);
+      const sectionIcon = getSectionIcon(gName);
       const itemsHtml = groups[gName].map(k => {
         const icon = getIconForKey(k);
         const isLong = k.toLowerCase().includes('phụ trách') || k.toLowerCase().includes('tài xế') || k.toLowerCase().includes('điện thoại') || k.toLowerCase().includes('sđt') || String(v[k]).length > 25 || String(k).length > 22;
         return `
           <div class="info-bento-item" ${isLong ? 'style="grid-column: span 2;"' : ''}>
-            <div class="info-bento-icon-wrap">
+            <div class="info-bento-icon-wrap ${colorClass}">
               <span class="material-icons info-bento-icon">${icon}</span>
             </div>
             <div class="info-bento-content">
@@ -1304,7 +1333,10 @@ function renderInfoVehicleList(vehicles) {
       return `
         <div class="info-bento-section collapsed">
           <div class="info-bento-section-title" onclick="toggleInfoSection(event, this)">
-            <span>${gName}</span>
+            <span class="section-title-left">
+              <span class="material-icons section-title-icon ${colorClass}">${sectionIcon}</span>
+              ${gName}
+            </span>
             <span class="material-icons section-chevron">keyboard_arrow_down</span>
           </div>
           <div class="info-bento-grid">
