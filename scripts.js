@@ -1422,8 +1422,17 @@ function closeInfoCard() {
 window.toggleInfoSection = function(event, el) {
   if (event) event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài gây đóng thẻ
   const section = el.closest('.info-bento-section');
-  if (section) {
-    section.classList.toggle('collapsed');
+  if (!section) return;
+  
+  const isCurrentlyCollapsed = section.classList.contains('collapsed');
+  
+  // Close ALL sections first (mutually exclusive accordion)
+  const allSections = section.parentElement.querySelectorAll('.info-bento-section');
+  allSections.forEach(s => s.classList.add('collapsed'));
+  
+  // If it was collapsed, open it. (If it was open, it is now closed)
+  if (isCurrentlyCollapsed) {
+    section.classList.remove('collapsed');
   }
 };
 
