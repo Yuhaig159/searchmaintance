@@ -144,7 +144,7 @@
     border: 1px solid var(--ios-sep-light);
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    /* Removed overflow: hidden to fix iOS Safari height clipping bug */
     transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
   }
 
@@ -194,6 +194,8 @@
     gap: 12px;
     padding: 16px;
     background: rgba(0, 0, 0, 0.02); /* Soft gray well for inner items */
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
 
   [data-theme="dark"] .info-bento-grid {
