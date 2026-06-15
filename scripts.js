@@ -484,7 +484,8 @@ function renderSummary(response) {
   const savedPlates = typeof getSpecialPlates === 'function' ? getSpecialPlates() : ['51K529.01', '51K723.57', '51K728.49', '51D729.70', '51K727.37'];
   const defaultInterval = typeof getDefaultInterval === 'function' ? getDefaultInterval() : 10000;
   const plateCleaned = normalizePlate(response.plate);
-  const interval = savedPlates.map(normalizePlate).includes(plateCleaned) ? 5000 : defaultInterval;
+  const isSpecial = savedPlates.map(normalizePlate).some(p => p.includes(plateCleaned) || plateCleaned.includes(p));
+  const interval = isSpecial ? 5000 : defaultInterval;
 
   const lastMilestoneKm = analysis.lastOilKm > 0 ? analysis.lastOilKm : analysis.lastPeriodicKm;
   const lastMilestoneDate = analysis.lastOilKm > 0 ? analysis.lastOilDate : analysis.lastPeriodicDate;
