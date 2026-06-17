@@ -230,6 +230,13 @@
     color: white;
   }
 
+  .settings-icon .material-icons {
+    color: white !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
   .bg-blue {
     background: #007AFF;
   }
