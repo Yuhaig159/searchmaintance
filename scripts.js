@@ -13,7 +13,7 @@ const MAINTENANCE_TARGETS = [
   { label: "Dây curoa", keys: ["DÂY CUROA", "CUROA"], interval: 180000 },
   { label: "Nhớt hộp số sàn", keys: ["NHỚT", "DẦU"], subKeys: ["SÀN"], interval: 240000 },
   { label: "Nhớt hộp số tự động", keys: ["NHỚT", "DẦU"], subKeys: ["TỰ ĐỘNG"], interval: 200000 },
-  { label: "Vỏ xe", keys: ["VỎ", "LỐP"], interval: 80000 },
+  { label: "Vỏ xe", keys: ["VỎ", "LỐP"], excludeKeys: ["THÂN VỎ"], interval: 80000 },
   { label: "Bình ắc quy", keys: ["ẮC QUY", "BÌNH ELECTRIC", "PIN"], interval: 60000 } // Added battery
 ];
 
@@ -500,7 +500,9 @@ function renderSummary(response) {
       const fullTxt = ((d.category || '') + ' ' + (d.work || '') + ' ' + (d.system || '')).toUpperCase();
       targets.forEach(t => {
         if (latestReplacements[t.label].km !== '---') return;
-        const match = t.keys.some(k => fullTxt.includes(k)) && (!t.subKeys || t.subKeys.some(s => fullTxt.includes(s)));
+        const match = t.keys.some(k => fullTxt.includes(k)) && 
+                      (!t.subKeys || t.subKeys.some(s => fullTxt.includes(s))) &&
+                      (!t.excludeKeys || !t.excludeKeys.some(e => fullTxt.includes(e)));
         if (match) {
           const km = parseInt(g.km);
           latestReplacements[t.label] = { km: g.kmDisplay || km.toLocaleString('vi-VN'), date: g.date, nextDue: km + t.interval };
