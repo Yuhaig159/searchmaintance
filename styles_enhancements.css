@@ -941,3 +941,153 @@
     font-size: 18px;
   }
 
+  /* ── Chi Tiết Thay Thế (Replacement Cards) ── */
+  .repl-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 4px;
+  }
+
+  .repl-card {
+    background: var(--ios-card);
+    border-radius: 16px;
+    padding: 14px 16px;
+    border: 1px solid var(--ios-sep-light);
+    box-shadow: 0 4px 12px var(--shadow-light);
+    transition: all 0.2s ease;
+  }
+
+  .repl-card:active {
+    transform: scale(0.98);
+  }
+
+  .repl-card-header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .repl-icon {
+    font-size: 24px;
+    background: var(--ios-fill-secondary);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+  }
+
+  .repl-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ios-text);
+    margin-bottom: 2px;
+  }
+
+  .repl-date {
+    font-size: 11px;
+    color: var(--ios-text-secondary);
+    font-weight: 500;
+  }
+
+  .repl-stats {
+    text-align: right;
+  }
+
+  .repl-km-current {
+    font-size: 12px;
+    color: var(--ios-text);
+  }
+  
+  .repl-km-current strong {
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  .repl-km-next {
+    font-size: 10px;
+    color: var(--ios-text-secondary);
+    margin-top: 2px;
+  }
+
+  .repl-progress-container {
+    height: 6px;
+    background: var(--ios-bg-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .repl-progress-bar {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--brand-green);
+    transition: width 0.5s ease-out;
+  }
+
+  .repl-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+    border-top: 1px solid var(--ios-sep-light);
+  }
+
+  .repl-unit {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ios-text-secondary);
+  }
+
+  .repl-next-due {
+    font-size: 13px;
+    color: var(--ios-text);
+  }
+  
+  .repl-next-due strong {
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  /* Status Colors */
+  .repl-card.status-danger {
+    border-left: 4px solid var(--ios-error);
+  }
+  .repl-card.status-danger .repl-progress-bar {
+    background: var(--ios-error);
+  }
+  .repl-card.status-danger .repl-next-due strong {
+    color: var(--ios-error);
+  }
+
+  .repl-card.status-warning {
+    border-left: 4px solid var(--brand-orange);
+  }
+  .repl-card.status-warning .repl-progress-bar {
+    background: var(--brand-orange);
+  }
+  .repl-card.status-warning .repl-next-due strong {
+    color: var(--brand-orange);
+  }
+
+  .repl-card.status-ok {
+    border-left: 4px solid var(--brand-green);
+  }
+  .repl-card.status-ok .repl-next-due strong {
+    color: var(--brand-green);
+  }
+
+  .repl-card.status-unknown {
+    border-left: 4px solid var(--ios-gray);
+    opacity: 0.7;
+  }
+  .repl-card.status-unknown .repl-progress-bar {
+    background: var(--ios-gray);
+  }
+  .repl-card.status-unknown .repl-next-due strong {
+    color: var(--ios-gray);
+  }
