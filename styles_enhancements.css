@@ -1250,11 +1250,21 @@ body.large-text .fleet-card-plate {
 #replacementModal .modal-header {
   background: transparent !important;
   border-bottom: none !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 16px 16px 8px 16px !important;
+  margin-bottom: 0 !important;
 }
 
 #replacementModal .modal-title {
   color: var(--ios-text) !important;
   text-shadow: 0 1px 4px rgba(255, 255, 255, 0.8) !important;
+  font-weight: 800 !important;
+  font-size: 20px !important;
+  letter-spacing: -0.5px !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 #replacementModal .modal-close {
@@ -1263,6 +1273,12 @@ body.large-text .fleet-card-plate {
   border: 1px solid rgba(0, 0, 0, 0.05) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 #replacementModal .repl-card {
@@ -1278,9 +1294,12 @@ body.large-text .fleet-card-plate {
 /* Text colors are inherited for light theme to preserve status colors */
 
 #replacementModal .repl-search-wrap {
-  background: rgba(0, 0, 0, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.6) !important;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.03), 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04), 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+  border-radius: 14px !important;
+  padding: 10px 14px !important;
+  margin: 8px 16px 16px 16px !important;
 }
 
 #replacementModal .repl-search-wrap input {
@@ -1343,12 +1362,21 @@ body.large-text .fleet-card-plate {
 [data-theme="dark"] #replacementModal .modal-title {
   color: #fff !important;
   text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2) !important;
+  font-weight: 800 !important;
+  font-size: 20px !important;
+  letter-spacing: -0.5px !important;
 }
 
 [data-theme="dark"] #replacementModal .modal-close {
   background: rgba(255, 255, 255, 0.1) !important;
   color: #fff !important;
   border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 [data-theme="dark"] #replacementModal .repl-card {
@@ -1382,9 +1410,12 @@ body.large-text .fleet-card-plate {
 }
 
 [data-theme="dark"] #replacementModal .repl-search-wrap {
-  background: rgba(0, 0, 0, 0.2) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  border-radius: 14px !important;
+  padding: 10px 14px !important;
+  margin: 8px 16px 16px 16px !important;
 }
 
 [data-theme="dark"] #replacementModal .repl-search-wrap input {
