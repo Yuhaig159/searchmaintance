@@ -520,7 +520,9 @@
 
   .nav-item.active .material-icons {
     transform: scale(1.1);
-    filter: drop-shadow(0 2px 4px rgba(28, 105, 91, 0.3));
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .nav-item.active .nav-label {
