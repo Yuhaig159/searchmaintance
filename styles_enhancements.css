@@ -1091,3 +1091,122 @@
   .repl-card.status-unknown .repl-next-due strong {
     color: var(--ios-gray);
   }
+
+  /* ── 3D Mock Layout Overrides ── */
+  .repl-list {
+    padding: 0 4px 8px 4px !important;
+  }
+
+  .repl-card {
+    padding: 16px !important;
+  }
+
+  .repl-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .repl-title-icon {
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .repl-title-text {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ios-text);
+    letter-spacing: 0.3px;
+  }
+
+  .repl-card-detail {
+    font-size: 13px;
+    color: var(--ios-text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .repl-card-detail span {
+    color: var(--ios-text);
+  }
+
+  .repl-card-detail.flex-between {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .repl-progress-wrap {
+    height: 4px;
+    background: var(--ios-sep);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .repl-progress-bar {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--brand-green);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .repl-card.status-danger .repl-progress-bar {
+    background: var(--ios-error) !important;
+  }
+  .repl-card.status-danger .repl-card-title-row .repl-title-text {
+    color: var(--ios-error);
+  }
+
+  .repl-card.status-warning .repl-progress-bar {
+    background: var(--brand-orange) !important;
+  }
+  .repl-card.status-warning .repl-card-title-row .repl-title-text {
+    color: var(--brand-orange);
+  }
+
+  .repl-card.status-ok .repl-progress-bar {
+    background: var(--brand-green) !important;
+  }
+
+  .repl-card.status-danger {
+    border-left: none !important;
+  }
+  .repl-card.status-warning {
+    border-left: none !important;
+  }
+  .repl-card.status-ok {
+    border-left: none !important;
+  }
+  .repl-card.status-unknown {
+    border-left: none !important;
+  }
+
+  .repl-search-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--ios-fill-secondary);
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin: 4px 16px 8px 16px;
+    gap: 8px;
+  }
+
+  .repl-search-wrap .material-icons {
+    color: var(--ios-text-secondary);
+    font-size: 20px;
+  }
+
+  .repl-search-wrap input {
+    border: none;
+    background: transparent;
+    color: var(--ios-text);
+    font-size: 15px;
+    width: 100%;
+    outline: none;
+  }
+
+  .repl-search-wrap input::placeholder {
+    color: var(--ios-text-secondary);
+  }
