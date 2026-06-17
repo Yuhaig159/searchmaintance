@@ -542,24 +542,20 @@ function renderSummary(response) {
 
   const replacementRowsHtml = targetsData.map(t => {
     return `
-      <div class="repl-card ${t.statusClass}" onclick="${t.hasData ? `MapsToReplacementCard('${t.label}', '${t.rowKm}', '${t.item.date}')` : ''}" ${t.hasData ? '' : 'style="cursor: default; opacity: 0.7;"'}>
-        <div class="repl-card-header">
-          <div class="repl-icon">${t.icon || '⚙️'}</div>
-          <div class="repl-info">
-            <div class="repl-title">${t.label}</div>
-            <div class="repl-date">Lần thay cuối: ${t.hasData ? t.item.date : 'Chưa có dữ liệu'}</div>
-          </div>
-          <div class="repl-stats">
-            <div class="repl-km-current">Đã thay: <strong>${t.item.km}</strong></div>
-            <div class="repl-km-next">Mốc: <strong>${t.interval.toLocaleString('vi-VN')}</strong> KM</div>
-          </div>
+      <div class="repl-card ${t.statusClass}" onclick="${t.hasData ? `MapsToReplacementCard('${t.label}', '${t.rowKm}', '${t.item.date}')` : ''}" ${t.hasData ? '' : 'style="cursor: default;"'}>
+        <div class="repl-card-title-row">
+          <span class="repl-title-icon">${t.icon || '⚙️'}</span>
+          <span class="repl-title-text">${t.label}</span>
         </div>
-        <div class="repl-progress-container">
+        <div class="repl-card-detail">
+          Lần thay cuối: <span>${t.hasData ? `${t.item.date} (lúc ${t.item.km})` : 'Chưa có dữ liệu'}</span>
+        </div>
+        <div class="repl-card-detail flex-between">
+          <span>Hiện tại: <strong>${t.hasData ? maxKm.toLocaleString('vi-VN') : '---'}</strong> KM</span>
+          <span>Kỳ tới: <strong>${t.nextServiceKm}</strong> KM</span>
+        </div>
+        <div class="repl-progress-wrap">
           <div class="repl-progress-bar" style="width: ${t.hasData ? t.progress : 0}%;"></div>
-        </div>
-        <div class="repl-footer">
-          <div class="repl-unit">${t.unit ? 'Đơn vị: ' + t.unit : ''}</div>
-          <div class="repl-next-due">Kỳ tới: <strong>${t.nextServiceKm}</strong></div>
         </div>
       </div>
     `;
@@ -1516,3 +1512,15 @@ window.toggleInfoSection = function(event, el) {
   }
 };
 
+window.filterReplacementCards = function() {
+  const query = document.getElementById('replSearchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('#replacementList .repl-card');
+  cards.forEach(card => {
+    const title = card.querySelector('.repl-title-text').innerText.toLowerCase();
+    if (title.includes(query)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+};
