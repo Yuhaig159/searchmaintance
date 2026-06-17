@@ -1212,13 +1212,22 @@
   }
 
   /* ── 3D Transparent Theme Overrides for Replacement Modal ── */
+  #replacementModal .bottom-sheet-overlay {
+    background: rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: none !important; /* Remove overlay blur so modal can blur the actual page */
+    -webkit-backdrop-filter: none !important;
+  }
+
   #replacementModal .bottom-sheet-content {
-    background: rgba(18, 30, 35, 0.6) !important;
-    backdrop-filter: blur(25px) saturate(150%) !important;
-    -webkit-backdrop-filter: blur(25px) saturate(150%) !important;
-    border: 1px solid rgba(0, 255, 200, 0.2) !important;
+    background: linear-gradient(135deg, rgba(15, 35, 30, 0.25), rgba(10, 20, 20, 0.4)) !important;
+    backdrop-filter: blur(40px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(200%) !important;
+    border: 1px solid rgba(0, 255, 200, 0.25) !important;
     border-bottom: none !important;
-    box-shadow: 0 -10px 40px rgba(0, 255, 200, 0.1) !important;
+    box-shadow: 
+      inset 0 1px 1px rgba(255, 255, 255, 0.15),
+      inset 0 0 40px rgba(0, 255, 200, 0.05),
+      0 -10px 40px rgba(0, 200, 180, 0.15) !important;
   }
   
   #replacementModal .modal-header {
@@ -1234,12 +1243,19 @@
   #replacementModal .modal-close {
     background: rgba(255, 255, 255, 0.1) !important;
     color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
   }
   
   #replacementModal .repl-card {
-    background: rgba(255, 255, 255, 0.06) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 
+      inset 0 1px 1px rgba(255, 255, 255, 0.15),
+      0 8px 32px rgba(0, 0, 0, 0.2) !important;
   }
   
   #replacementModal .repl-title-text,
@@ -1252,12 +1268,13 @@
   #replacementModal .repl-card-detail,
   #replacementModal .repl-km-current,
   #replacementModal .repl-km-next {
-    color: rgba(255, 255, 255, 0.6) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
   }
 
   #replacementModal .repl-search-wrap {
-    background: rgba(0, 0, 0, 0.3) !important;
+    background: rgba(0, 0, 0, 0.2) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.05) !important;
   }
 
   #replacementModal .repl-search-wrap input {
@@ -1271,10 +1288,12 @@
   #replacementModal .repl-title-icon {
     background: transparent !important;
     font-size: 24px !important;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
   }
   
   #replacementModal .repl-progress-wrap {
-    background: rgba(255, 255, 255, 0.1) !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) !important;
   }
   
   #replacementModal .repl-add-btn-wrap {
@@ -1284,17 +1303,19 @@
   #replacementModal .repl-add-btn {
     width: 100%;
     padding: 16px;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
     border-radius: 16px;
     color: #fff;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255,255,255,0.2) !important;
   }
 
   #replacementModal .repl-add-btn:active {
-    transform: scale(0.98);
-    background: rgba(255, 255, 255, 0.12) !important;
+    transform: scale(0.96);
+    background: rgba(255, 255, 255, 0.2) !important;
   }
