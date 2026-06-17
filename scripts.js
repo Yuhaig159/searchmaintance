@@ -5,16 +5,16 @@ const CONFIG = {
 };
 
 const MAINTENANCE_TARGETS = [
-  { label: "Lọc gió động cơ", keys: ["LỌC GIÓ"], subKeys: ["ĐỘNG CƠ", "MÁY"], interval: 60000 },
-  { label: "Lọc gió A/C", keys: ["LỌC GIÓ"], subKeys: ["A/C", "MÁY LẠNH", "CABIN", "ĐIỀU HÒA"], interval: 60000 },
-  { label: "Lọc dầu", keys: ["LỌC DẦU"], interval: 80000 },
-  { label: "Lọc nhiên liệu", keys: ["LỌC NHIÊN LIỆU"], interval: 50000 },
-  { label: "Bố phanh", keys: ["BỐ PHANH", "MÔ PHANH", "PAD PHANH"], interval: 170000 },
-  { label: "Dây curoa", keys: ["DÂY CUROA", "CUROA"], interval: 180000 },
-  { label: "Nhớt hộp số sàn", keys: ["NHỚT", "DẦU"], subKeys: ["SÀN"], interval: 240000 },
-  { label: "Nhớt hộp số tự động", keys: ["NHỚT", "DẦU"], subKeys: ["TỰ ĐỘNG"], interval: 200000 },
-  { label: "Vỏ xe", keys: ["VỎ", "LỐP"], excludeKeys: ["THÂN VỎ"], interval: 80000 },
-  { label: "Bình ắc quy", keys: ["ẮC QUY", "BÌNH ELECTRIC", "PIN"], interval: 60000 } // Added battery
+  { label: "Lọc gió động cơ", icon: "🌬️", unit: "Cái", keys: ["LỌC GIÓ"], subKeys: ["ĐỘNG CƠ", "MÁY"], interval: 60000 },
+  { label: "Lọc gió A/C", icon: "❄️", unit: "Cái", keys: ["LỌC GIÓ"], subKeys: ["A/C", "MÁY LẠNH", "CABIN", "ĐIỀU HÒA"], interval: 60000 },
+  { label: "Lọc dầu", icon: "🛢️", unit: "Cái", keys: ["LỌC DẦU"], interval: 80000 },
+  { label: "Lọc nhiên liệu", icon: "⛽", unit: "Cái", keys: ["LỌC NHIÊN LIỆU"], interval: 50000 },
+  { label: "Bố phanh", icon: "🛑", unit: "Bộ", keys: ["BỐ PHANH", "MÔ PHANH", "PAD PHANH"], interval: 170000 },
+  { label: "Dây curoa", icon: "🔗", unit: "Sợi", keys: ["DÂY CUROA", "CUROA"], interval: 180000 },
+  { label: "Nhớt hộp số sàn", icon: "⚙️", unit: "Lít", keys: ["NHỚT", "DẦU"], subKeys: ["SÀN"], interval: 240000 },
+  { label: "Nhớt hộp số tự động", icon: "🕹️", unit: "Lít", keys: ["NHỚT", "DẦU"], subKeys: ["TỰ ĐỘNG"], interval: 200000 },
+  { label: "Vỏ xe", icon: "🛞", unit: "Quả", keys: ["VỎ", "LỐP"], excludeKeys: ["THÂN VỎ"], interval: 80000 },
+  { label: "Bình ắc quy", icon: "🔋", unit: "Bình", keys: ["ẮC QUY", "BÌNH ELECTRIC", "PIN"], interval: 60000 }
 ];
 
 const google = {
@@ -393,7 +393,7 @@ function doSearch(plateVal) {
 
 function openReplacementModal(htmlContent) {
   const modal = document.getElementById('replacementModal');
-  document.querySelector('#replacementTable tbody').innerHTML = htmlContent;
+  document.getElementById('replacementList').innerHTML = htmlContent;
   modal.classList.remove('hidden');
 
   // ⚡ V112: Làm mờ và giảm độ sáng toàn bộ nền
@@ -511,25 +511,58 @@ function renderSummary(response) {
     });
   });
 
-  const replacementRowsHtml = targets.map(t => {
+  const targetsData = targets.map(t => {
     const item = latestReplacements[t.label];
     const hasData = item.km !== '---';
     const rowKm = hasData ? item.km.replace(/\D/g, '') : '';
-    const currentKmVal = hasData ? parseInt(item.km.replace(/\./g, '')) : 0;
+    const currentKmVal = hasData ? parseInt(item.km.replace(/\D/g, '')) : 0;
     const nextServiceKm = hasData ? (currentKmVal + t.interval).toLocaleString('vi-VN') : '---';
+    
+    let progress = 0;
+    let statusClass = 'status-ok';
+    if (hasData) {
+      const usedKm = Math.max(0, maxKm - currentKmVal);
+      progress = Math.min(100, Math.round((usedKm / t.interval) * 100));
+      if (progress >= 100) statusClass = 'status-danger';
+      else if (progress >= 85) statusClass = 'status-warning';
+    } else {
+      statusClass = 'status-unknown';
+    }
+    
+    return { ...t, item, hasData, rowKm, currentKmVal, nextServiceKm, progress, statusClass };
+  });
 
+  // Sort: highest progress first, unknown last
+  targetsData.sort((a, b) => {
+    if (!a.hasData && !b.hasData) return 0;
+    if (!a.hasData) return 1;
+    if (!b.hasData) return -1;
+    return b.progress - a.progress;
+  });
+
+  const replacementRowsHtml = targetsData.map(t => {
     return `
-        <tr onclick="${hasData ? `MapsToReplacementCard('${t.label}', '${rowKm}', '${item.date}')` : ''}"
-            style="cursor: ${hasData ? 'pointer' : 'default'}; border-bottom: 1px solid var(--ios-sep-light);">
-          <td style="padding: 12px 0;">
-            <div style="font-weight: 700; font-size: 15px; color: var(--ios-text);">${t.label}</div>
-            <div style="font-size: 10px; color: var(--ios-text-secondary); margin-top: 2px;">Ngày thay: ${hasData ? item.date : '---'}</div>
-          </td>
-          <td style="text-align: right; padding: 12px 0; white-space: nowrap;">
-            <div style="font-size: 14px; font-weight: 800; color: var(--ios-text);">Đã thay: ${item.km}</div>
-            <div style="color: var(--brand-orange); font-weight: 800; font-size: 16px; margin: 2px 0;">Kỳ tới: ${nextServiceKm}</div>
-          </td>
-        </tr>`;
+      <div class="repl-card ${t.statusClass}" onclick="${t.hasData ? `MapsToReplacementCard('${t.label}', '${t.rowKm}', '${t.item.date}')` : ''}" ${t.hasData ? '' : 'style="cursor: default; opacity: 0.7;"'}>
+        <div class="repl-card-header">
+          <div class="repl-icon">${t.icon || '⚙️'}</div>
+          <div class="repl-info">
+            <div class="repl-title">${t.label}</div>
+            <div class="repl-date">Lần thay cuối: ${t.hasData ? t.item.date : 'Chưa có dữ liệu'}</div>
+          </div>
+          <div class="repl-stats">
+            <div class="repl-km-current">Đã thay: <strong>${t.item.km}</strong></div>
+            <div class="repl-km-next">Mốc: <strong>${t.interval.toLocaleString('vi-VN')}</strong> KM</div>
+          </div>
+        </div>
+        <div class="repl-progress-container">
+          <div class="repl-progress-bar" style="width: ${t.hasData ? t.progress : 0}%;"></div>
+        </div>
+        <div class="repl-footer">
+          <div class="repl-unit">${t.unit ? 'Đơn vị: ' + t.unit : ''}</div>
+          <div class="repl-next-due">Kỳ tới: <strong>${t.nextServiceKm}</strong></div>
+        </div>
+      </div>
+    `;
   }).join('');
 
   window.currentReplacementTableHtml = replacementRowsHtml;
