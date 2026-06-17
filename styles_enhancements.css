@@ -1210,3 +1210,91 @@
   .repl-search-wrap input::placeholder {
     color: var(--ios-text-secondary);
   }
+
+  /* ── 3D Transparent Theme Overrides for Replacement Modal ── */
+  #replacementModal .bottom-sheet-content {
+    background: rgba(18, 30, 35, 0.6) !important;
+    backdrop-filter: blur(25px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(150%) !important;
+    border: 1px solid rgba(0, 255, 200, 0.2) !important;
+    border-bottom: none !important;
+    box-shadow: 0 -10px 40px rgba(0, 255, 200, 0.1) !important;
+  }
+  
+  #replacementModal .modal-header {
+    background: transparent !important;
+    border-bottom: none !important;
+  }
+
+  #replacementModal .modal-title {
+    color: #fff !important;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2) !important;
+  }
+
+  #replacementModal .modal-close {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+  }
+  
+  #replacementModal .repl-card {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+  }
+  
+  #replacementModal .repl-title-text,
+  #replacementModal .repl-km-current strong,
+  #replacementModal .repl-next-due strong,
+  #replacementModal .repl-card-detail span {
+    color: #fff !important;
+  }
+  
+  #replacementModal .repl-card-detail,
+  #replacementModal .repl-km-current,
+  #replacementModal .repl-km-next {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  #replacementModal .repl-search-wrap {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  #replacementModal .repl-search-wrap input {
+    color: #fff !important;
+  }
+
+  #replacementModal .repl-search-wrap input::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  #replacementModal .repl-title-icon {
+    background: transparent !important;
+    font-size: 24px !important;
+  }
+  
+  #replacementModal .repl-progress-wrap {
+    background: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  #replacementModal .repl-add-btn-wrap {
+    padding: 8px 16px 16px 16px;
+  }
+
+  #replacementModal .repl-add-btn {
+    width: 100%;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 16px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  #replacementModal .repl-add-btn:active {
+    transform: scale(0.98);
+    background: rgba(255, 255, 255, 0.12) !important;
+  }
