@@ -694,3 +694,199 @@
     transform: scale(1.1);
   }
 
+/* ═══════════════════════════════════════════════════════════════
+   MASTER PROMPT V1.0 — Review UI (2-trang: Phiếu + Báo Giá)
+   ═══════════════════════════════════════════════════════════════ */
+
+.master-section-block {
+  background: var(--ios-card);
+  border: 1px solid var(--ios-sep-light);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 10px var(--shadow-light);
+  animation: msgAppear 0.35s ease;
+}
+
+.master-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ios-accent-green);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ios-sep-light);
+}
+
+.master-section-title .material-icons {
+  font-size: 18px;
+}
+
+.master-section-title.warn {
+  color: #FF9500;
+}
+
+/* ── Info grid (Phiếu Đề Nghị) ─────────────────────────── */
+.master-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+}
+
+.master-info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+
+.master-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ios-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* ── Hạng mục rows (checkbox list) ─────────────────────── */
+.master-hang-muc-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--ios-sep-light);
+  font-size: 13px;
+}
+
+.master-hang-muc-row:last-of-type {
+  border-bottom: none;
+}
+
+.master-hm-stt {
+  width: 20px;
+  font-weight: 700;
+  color: var(--ios-text-secondary);
+  flex-shrink: 0;
+}
+
+.master-hm-name {
+  flex: 1;
+  color: var(--ios-text);
+}
+
+.master-badge {
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  background: var(--ios-fill);
+  color: var(--ios-text-secondary);
+  flex-shrink: 0;
+}
+
+.master-badge.badge-repair {
+  background: rgba(255, 59, 48, 0.15);
+  color: #FF3B30;
+}
+
+.master-badge.badge-replace {
+  background: rgba(52, 199, 89, 0.15);
+  color: #34C759;
+}
+
+/* ── Báo Giá item rows ─────────────────────────────────── */
+.master-item-row {
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--ios-sep-light);
+}
+
+.master-item-row:last-of-type {
+  border-bottom: none;
+}
+
+.master-item-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ios-text);
+  margin-bottom: 4px;
+}
+
+.master-item-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--ios-text-secondary);
+}
+
+.master-item-total {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--ios-accent-green);
+}
+
+/* ── Tổng tiền block ────────────────────────────────────── */
+.master-total-block {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--ios-bg-secondary);
+  border-radius: 12px;
+  border: 1px dashed var(--ios-sep);
+}
+
+.master-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--ios-text-secondary);
+  padding: 4px 0;
+}
+
+.master-grand-total {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ios-text);
+  border-top: 1px solid var(--ios-sep);
+  margin-top: 4px;
+  padding-top: 8px;
+}
+
+.master-grand-total span:last-child {
+  color: var(--ios-accent-green);
+}
+
+/* ── Warnings block ─────────────────────────────────────── */
+.master-warnings-block {
+  background: rgba(255, 149, 0, 0.08);
+  border: 1px solid rgba(255, 149, 0, 0.3);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.master-warn-item {
+  font-size: 12px;
+  color: #FF9500;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 149, 0, 0.15);
+  word-break: break-all;
+}
+
+.master-warn-item:last-child {
+  border-bottom: none;
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .master-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .master-item-meta {
+    flex-wrap: wrap;
+  }
+}
