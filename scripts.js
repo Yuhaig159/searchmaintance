@@ -700,12 +700,25 @@ function forceRefresh() {
 function MapsToReplacementCard(partName, km, date) {
   closeReplacementModal();
 
+  // Ensure the target is rendered by checking filteredData and loading more pages if needed
+  if (typeof filteredData !== 'undefined' && filteredData.length > 0) {
+    const targetIndex = filteredData.findIndex(group => String(group.km).replace(/\D/g, '') === String(km) && group.date === date);
+    if (targetIndex !== -1) {
+      const requiredPage = Math.floor(targetIndex / ITEMS_PER_PAGE);
+      while (currentPage < requiredPage) {
+        currentPage++;
+        renderUILazy();
+      }
+    }
+  }
+
   const cards = document.querySelectorAll('.card');
   let foundCard = null;
 
   cards.forEach(card => {
     const cardKm = card.querySelector('.card-km')?.textContent.replace(/\D/g, '');
-    const cardDate = card.querySelector('.card-title')?.textContent.trim();
+    const dateNode = card.querySelector('.card-date');
+    const cardDate = dateNode ? dateNode.textContent.replace('event', '').trim() : '';
     if (cardKm === km && cardDate === date) foundCard = card;
   });
 
