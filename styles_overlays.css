@@ -283,21 +283,6 @@
 
     .card-header {
       padding: 10px 12px;
-      flex-direction: row;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .card-header-left {
-      width: auto;
-      flex-direction: column;
-      justify-content: center;
-      gap: 4px;
-    }
-
-    .card-title {
-      font-size: 14px;
-      font-weight: 600;
     }
 
     .card-badge {
