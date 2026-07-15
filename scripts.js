@@ -546,15 +546,18 @@ function renderSummary(response) {
     return `
       <div class="repl-card ${t.statusClass}" onclick="${t.hasData ? `MapsToReplacementCard('${t.label}', '${t.rowKm}', '${t.item.date}')` : ''}" ${t.hasData ? '' : 'style="cursor: default;"'}>
         <div class="repl-card-title-row">
-          <span class="repl-title-icon">${t.icon || '⚙️'}</span>
+          <span class="material-icons repl-title-icon">${t.icon === '⚙️' ? 'settings' : 'build'}</span>
           <span class="repl-title-text">${t.label}</span>
         </div>
-        <div class="repl-card-detail">
-          Lần thay cuối: <span>${t.hasData ? `${t.item.date} (lúc ${t.item.km})` : 'Chưa có dữ liệu'}</span>
-        </div>
-        <div class="repl-card-detail flex-between">
-          <span>Hiện tại: <strong>${t.hasData ? maxKm.toLocaleString('vi-VN') : '---'}</strong> KM</span>
-          <span>Kỳ tới: <strong>${t.nextServiceKm}</strong> KM</span>
+        <div class="repl-card-grid">
+          <div class="repl-card-col">
+            <span class="repl-label">Lần thay cuối</span>
+            <span class="repl-val">${t.hasData ? `${t.item.date} (${t.item.km})` : 'Chưa có dữ liệu'}</span>
+          </div>
+          <div class="repl-card-col right-align">
+            <span class="repl-label">Kỳ tới (Dự kiến)</span>
+            <span class="repl-val">${t.hasData ? `${t.nextServiceKm} KM` : '---'}</span>
+          </div>
         </div>
         <div class="repl-progress-wrap">
           <div class="repl-progress-bar" style="width: ${t.hasData ? t.progress : 0}%;"></div>
@@ -568,17 +571,20 @@ function renderSummary(response) {
 
   document.getElementById('summaryContainer').innerHTML = `
       <div class="summary-card ${isOverdue ? 'warning-state' : ''}">
-        <div class="summary-item">
-          <span class="label">Bảo dưỡng kỳ trước</span>
-          <div class="value">${lastMilestoneKm > 0 ? lastMilestoneKm.toLocaleString('vi-VN') : '---'}</div>
-          <div class="summary-item-subtitle">${lastMilestoneDate || ''}</div>
-        </div>
-        <div class="summary-item right-align">
-          <span class="label">Bảo dưỡng kỳ sau</span>
-          <div class="value">${nextPeriodicKm.toLocaleString('vi-VN')}</div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span class="label">Bảo dưỡng kỳ trước</span>
+            <div class="value">${lastMilestoneKm > 0 ? lastMilestoneKm.toLocaleString('vi-VN') : '---'}</div>
+            <div class="summary-item-subtitle">${lastMilestoneDate || ''}</div>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-item right-align">
+            <span class="label">Kỳ tới (Dự kiến)</span>
+            <div class="value highlight">${nextPeriodicKm.toLocaleString('vi-VN')}</div>
+          </div>
         </div>
         <button onclick="openReplacementModal(window.currentReplacementTableHtml)" class="summary-btn">
-          Chi tiết mốc phụ tùng
+          <span class="material-icons" style="font-size: 18px; margin-right: 6px;">settings_suggest</span> Chi tiết mốc phụ tùng
         </button>
       </div>`;
 }
@@ -617,13 +623,12 @@ function renderUILazy() {
     html += `
         <div class="card fade-in-up-spring" style="animation-delay: ${delay}s">
           <div class="card-header">
-            <div class="card-header-left">
-              <div class="card-title">${group.date}</div>
-              ${badgeType ? `<span class="card-badge ${badgeClass}">● ${badgeType}</span>` : ''}
+            <div class="card-header-main">
+              <div class="card-km">${group.kmDisplay || Number(group.km).toLocaleString('vi-VN')} <span class="card-km-label">KM</span></div>
             </div>
-            <div>
-              <div class="card-km">${group.kmDisplay || Number(group.km).toLocaleString('vi-VN')}</div>
-              <div class="card-km-label">KM</div>
+            <div class="card-header-sub">
+              <div class="card-date"><span class="material-icons" style="font-size: 14px; margin-right: 4px;">event</span> ${group.date}</div>
+              ${badgeType ? `<span class="card-badge ${badgeClass}"><span class="material-icons" style="font-size: 12px; margin-right: 4px;">${badgeClass === 'periodic' ? 'check_circle' : (badgeClass === 'replacement' ? 'build' : 'construction')}</span> ${badgeType}</span>` : ''}
             </div>
           </div>
           <div class="card-body">
@@ -633,11 +638,11 @@ function renderUILazy() {
       return `
                 <div class="work-item">
                   <div class="work-item-icon ${isPeriodic ? '' : 'replacement'}" role="img">
-                    ${isPeriodic ? '✓' : '🔧'}
+                    <span class="material-icons">${isPeriodic ? 'check_circle_outline' : 'build'}</span>
                   </div>
                   <div class="work-item-content">
                     <span class="tag system-icon">${d.system}</span>
-                    <div class="work-desc"><strong>${d.category}</strong> ${d.work}</div>
+                    <div class="work-desc"><span class="work-category">${d.category}</span> <strong>${d.work}</strong></div>
                   </div>
                 </div>`;
     }).join('')}
