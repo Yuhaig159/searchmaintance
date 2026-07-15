@@ -125,19 +125,21 @@ const USER_ID = 'user_' + Math.random().toString(36).substr(2, 9);
 
 const DataCache = {
   _mem: new Map(),
+  TTL: 300000, // 5 phút (giảm từ 1h để dữ liệu mới nhất được load)
   get: function (key) {
-    if (this._mem.has(key)) return this._mem.get(key);
+    const memEntry = this._mem.get(key);
+    if (memEntry && (Date.now() - memEntry.time) < this.TTL) return memEntry.data;
     try {
       const cached = localStorage.getItem('cache_' + key);
       if (cached) {
         const item = JSON.parse(cached);
-        if (Date.now() - item.time < 3600000) return item.data; // Cache 1h
+        if (Date.now() - item.time < this.TTL) return item.data;
       }
     } catch (e) { }
     return null;
   },
   set: function (key, data) {
-    this._mem.set(key, data);
+    this._mem.set(key, { data: data, time: Date.now() });
     try {
       localStorage.setItem('cache_' + key, JSON.stringify({ data: data, time: Date.now() }));
     } catch (e) {
@@ -664,7 +666,7 @@ function forceRefresh() {
   if (btn) btn.classList.add('loading');
   showLoading();
 
-  // Clear client-side cache
+  // Xóa cache phía client trước
   DataCache.clear();
 
   google.script.run
@@ -672,15 +674,18 @@ function forceRefresh() {
       if (btn) btn.classList.remove('loading');
       hideLoading();
       if (result.success) {
-        showToast(`✅ ${result.message}`);
+        showToast(`✅ ${result.message || 'Đã làm mới dữ liệu'}`);
         loadInitialData();
-        if (currentPlate) doSearch();
+        // Sau khi server xóa cache & rebuild xong, tìm kiếm lại biển số hiện tại
+        if (currentPlate) {
+          doSearch(currentPlate);
+        }
       } else {
-        showToast('❌ ' + result.message);
+        showToast('❌ ' + (result.error || result.message || 'Không thể làm mới dữ liệu'));
       }
     })
     .withFailureHandler(err => {
-      btn.classList.remove('loading');
+      if (btn) btn.classList.remove('loading');
       hideLoading();
       showToast('❌ Lỗi: ' + err.message);
     })
