@@ -5,16 +5,16 @@ const CONFIG = {
 };
 
 const MAINTENANCE_TARGETS = [
-  { label: "Lọc gió động cơ", icon: "🌬️", unit: "Cái", keys: ["LỌC GIÓ"], subKeys: ["ĐỘNG CƠ", "MÁY"], interval: 60000 },
-  { label: "Lọc gió A/C", icon: "❄️", unit: "Cái", keys: ["LỌC GIÓ"], subKeys: ["A/C", "MÁY LẠNH", "CABIN", "ĐIỀU HÒA"], interval: 60000 },
-  { label: "Lọc dầu", icon: "🛢️", unit: "Cái", keys: ["LỌC DẦU"], interval: 80000 },
-  { label: "Lọc nhiên liệu", icon: "⛽", unit: "Cái", keys: ["LỌC NHIÊN LIỆU"], interval: 50000 },
-  { label: "Bố phanh", icon: "🛑", unit: "Bộ", keys: ["BỐ PHANH", "MÔ PHANH", "PAD PHANH"], interval: 170000 },
-  { label: "Dây curoa", icon: "🔗", unit: "Sợi", keys: ["DÂY CUROA", "CUROA"], interval: 180000 },
-  { label: "Nhớt hộp số sàn", icon: "⚙️", unit: "Lít", keys: ["NHỚT", "DẦU"], subKeys: ["SÀN"], interval: 240000 },
-  { label: "Nhớt hộp số tự động", icon: "🕹️", unit: "Lít", keys: ["NHỚT", "DẦU"], subKeys: ["TỰ ĐỘNG"], interval: 200000 },
-  { label: "Vỏ xe", icon: "🛞", unit: "Quả", keys: ["VỎ", "LỐP"], excludeKeys: ["THÂN VỎ"], interval: 80000 },
-  { label: "Bình ắc quy", icon: "🔋", unit: "Bình", keys: ["ẮC QUY", "BÌNH ELECTRIC", "PIN"], interval: 60000 }
+  { label: "Lọc gió động cơ", icon: "air", unit: "Cái", keys: ["LỌC GIÓ"], subKeys: ["ĐỘNG CƠ", "MÁY"], interval: 60000 },
+  { label: "Lọc gió A/C", icon: "ac_unit", unit: "Cái", keys: ["LỌC GIÓ"], subKeys: ["A/C", "MÁY LẠNH", "CABIN", "ĐIỀU HÒA"], interval: 60000 },
+  { label: "Lọc dầu", icon: "water_drop", unit: "Cái", keys: ["LỌC DẦU"], interval: 80000 },
+  { label: "Lọc nhiên liệu", icon: "local_gas_station", unit: "Cái", keys: ["LỌC NHIÊN LIỆU"], interval: 50000 },
+  { label: "Bố phanh", icon: "radio_button_checked", unit: "Bộ", keys: ["BỐ PHANH", "MÔ PHANH", "PAD PHANH"], interval: 170000 },
+  { label: "Dây curoa", icon: "all_inclusive", unit: "Sợi", keys: ["DÂY CUROA", "CUROA"], interval: 180000 },
+  { label: "Nhớt hộp số sàn", icon: "settings_applications", unit: "Lít", keys: ["NHỚT", "DẦU"], subKeys: ["SÀN"], interval: 240000 },
+  { label: "Nhớt hộp số tự động", icon: "settings_suggest", unit: "Lít", keys: ["NHỚT", "DẦU"], subKeys: ["TỰ ĐỘNG"], interval: 200000 },
+  { label: "Vỏ xe", icon: "tire_repair", unit: "Quả", keys: ["VỎ", "LỐP"], excludeKeys: ["THÂN VỎ"], interval: 80000 },
+  { label: "Bình ắc quy", icon: "battery_charging_full", unit: "Bình", keys: ["ẮC QUY", "BÌNH ELECTRIC", "PIN"], interval: 60000 }
 ];
 
 const google = {
@@ -546,7 +546,7 @@ function renderSummary(response) {
     return `
       <div class="repl-card ${t.statusClass}" onclick="${t.hasData ? `MapsToReplacementCard('${t.label}', '${t.rowKm}', '${t.item.date}')` : ''}" ${t.hasData ? '' : 'style="cursor: default;"'}>
         <div class="repl-card-title-row">
-          <span class="material-icons repl-title-icon">${t.icon === '⚙️' ? 'settings' : 'build'}</span>
+          <span class="material-icons repl-title-icon">${t.icon}</span>
           <span class="repl-title-text">${t.label}</span>
         </div>
         <div class="repl-card-grid">
