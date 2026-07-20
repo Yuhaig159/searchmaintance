@@ -1,567 +1,1260 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nhập Dữ Liệu Bảo Dưỡng</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <base target="_top">
   <style>
-    /* Custom styles for specific behaviors that Tailwind doesn't cover natively out-of-the-box perfectly */
-    .suggestions {
-      display: none;
+    * {
+      box-sizing: border-box;
     }
-    .suggestions.active {
+
+    body {
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      font-size: 13px;
+      color: #1e293b;
+      margin: 0;
+      padding: 18px 22px 16px;
+      background: #f1f5f9;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: #64748b;
+      margin: 16px 0 8px;
+    }
+
+    .section-label:first-child {
+      margin-top: 0;
+    }
+
+    label {
       display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #334155;
+      font-size: 12px;
+    }
+
+    input[type=text],
+    input[type=number],
+    select {
+      width: 100%;
+      padding: 7px 9px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font-size: 13px;
+      background: #fff;
+      transition: border-color .15s, box-shadow .15s;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+    }
+
+    .card {
+      background: #fff;
+      padding: 14px 16px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .top-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .autocomplete-wrap {
+      position: relative;
+    }
+
+    .suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      border-top: none;
+      border-radius: 0 0 7px 7px;
+      max-height: 160px;
+      overflow-y: auto;
+      z-index: 50;
+      display: none;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, .10);
+    }
+
+    .suggestions div {
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .suggestions div:hover {
+      background: #eff6ff;
+    }
+
+    .hint-text {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 3px;
+      min-height: 14px;
+    }
+
+    .error-text {
+      font-size: 11px;
+      color: #dc2626;
+      margin-top: 3px;
+      min-height: 14px;
+    }
+
+    .warning-box {
+      margin-top: 10px;
+      background: #fff7ed;
+      border: 1px solid #fdba74;
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 12px;
+      color: #9a3412;
+    }
+
+    .warning-box label {
+      font-weight: 400;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #9a3412;
+    }
+
+    .quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .chip {
+      font-size: 11.5px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .12s;
+    }
+
+    .chip:hover {
+      background: #e0e7ff;
+    }
+
+    #itemsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: 108px 2fr 84px 108px 30px 30px;
+      gap: 8px;
+      align-items: start;
+      background: #fff;
+      padding: 12px 12px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      position: relative;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, .03);
+    }
+
+    .item-row .stt-badge {
+      position: absolute;
+      top: -9px;
+      left: -9px;
+      background: #2563eb;
+      color: #fff;
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+    }
+
+    .icon-btn {
+      border: none;
+      border-radius: 7px;
+      width: 28px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 13px;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .remove-btn {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .remove-btn:hover {
+      background: #fecaca;
+    }
+
+    .dup-btn {
+      background: #eef2ff;
+      color: #4338ca;
+    }
+
+    .dup-btn:hover {
+      background: #e0e7ff;
+    }
+
+    #addItemBtn {
+      margin-top: 2px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px dashed #93c5fd;
+      border-radius: 8px;
+      padding: 9px 12px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+    }
+
+    #addItemBtn:hover {
+      background: #dbeafe;
+    }
+
+    .items-footer-count {
+      font-size: 11.5px;
+      color: #64748b;
+      margin-top: 6px;
+      text-align: right;
+    }
+
+    .footer-bar {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      position: sticky;
+      bottom: -16px;
+      background: #f1f5f9;
+      padding: 10px 0 2px;
+    }
+
+    #saveBtn {
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    #saveBtn:hover {
+      background: #15803d;
+    }
+
+    #saveBtn:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    #cancelBtn {
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    #globalError {
+      font-size: 12px;
+      color: #dc2626;
+      margin-top: 6px;
+      text-align: right;
+    }
+
+    .field-invalid {
+      border-color: #dc2626 !important;
+    }
+
+    .small-note {
+      font-size: 10.5px;
+      color: #94a3b8;
+      margin-top: 3px;
+    }
+
+    .chitiet-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .text-link-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .text-link-btn.find {
+      color: #2563eb;
+    }
+
+    .text-link-btn.find:hover {
+      text-decoration: underline;
+    }
+
+    .text-link-btn.addnew {
+      color: #059669;
+    }
+
+    .text-link-btn.addnew:hover {
+      text-decoration: underline;
+    }
+
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .4);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px 22px;
+      width: 380px;
+      max-width: 90vw;
+      box-shadow: 0 12px 34px rgba(0, 0, 0, .22);
+      max-height: 82vh;
+      overflow-y: auto;
+    }
+
+    .popup-title {
+      font-weight: 700;
+      font-size: 14.5px;
+      color: #0f172a;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .popup-subtitle {
+      font-size: 11.5px;
+      color: #64748b;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .similar-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 11px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      margin-bottom: 7px;
+      cursor: pointer;
+      transition: border-color .12s, background .12s;
+    }
+
+    .similar-item:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+
+    .similar-item .label {
+      font-size: 12.5px;
+      color: #1e293b;
+    }
+
+    .similar-item .score {
+      font-size: 10px;
+      font-weight: 700;
+      color: #2563eb;
+      background: #eff6ff;
+      border-radius: 999px;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+
+    .popup-footer-link {
+      text-align: center;
+      margin-top: 6px;
+      font-size: 11.5px;
+      color: #64748b;
+    }
+
+    .popup-footer-link button {
+      background: none;
+      border: none;
+      color: #059669;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 11.5px;
+    }
+
+    .popup-footer-link button:hover {
+      text-decoration: underline;
+    }
+
+    .popup-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .popup-btn-cancel {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 8px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 12.5px;
+    }
+
+    .popup-btn-confirm {
+      background: #059669;
+      border: none;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12.5px;
+    }
+
+    .popup-btn-confirm:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .popup-error {
+      font-size: 11.5px;
+      color: #dc2626;
+      margin-top: 8px;
+      min-height: 14px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 14px 0 4px;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+      font-size: 11.5px;
+      color: #475569;
+    }
+
+    .checkbox-row input {
+      width: auto;
+    }
+
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(241, 245, 249, .9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #334155;
+      font-size: 13px;
+      z-index: 100;
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans p-4 md:p-6 h-screen overflow-y-auto">
 
-  <!-- Loading Overlay -->
-  <div id="loadingOverlay" class="fixed inset-0 bg-white/80 z-50 flex flex-col items-center justify-center font-semibold text-slate-700 text-sm backdrop-blur-sm transition-opacity">
-    <div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-    <span id="loadingText">Đang tải dữ liệu...</span>
-  </div>
+<body>
 
-  <!-- New Unit Overlay -->
-  <div id="newUnitOverlay" class="fixed inset-0 bg-slate-900/40 z-[200] hidden items-center justify-center p-4">
-    <div class="bg-white rounded-xl p-5 max-w-sm w-full shadow-2xl">
-      <div class="font-bold text-sm text-slate-900 mb-2">Đơn vị thực hiện mới</div>
-      <div id="newUnitMessage" class="text-sm text-slate-700 leading-relaxed mb-4"></div>
-      <div class="flex justify-end gap-2">
-        <button type="button" id="newUnitCancelBtn" class="bg-slate-100 border border-slate-300 text-slate-700 px-4 py-2 rounded-lg cursor-pointer text-sm hover:bg-slate-200 transition-colors">Hủy, để tôi sửa lại</button>
-        <button type="button" id="newUnitConfirmBtn" class="bg-blue-600 border-none text-white px-4 py-2 rounded-lg cursor-pointer font-semibold text-sm hover:bg-blue-700 transition-colors">✓ Thêm mới & Lưu</button>
+  <div id="loadingOverlay">Đang tải dữ liệu...</div>
+
+  <div id="newUnitOverlay"
+    style="display:none; position:fixed; inset:0; background:rgba(15,23,42,.35); z-index:200; align-items:center; justify-content:center;">
+    <div
+      style="background:#fff; border-radius:12px; padding:20px 22px; max-width:380px; box-shadow:0 10px 30px rgba(0,0,0,.2);">
+      <div style="font-weight:700; font-size:14px; color:#0f172a; margin-bottom:8px;">Đơn vị thực hiện mới</div>
+      <div id="newUnitMessage" style="font-size:12.5px; color:#334155; line-height:1.5; margin-bottom:16px;"></div>
+      <div style="display:flex; justify-content:flex-end; gap:8px;">
+        <button type="button" id="newUnitCancelBtn"
+          style="background:#f1f5f9; border:1px solid #cbd5e1; color:#334155; padding:8px 14px; border-radius:7px; cursor:pointer; font-size:12.5px;">Hủy,
+          để tôi sửa lại</button>
+        <button type="button" id="newUnitConfirmBtn"
+          style="background:#2563eb; border:none; color:#fff; padding:8px 14px; border-radius:7px; cursor:pointer; font-weight:600; font-size:12.5px;">✓
+          Thêm mới & Lưu</button>
       </div>
     </div>
   </div>
 
-  <div class="max-w-4xl mx-auto">
-    <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
-      <span class="text-xl">📋</span> Nhập Dữ Liệu Bảo Dưỡng
-    </h2>
+  <div id="successBanner"
+    style="display:none; background:#dcfce7; border:1px solid #86efac; color:#166534; padding:10px 14px; border-radius:9px; font-size:12.5px; font-weight:600; margin-bottom:14px;">
+  </div>
 
-    <div id="successBanner" class="hidden bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg text-sm font-semibold mb-4 shadow-sm"></div>
-
-    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="relative">
-        <label class="block font-semibold text-slate-700 text-xs mb-1">Biển Số Xe *</label>
-        <input id="plate" type="text" placeholder="Nhập hoặc chọn biển số..." autocomplete="off" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
-        <div id="plateSuggestions" class="suggestions absolute top-full left-0 right-0 bg-white border border-slate-300 border-t-0 rounded-b-lg max-h-40 overflow-y-auto z-50 shadow-lg"></div>
-        <div class="text-[11px] text-slate-500 mt-1 min-h-[14px]" id="plateHint"></div>
+  <!-- Popup: gợi ý tương tự (fuzzy match) -->
+  <div id="similarOverlay" class="popup-overlay">
+    <div class="popup-card">
+      <div class="popup-title">🔍 Có phải bạn đang tìm?</div>
+      <div class="popup-subtitle">Đối chiếu gần đúng với Danh_muc hiện có. Bấm để chọn.</div>
+      <div id="similarList"></div>
+      <div class="popup-footer-link">
+        Không có cái nào đúng?
+        <button type="button" id="similarGoAddNew">➕ Thêm mới vào Danh_muc</button>
       </div>
-
-      <div class="relative">
-        <label class="block font-semibold text-slate-700 text-xs mb-1">Đơn Vị Thực Hiện *</label>
-        <input id="unit" type="text" placeholder="Nhập hoặc chọn đơn vị..." autocomplete="off" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
-        <div id="unitSuggestions" class="suggestions absolute top-full left-0 right-0 bg-white border border-slate-300 border-t-0 rounded-b-lg max-h-40 overflow-y-auto z-50 shadow-lg"></div>
-        <div class="text-[11px] text-slate-500 mt-1 min-h-[14px]">&nbsp;</div>
+      <div class="popup-actions">
+        <button type="button" class="popup-btn-cancel" id="similarCloseBtn">Đóng</button>
       </div>
+    </div>
+  </div>
 
+  <!-- Popup: thêm nhanh vào Danh_muc -->
+  <div id="addDanhMucOverlay" class="popup-overlay">
+    <div class="popup-card">
+      <div class="popup-title">➕ Thêm hạng mục mới vào Danh_muc</div>
+      <div class="popup-subtitle">Lưu trực tiếp vào sheet Danh_muc, không cần rời khỏi form này.</div>
+
+      <div class="autocomplete-wrap" style="margin-bottom:10px;">
+        <label>Hệ thống *</label>
+        <input type="text" id="newHeThong" placeholder="vd: Động cơ" autocomplete="off">
+        <div class="suggestions" id="newHeThongSuggestions"></div>
+      </div>
+      <div class="autocomplete-wrap" style="margin-bottom:10px;">
+        <label>Tên hạng mục *</label>
+        <input type="text" id="newTenHangMuc" placeholder="vd: Lọc nhớt động cơ" autocomplete="off">
+        <div class="suggestions" id="newTenHangMucSuggestions"></div>
+      </div>
       <div>
-        <label class="block font-semibold text-slate-700 text-xs mb-1">Ngày Hoàn Thành * (dd/mm/yyyy)</label>
-        <input id="date" type="text" placeholder="vd: 15/07/2026" autocomplete="off" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
-        <div class="text-[11px] text-red-600 mt-1 min-h-[14px]" id="dateError"></div>
+        <label>Chi tiết công việc *</label>
+        <input type="text" id="newChiTiet" placeholder="vd: Lọc nhớt chính hãng (OEM)" autocomplete="off">
       </div>
 
-      <div>
-        <label class="block font-semibold text-slate-700 text-xs mb-1">Số Kilomet *</label>
-        <input id="km" type="number" step="0.001" placeholder="vd: 90000" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
-        <div class="text-[11px] text-slate-500 mt-1 min-h-[14px]" id="kmHint">&nbsp;</div>
+      <div class="popup-error" id="addDanhMucError"></div>
+      <div class="popup-actions">
+        <button type="button" class="popup-btn-cancel" id="addDanhMucCancelBtn">Hủy</button>
+        <button type="button" class="popup-btn-confirm" id="addDanhMucConfirmBtn">✓ Lưu vào Danh_muc</button>
       </div>
-    </div>
-
-    <div id="kmWarning" class="hidden mt-2 bg-orange-50 border border-orange-300 rounded-lg p-3 text-sm text-orange-800 shadow-sm mb-4">
-      <div class="font-medium mb-1">⚠️ <span id="kmWarningText"></span></div>
-      <label class="flex items-center gap-2 mt-2 font-normal cursor-pointer">
-        <input type="checkbox" id="kmConfirm" class="w-4 h-4 text-orange-600 rounded border-orange-300 focus:ring-orange-500">
-        <span>Tôi xác nhận đây là trường hợp đặc biệt (bổ sung/điều chỉnh), vẫn lưu số km này</span>
-      </label>
-    </div>
-
-    <h3 class="text-sm font-bold text-slate-700 border-b border-slate-200 pb-2 mb-3 mt-6">🧰 Hạng Mục Công Việc</h3>
-    
-    <div id="itemsContainer" class="flex flex-col gap-3"></div>
-    
-    <button type="button" id="addItemBtn" class="mt-3 w-full bg-blue-50 text-blue-700 border border-dashed border-blue-300 rounded-lg py-2.5 font-semibold text-sm cursor-pointer hover:bg-blue-100 transition-colors">
-      + Thêm hạng mục
-    </button>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-      <div class="md:col-start-3">
-        <label class="block font-semibold text-slate-700 text-xs mb-1">Tổng Tiền Báo Giá (VNĐ)</label>
-        <input id="tongTien" type="number" step="1" placeholder="vd: 2080512" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
-        <div class="text-[10.5px] text-slate-400 mt-1">Lưu 1 lần cho cả phiếu vào sheet "Phieu", không lặp lại ở từng hạng mục.</div>
-      </div>
-    </div>
-
-    <div id="globalError" class="text-xs text-red-600 mt-2 text-right font-medium"></div>
-
-    <div class="mt-6 flex justify-end gap-3 border-t border-slate-200 pt-4">
-      <button type="button" id="cancelBtn" class="bg-slate-100 text-slate-700 border border-slate-300 px-5 py-2.5 rounded-lg cursor-pointer text-sm font-medium hover:bg-slate-200 transition-colors">Xóa form</button>
-      <button type="button" id="saveBtn" class="bg-green-600 text-white border-none px-6 py-2.5 rounded-lg font-bold cursor-pointer text-sm shadow-sm hover:bg-green-700 hover:shadow disabled:bg-slate-400 disabled:cursor-not-allowed transition-all">💾 Lưu Dữ Liệu</button>
     </div>
   </div>
 
-<script>
-  const API_URL = 'https://script.google.com/macros/s/AKfycbyJtGnyQcq5bxvAHqARyZ11x0mXIVlttBo3P6o7bSk06K_iN7oImLGToWWxX3nFrTaguA/exec';
-  let INIT_DATA = { vehicles: [], vehicleUnitMap: {}, workItems: [], units: [], phanLoaiOptions: [] };
-  let itemCounter = 0;
-  let lastKmInfo = null;
+  <div class="section-label">🚗 Thông tin phiếu</div>
+  <div class="card">
+    <div class="top-grid">
+      <div class="autocomplete-wrap">
+        <label>Biển Số Xe *</label>
+        <input id="plate" type="text" placeholder="Nhập hoặc chọn biển số..." autocomplete="off">
+        <div id="plateSuggestions" class="suggestions"></div>
+        <div class="hint-text" id="plateHint">&nbsp;</div>
+      </div>
 
-  // Custom api wrapper to replace google.script.run
-  const api = {
-    withSuccessHandler: function(onSuccess) {
-      this.onSuccess = onSuccess;
-      return this;
-    },
-    withFailureHandler: function(onFailure) {
-      this.onFailure = onFailure;
-      return this;
-    },
-    _call: function(action, args) {
-      const successCb = this.onSuccess;
-      const failureCb = this.onFailure;
-      const finalUrl = API_URL + '?action=' + action;
-      
-      fetch(finalUrl, {
+      <div class="autocomplete-wrap">
+        <label>Đơn Vị Thực Hiện *</label>
+        <input id="unit" type="text" placeholder="Nhập hoặc chọn đơn vị..." autocomplete="off">
+        <div id="unitSuggestions" class="suggestions"></div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="keepUnitToggle">
+          <label for="keepUnitToggle" style="margin:0; font-weight:400; color:#475569;">Giữ đơn vị này cho phiếu tiếp
+            theo</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="top-grid-2">
+      <div>
+        <label>Ngày Hoàn Thành * (dd/mm/yyyy)</label>
+        <input id="date" type="text" placeholder="vd: 15/07/2026" autocomplete="off">
+        <div class="error-text" id="dateError"></div>
+      </div>
+      <div>
+        <label>Số Kilomet *</label>
+        <input id="km" type="number" step="0.001" placeholder="vd: 90000">
+        <div class="hint-text" id="kmHint">&nbsp;</div>
+      </div>
+    </div>
+
+    <div id="kmWarning" class="warning-box" style="display:none;">
+      ⚠️ <span id="kmWarningText"></span>
+      <label><input type="checkbox" id="kmConfirm"> Tôi xác nhận đây là trường hợp đặc biệt (bổ sung/điều chỉnh), vẫn
+        lưu số km này</label>
+    </div>
+  </div>
+
+  <div class="section-label">🧰 Hạng mục công việc</div>
+
+  <div id="quickChipsWrap">
+    <div class="quick-chips" id="quickChips"></div>
+  </div>
+
+  <div id="itemsContainer"></div>
+  <button type="button" id="addItemBtn">+ Thêm hạng mục</button>
+  <div class="items-footer-count" id="itemsCount"></div>
+
+  <div class="section-label">💰 Tổng tiền</div>
+  <div class="card">
+    <label>Tổng Tiền Báo Giá (VNĐ)</label>
+    <input id="tongTien" type="number" step="1" placeholder="vd: 2080512">
+    <div class="small-note">Lưu 1 lần cho cả phiếu vào sheet "Phieu", không lặp lại ở từng hạng mục.</div>
+  </div>
+
+  <div id="globalError"></div>
+
+  <div class="footer-bar">
+    <button type="button" id="cancelBtn" onclick="window.parent.postMessage({action: 'closeModal'}, '*')">Đóng</button>
+    <button type="button" id="saveBtn">💾 Lưu Dữ Liệu</button>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyJtGnyQcq5bxvAHqARyZ11x0mXIVlttBo3P6o7bSk06K_iN7oImLGToWWxX3nFrTaguA/exec";
+
+    function decompressKeys(obj) {
+      if (!obj || typeof obj !== 'object') return obj;
+      if (Array.isArray(obj)) return obj.map(decompressKeys);
+      const mapping = { p: 'plate', d: 'date', k: 'km', a: 'action', t: 'type', st: 'subType', vh: 'vehicles', stt: 'status' };
+      const newObj = {};
+      for (let key in obj) {
+        let newKey = Object.keys(mapping).find(k => mapping[k] === key) || key;
+        newObj[newKey] = decompressKeys(obj[key]);
+      }
+      return newObj;
+    }
+
+    function apiCall(action, payload) {
+      return fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: action, args: args })
+        body: JSON.stringify({ action: action, ...payload })
       })
+      .then(res => res.json())
       .then(res => {
-        if (!res.ok) throw new Error("Lỗi mạng: " + res.status);
-        return res.text();
-      })
-      .then(text => {
-        try { return JSON.parse(text); } catch (e) { throw new Error("Không thể parse JSON"); }
-      })
-      .then(data => {
-        if (data && (data.error || data.serverApiError)) {
-          if (failureCb) failureCb(new Error(data.error || data.serverApiError));
-        } else {
-          if (data && data.isCompressed) {
-            data = decompressKeys(data);
-          }
-          if (successCb) successCb(data);
+        if (res.stt === 'error' || res.status === 'error' || !res.success) {
+          throw new Error(res.error || res.message || 'Unknown error');
         }
-      })
-      .catch(err => {
-        if (failureCb) failureCb(err);
+        return decompressKeys(res.data);
       });
-    },
-    getFormInitData: function() { this._call('getFormInitData', []); },
-    getLastKmForPlate: function(plate) { this._call('getLastKmForPlate', [plate]); },
-    saveMaintenanceRecord: function(payload) { this._call('saveMaintenanceRecord', [payload]); }
-  };
-
-  function decompressKeys(obj) {
-    if (!obj || typeof obj !== 'object') return obj;
-    if (Array.isArray(obj)) return obj.map(decompressKeys);
-
-    const reverseMapping = {
-      p: 'plate', d: 'date', do: 'dateObj', kd: 'kmDisplay', k: 'km',
-      s: 'system', c: 'category', w: 'work', mt: 'maintenanceType',
-      dt: 'details', t: 'type', st: 'subType', vh: 'vehicles', stt: 'status'
-    };
-
-    const newObj = {};
-    for (let key in obj) {
-      let newKey = reverseMapping[key] || key;
-      let value = obj[key];
-      if (value && typeof value === 'object') {
-        newObj[newKey] = decompressKeys(value);
-      } else {
-        newObj[newKey] = value;
-      }
     }
-    return newObj;
-  }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    api.withSuccessHandler(onInitLoaded).withFailureHandler(onInitFailed).getFormInitData();
-  });
+    let INIT_DATA = { vehicles: [], vehicleUnitMap: {}, workItems: [], units: [], phanLoaiOptions: [], chiTietDefaults: {}, topChiTiet: [] };
+    let itemCounter = 0;
+    let lastKmInfo = null;
 
-  function onInitFailed(err) {
-    document.getElementById('loadingText').innerText = 'Lỗi tải dữ liệu: ' + (err.message || err);
-    document.querySelector('.animate-spin').style.display = 'none';
-  }
-
-  function onInitLoaded(data) {
-    INIT_DATA = data;
-    document.getElementById('loadingOverlay').style.display = 'none';
-    
-    setupAutocomplete(document.getElementById('plate'), document.getElementById('plateSuggestions'),
-      function () { return INIT_DATA.vehicles || []; },
-      function (val) {
-        document.getElementById('plate').value = val;
-        const knownUnit = INIT_DATA.vehicleUnitMap ? INIT_DATA.vehicleUnitMap[val] : null;
-        if (knownUnit) document.getElementById('unit').value = knownUnit;
-        refreshLastKm(val);
-      }
-    );
-    
-    document.getElementById('plate').addEventListener('blur', function () {
-      refreshLastKm(this.value.trim());
+    document.addEventListener('DOMContentLoaded', function () {
+      apiCall('getFormInitData', {}).then(onInitLoaded).catch(onInitFailed);
     });
 
-    setupAutocomplete(document.getElementById('unit'), document.getElementById('unitSuggestions'),
-      function () { return INIT_DATA.executionUnits || []; },
-      function (val) { document.getElementById('unit').value = val; }
-    );
+    function onInitFailed(err) {
+      document.getElementById('loadingOverlay').innerText = 'Lỗi tải dữ liệu: ' + (err.message || err);
+    }
 
-    addItemRow();
-  }
-
-  function refreshLastKm(plate) {
-    lastKmInfo = null;
-    document.getElementById('kmHint').innerText = '';
-    if (!plate) return;
-    
-    document.getElementById('loadingOverlay').style.display = 'flex';
-    document.getElementById('loadingText').innerText = 'Đang kiểm tra KM...';
-    document.querySelector('.animate-spin').style.display = 'block';
-
-    api.withSuccessHandler(function (info) {
+    function onInitLoaded(data) {
+      INIT_DATA = data;
       document.getElementById('loadingOverlay').style.display = 'none';
-      lastKmInfo = info;
-      const hintEl = document.getElementById('kmHint');
-      if (info && info.km) {
-        hintEl.innerText = 'Km gần nhất của xe này: ' + Number(info.km).toLocaleString('vi-VN') + ' (ngày ' + info.date + ')';
-      } else {
-        hintEl.innerText = 'Chưa có dữ liệu km trước đó cho xe này.';
-      }
-      validateKm();
-    }).withFailureHandler(function(err) {
-      document.getElementById('loadingOverlay').style.display = 'none';
-      console.error(err);
-    }).getLastKmForPlate(plate);
-  }
 
-  function validateKm() {
-    const kmVal = Number(document.getElementById('km').value);
-    const warnBox = document.getElementById('kmWarning');
-    const warnText = document.getElementById('kmWarningText');
-    if (lastKmInfo && lastKmInfo.km && !isNaN(kmVal) && kmVal > 0 && kmVal < Number(lastKmInfo.km)) {
-      warnText.innerText = 'Số km bạn nhập (' + kmVal.toLocaleString('vi-VN') + ') NHỎ HƠN số km lần trước (' +
-        Number(lastKmInfo.km).toLocaleString('vi-VN') + ' - ngày ' + lastKmInfo.date + ').';
-      warnBox.classList.remove('hidden');
-    } else {
-      warnBox.classList.add('hidden');
-      document.getElementById('kmConfirm').checked = false;
-    }
-  }
-  document.getElementById('km').addEventListener('input', validateKm);
-
-  /* ---------- Autocomplete dùng chung ---------- */
-  function setupAutocomplete(inputEl, boxEl, getListFn, onSelectFn) {
-    inputEl.addEventListener('input', function () {
-      document.getElementById('successBanner').classList.add('hidden');
-      const q = this.value.trim().toLowerCase();
-      const list = getListFn();
-      if (!q) { boxEl.classList.remove('active'); return; }
-      const matches = list.filter(v => v && v.toLowerCase().includes(q)).slice(0, 30);
-      renderSuggestions(boxEl, matches, onSelectFn, inputEl);
-    });
-    inputEl.addEventListener('focus', function () {
-      const list = getListFn();
-      if (list.length) renderSuggestions(boxEl, list.slice(0, 30), onSelectFn, inputEl);
-    });
-    document.addEventListener('click', function (e) {
-      if (!boxEl.contains(e.target) && e.target !== inputEl) boxEl.classList.remove('active');
-    });
-  }
-
-  function renderSuggestions(boxEl, matches, onSelectFn, inputEl) {
-    boxEl.innerHTML = '';
-    if (matches.length === 0) { boxEl.classList.remove('active'); return; }
-    matches.forEach(function (m) {
-      const div = document.createElement('div');
-      div.innerText = m;
-      div.className = 'px-3 py-2 cursor-pointer text-sm text-slate-700 hover:bg-blue-50 transition-colors border-b border-slate-100 last:border-0';
-      div.addEventListener('mousedown', function (e) {
-        e.preventDefault();
-        onSelectFn(m);
-        boxEl.classList.remove('active');
-      });
-      boxEl.appendChild(div);
-    });
-    boxEl.classList.add('active');
-  }
-
-  /* ---------- Quản lý hạng mục ---------- */
-  function addItemRow() {
-    itemCounter++;
-    const id = itemCounter;
-    const container = document.getElementById('itemsContainer');
-    const row = document.createElement('div');
-    row.className = 'item-row bg-white p-4 border border-slate-200 rounded-xl relative shadow-sm grid grid-cols-1 sm:grid-cols-12 gap-3 items-start';
-    row.dataset.itemId = id;
-    
-    let phanLoaiOpts = '<option value="">-- chọn --</option>';
-    if (INIT_DATA.phanLoaiOptions && INIT_DATA.phanLoaiOptions.length) {
-      phanLoaiOpts += INIT_DATA.phanLoaiOptions.map(p => '<option value="' + p + '">' + p + '</option>').join('');
-    }
-
-    row.innerHTML = `
-      <div class="stt-badge absolute -top-2 -left-2 bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-sm">${container.children.length + 1}</div>
-      <div class="sm:col-span-3">
-        <label class="block font-semibold text-slate-700 text-xs mb-1">Phân loại *</label>
-        <select class="fld-phanloai w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
-          ${phanLoaiOpts}
-        </select>
-      </div>
-      <div class="sm:col-span-4 relative">
-        <label class="block font-semibold text-slate-700 text-xs mb-1">Chi tiết công việc *</label>
-        <input type="text" class="fld-chitiet w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow" placeholder="Gõ để tìm..." autocomplete="off">
-        <div class="suggestions fld-chitiet-suggestions absolute top-full left-0 right-0 bg-white border border-slate-300 border-t-0 rounded-b-lg max-h-40 overflow-y-auto z-50 shadow-lg"></div>
-        <div class="small-note fld-chitiet-note text-[10.5px] text-slate-400 mt-1"></div>
-      </div>
-      <div class="sm:col-span-2">
-        <label class="block font-semibold text-slate-700 text-xs mb-1">Số lượng *</label>
-        <input type="number" step="0.01" class="fld-soluong w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow" placeholder="1">
-      </div>
-      <div class="sm:col-span-2 relative">
-        <label class="block font-semibold text-slate-700 text-xs mb-1">Đơn vị *</label>
-        <input type="text" class="fld-donvi w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow" placeholder="Cái/Lít..." autocomplete="off">
-        <div class="suggestions fld-donvi-suggestions absolute top-full left-0 right-0 bg-white border border-slate-300 border-t-0 rounded-b-lg max-h-40 overflow-y-auto z-50 shadow-lg"></div>
-      </div>
-      <div class="sm:col-span-1 flex justify-end sm:mt-6">
-        <button type="button" class="remove-btn bg-red-100 text-red-700 border-none rounded-lg w-8 h-8 sm:w-full sm:h-[38px] flex items-center justify-center cursor-pointer hover:bg-red-200 transition-colors" title="Xóa hạng mục">✕</button>
-      </div>
-    `;
-
-    container.appendChild(row);
-
-    const chiTietInput = row.querySelector('.fld-chitiet');
-    const chiTietBox = row.querySelector('.fld-chitiet-suggestions');
-    const chiTietNote = row.querySelector('.fld-chitiet-note');
-    setupAutocomplete(chiTietInput, chiTietBox,
-      function () { return INIT_DATA.workItems || []; },
-      function (val) {
-        chiTietInput.value = val;
-        chiTietNote.innerText = '';
-        chiTietInput.classList.remove('border-red-500');
-      }
-    );
-    chiTietInput.addEventListener('blur', function () {
-      const v = this.value.trim();
-      if (v && INIT_DATA.workItems && INIT_DATA.workItems.indexOf(v) === -1) {
-        chiTietNote.innerHTML = '<span class="text-red-500">⚠️ Không khớp Danh_muc — có thể để trống.</span>';
-        chiTietInput.classList.add('border-red-500');
-      } else {
-        chiTietNote.innerText = '';
-        chiTietInput.classList.remove('border-red-500');
-      }
-    });
-
-    const donViInput = row.querySelector('.fld-donvi');
-    const donViBox = row.querySelector('.fld-donvi-suggestions');
-    setupAutocomplete(donViInput, donViBox,
-      function () { return INIT_DATA.units || []; },
-      function (val) { donViInput.value = val; }
-    );
-
-    row.querySelector('.remove-btn').addEventListener('click', function () {
-      row.remove();
-      renumberItems();
-    });
-
-    renumberItems();
-  }
-
-  function renumberItems() {
-    const rows = document.querySelectorAll('.item-row');
-    rows.forEach(function (r, i) {
-      r.querySelector('.stt-badge').innerText = i + 1;
-    });
-  }
-
-  document.getElementById('addItemBtn').addEventListener('click', addItemRow);
-  
-  // Custom Cancel Button Action (since it's not a native Google popup anymore)
-  document.getElementById('cancelBtn').addEventListener('click', function() {
-    if(confirm('Bạn có chắc muốn xóa trắng toàn bộ dữ liệu trên form?')) {
-      resetFormForNextEntry();
-    }
-  });
-
-  /* ---------- Validate & Save ---------- */
-  function parseDateStr(str) {
-    const m = str.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if (!m) return null;
-    const dd = parseInt(m[1], 10), mm = parseInt(m[2], 10), yyyy = parseInt(m[3], 10);
-    if (mm < 1 || mm > 12) return null;
-    const daysInMonth = new Date(yyyy, mm, 0).getDate();
-    if (dd < 1 || dd > daysInMonth) return null;
-    return { dd: dd, mm: mm, yyyy: yyyy };
-  }
-
-  function isKnownUnit(val) {
-    const target = val.trim().toLowerCase();
-    return (INIT_DATA.executionUnits || []).some(u => u.trim().toLowerCase() === target);
-  }
-
-  function doSave(payload) {
-    const globalErr = document.getElementById('globalError');
-    const saveBtn = document.getElementById('saveBtn');
-    saveBtn.disabled = true;
-    saveBtn.innerText = 'Đang lưu...';
-    
-    document.getElementById('loadingOverlay').style.display = 'flex';
-    document.getElementById('loadingText').innerText = 'Đang lưu dữ liệu...';
-    document.querySelector('.animate-spin').style.display = 'block';
-
-    api
-      .withSuccessHandler(function (res) {
-        document.getElementById('loadingOverlay').style.display = 'none';
-        onSaveSuccess(res, payload);
-      })
-      .withFailureHandler(function (err) {
-        document.getElementById('loadingOverlay').style.display = 'none';
-        saveBtn.disabled = false;
-        saveBtn.innerText = '💾 Lưu Dữ Liệu';
-        globalErr.innerText = 'Lỗi khi lưu: ' + (err.message || err);
-      })
-      .saveMaintenanceRecord(payload);
-  }
-
-  function onSaveSuccess(res, payload) {
-    if (INIT_DATA.vehicles && INIT_DATA.vehicles.indexOf(payload.plate) === -1) INIT_DATA.vehicles.push(payload.plate);
-    if(!INIT_DATA.vehicleUnitMap) INIT_DATA.vehicleUnitMap = {};
-    INIT_DATA.vehicleUnitMap[payload.plate] = payload.unit;
-    if (!isKnownUnit(payload.unit)) {
-      INIT_DATA.executionUnits = INIT_DATA.executionUnits || [];
-      INIT_DATA.executionUnits.push(payload.unit);
-    }
-
-    const banner = document.getElementById('successBanner');
-    banner.innerText = '✅ ' + (res.message || 'Lưu thành công') + ' — form đã sẵn sàng để nhập phiếu tiếp theo.';
-    banner.classList.remove('hidden');
-
-    resetFormForNextEntry();
-
-    const saveBtn = document.getElementById('saveBtn');
-    saveBtn.disabled = false;
-    saveBtn.innerText = '💾 Lưu Dữ Liệu';
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function resetFormForNextEntry() {
-    document.getElementById('plate').value = '';
-    document.getElementById('unit').value = '';
-    document.getElementById('date').value = '';
-    document.getElementById('km').value = '';
-    document.getElementById('tongTien').value = '';
-    document.getElementById('dateError').innerText = '';
-    document.getElementById('globalError').innerText = '';
-    document.getElementById('kmHint').innerText = '';
-    document.getElementById('kmWarning').classList.add('hidden');
-    document.getElementById('kmConfirm').checked = false;
-    lastKmInfo = null;
-
-    document.getElementById('itemsContainer').innerHTML = '';
-    addItemRow();
-
-    document.getElementById('plate').focus();
-  }
-
-  function askAddNewUnit(unitName, onConfirm, onCancel) {
-    const overlay = document.getElementById('newUnitOverlay');
-    document.getElementById('newUnitMessage').innerText =
-      'Đơn vị "' + unitName + '" chưa có trong danh sách hiện có. Bạn có muốn thêm mới đơn vị này không? ' +
-      'Sau khi xác nhận, đơn vị này sẽ được lưu và xuất hiện trong gợi ý cho các lần nhập sau.';
-    overlay.classList.remove('hidden');
-    overlay.classList.add('flex');
-
-    const confirmBtn = document.getElementById('newUnitConfirmBtn');
-    const cancelBtn = document.getElementById('newUnitCancelBtn');
-
-    function cleanup() {
-      overlay.classList.add('hidden');
-      overlay.classList.remove('flex');
-      confirmBtn.removeEventListener('click', handleConfirm);
-      cancelBtn.removeEventListener('click', handleCancel);
-    }
-    function handleConfirm() { cleanup(); onConfirm(); }
-    function handleCancel() { cleanup(); onCancel(); }
-
-    confirmBtn.addEventListener('click', handleConfirm);
-    cancelBtn.addEventListener('click', handleCancel);
-  }
-
-  document.getElementById('saveBtn').addEventListener('click', function () {
-    const globalErr = document.getElementById('globalError');
-    globalErr.innerText = '';
-
-    const plate = document.getElementById('plate').value.trim();
-    const unit = document.getElementById('unit').value.trim();
-    const dateStr = document.getElementById('date').value.trim();
-    const km = document.getElementById('km').value;
-    const tongTien = document.getElementById('tongTien').value;
-
-    const dateErrEl = document.getElementById('dateError');
-    dateErrEl.innerText = '';
-    const dateParsed = parseDateStr(dateStr);
-    if (!dateParsed) dateErrEl.innerText = 'Định dạng phải là dd/mm/yyyy, vd 15/07/2026.';
-
-    const kmWarnVisible = !document.getElementById('kmWarning').classList.contains('hidden');
-    const kmConfirmed = document.getElementById('kmConfirm').checked;
-
-    let errors = [];
-    if (!plate) errors.push('Thiếu Biển số xe.');
-    if (!unit) errors.push('Thiếu Đơn vị thực hiện.');
-    if (!dateParsed) errors.push('Ngày hoàn thành không hợp lệ.');
-    if (!km || isNaN(Number(km)) || Number(km) <= 0) errors.push('Thiếu/ sai Số kilomet.');
-    if (kmWarnVisible && !kmConfirmed) errors.push('Vui lòng tick xác nhận trường hợp km nhỏ hơn lần trước, hoặc sửa lại số km.');
-
-    const itemRows = document.querySelectorAll('.item-row');
-    if (itemRows.length === 0) errors.push('Cần ít nhất 1 hạng mục công việc.');
-
-    const items = [];
-    itemRows.forEach(function (r, idx) {
-      const phanLoai = r.querySelector('.fld-phanloai').value;
-      const chiTiet = r.querySelector('.fld-chitiet').value.trim();
-      const soLuong = r.querySelector('.fld-soluong').value;
-      const donVi = r.querySelector('.fld-donvi').value.trim();
-      if (!phanLoai) errors.push('Hạng mục #' + (idx + 1) + ': thiếu Phân loại.');
-      if (!chiTiet) errors.push('Hạng mục #' + (idx + 1) + ': thiếu Chi tiết công việc.');
-      if (!soLuong || isNaN(Number(soLuong)) || Number(soLuong) <= 0) errors.push('Hạng mục #' + (idx + 1) + ': thiếu/sai Số lượng.');
-      if (!donVi) errors.push('Hạng mục #' + (idx + 1) + ': thiếu Đơn vị.');
-      items.push({ phanLoai: phanLoai, chiTiet: chiTiet, soLuong: soLuong, donVi: donVi });
-    });
-
-    if (errors.length > 0) {
-      globalErr.innerText = errors.join(' ');
-      return;
-    }
-
-    const payload = {
-      plate: plate,
-      unit: unit,
-      date: dateParsed,
-      km: km,
-      tongTien: tongTien,
-      items: items
-    };
-
-    if (!isKnownUnit(unit)) {
-      askAddNewUnit(unit,
-        function onConfirm() {
-          INIT_DATA.executionUnits = INIT_DATA.executionUnits || [];
-          INIT_DATA.executionUnits.push(unit);
-          doSave(payload);
-        },
-        function onCancel() {
-          document.getElementById('unit').focus();
+      setupAutocomplete(document.getElementById('plate'), document.getElementById('plateSuggestions'),
+        function () { return INIT_DATA.vehicles; },
+        function (val) {
+          document.getElementById('plate').value = val;
+          const knownUnit = INIT_DATA.vehicleUnitMap[val];
+          if (knownUnit && !document.getElementById('keepUnitToggle').checked) {
+            document.getElementById('unit').value = knownUnit;
+          }
+          refreshLastKm(val);
         }
       );
-      return;
+      document.getElementById('plate').addEventListener('blur', function () { refreshLastKm(this.value.trim()); });
+
+      setupAutocomplete(document.getElementById('unit'), document.getElementById('unitSuggestions'),
+        function () { return INIT_DATA.executionUnits || []; },
+        function (val) { document.getElementById('unit').value = val; }
+      );
+
+      renderQuickChips();
+      addItemRow();
     }
 
-    doSave(payload);
-  });
-</script>
+    function renderQuickChips() {
+      const wrap = document.getElementById('quickChips');
+      wrap.innerHTML = '';
+      (INIT_DATA.topChiTiet || []).forEach(function (chiTiet) {
+        const chip = document.createElement('div');
+        chip.className = 'chip';
+        chip.innerText = '+ ' + chiTiet;
+        chip.title = 'Thêm nhanh hạng mục này';
+        chip.addEventListener('click', function () { addItemRow(chiTiet); });
+        wrap.appendChild(chip);
+      });
+      if ((INIT_DATA.topChiTiet || []).length === 0) {
+        document.getElementById('quickChipsWrap').style.display = 'none';
+      }
+    }
+
+    function refreshLastKm(plate) {
+      lastKmInfo = null;
+      document.getElementById('kmHint').innerText = '';
+      if (!plate) return;
+      apiCall('getLastKmForPlate', { args: [plate] })
+        .then(function (info) {
+        lastKmInfo = info;
+        const hintEl = document.getElementById('kmHint');
+        hintEl.innerText = info
+          ? 'Km gần nhất của xe này: ' + Number(info.km).toLocaleString('vi-VN') + ' (ngày ' + info.date + ')'
+          : 'Chưa có dữ liệu km trước đó cho xe này.';
+        validateKm();
+      }).catch(e => console.error(e));
+    }
+
+    function validateKm() {
+      const kmVal = Number(document.getElementById('km').value);
+      const warnBox = document.getElementById('kmWarning');
+      const warnText = document.getElementById('kmWarningText');
+      if (lastKmInfo && !isNaN(kmVal) && kmVal > 0 && kmVal < Number(lastKmInfo.km)) {
+        warnText.innerText = 'Số km bạn nhập (' + kmVal.toLocaleString('vi-VN') + ') NHỎ HƠN số km lần trước (' +
+          Number(lastKmInfo.km).toLocaleString('vi-VN') + ' - ngày ' + lastKmInfo.date + ').';
+        warnBox.style.display = 'block';
+      } else {
+        warnBox.style.display = 'none';
+        document.getElementById('kmConfirm').checked = false;
+      }
+    }
+    document.getElementById('km').addEventListener('input', validateKm);
+
+    /* ---------- Autocomplete dùng chung ---------- */
+    function setupAutocomplete(inputEl, boxEl, getListFn, onSelectFn) {
+      inputEl.addEventListener('input', function () {
+        document.getElementById('successBanner').style.display = 'none';
+        const q = this.value.trim().toLowerCase();
+        const list = getListFn();
+        if (!q) { boxEl.style.display = 'none'; return; }
+        const matches = list.filter(v => v.toLowerCase().includes(q)).slice(0, 30);
+        renderSuggestions(boxEl, matches, onSelectFn);
+      });
+      inputEl.addEventListener('focus', function () {
+        const list = getListFn();
+        if (list.length) renderSuggestions(boxEl, list.slice(0, 30), onSelectFn);
+      });
+      document.addEventListener('click', function (e) {
+        if (!boxEl.contains(e.target) && e.target !== inputEl) boxEl.style.display = 'none';
+      });
+    }
+
+    function renderSuggestions(boxEl, matches, onSelectFn) {
+      boxEl.innerHTML = '';
+      if (matches.length === 0) { boxEl.style.display = 'none'; return; }
+      matches.forEach(function (m) {
+        const div = document.createElement('div');
+        div.innerText = m;
+        div.addEventListener('mousedown', function (e) {
+          e.preventDefault();
+          onSelectFn(m);
+          boxEl.style.display = 'none';
+        });
+        boxEl.appendChild(div);
+      });
+      boxEl.style.display = 'block';
+    }
+
+    /* ---------- Quản lý hạng mục ---------- */
+    function addItemRow(prefillChiTiet, copyFrom) {
+      itemCounter++;
+      const container = document.getElementById('itemsContainer');
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML =
+        '<div class="stt-badge">' + (container.children.length + 1) + '</div>' +
+        '<div>' +
+        '<label>Phân loại *</label>' +
+        '<select class="fld-phanloai">' +
+        '<option value="">-- chọn --</option>' +
+        INIT_DATA.phanLoaiOptions.map(p => '<option value="' + p + '">' + p + '</option>').join('') +
+        '</select>' +
+        '</div>' +
+        '<div class="autocomplete-wrap">' +
+        '<label>Chi tiết công việc *</label>' +
+        '<input type="text" class="fld-chitiet" placeholder="Gõ để tìm trong Danh_muc..." autocomplete="off">' +
+        '<div class="suggestions fld-chitiet-suggestions"></div>' +
+        '<div class="chitiet-actions fld-chitiet-actions" style="display:none;">' +
+        '<button type="button" class="text-link-btn find">🔍 Tìm tương tự</button>' +
+        '<button type="button" class="text-link-btn addnew">➕ Thêm mới</button>' +
+        '</div>' +
+        '</div>' +
+        '<div>' +
+        '<label>Số lượng *</label>' +
+        '<input type="number" step="0.01" class="fld-soluong" placeholder="1">' +
+        '</div>' +
+        '<div class="autocomplete-wrap">' +
+        '<label>Đơn vị *</label>' +
+        '<input type="text" class="fld-donvi" placeholder="Cái/Lít..." autocomplete="off">' +
+        '<div class="suggestions fld-donvi-suggestions"></div>' +
+        '</div>' +
+        '<button type="button" class="icon-btn dup-btn" title="Nhân bản hạng mục này">⧉</button>' +
+        '<button type="button" class="icon-btn remove-btn" title="Xóa hạng mục">✕</button>';
+
+      container.appendChild(row);
+
+      const phanLoaiSelect = row.querySelector('.fld-phanloai');
+      const chiTietInput = row.querySelector('.fld-chitiet');
+      const chiTietBox = row.querySelector('.fld-chitiet-suggestions');
+      const chiTietActions = row.querySelector('.fld-chitiet-actions');
+      const findBtn = row.querySelector('.text-link-btn.find');
+      const addNewBtn = row.querySelector('.text-link-btn.addnew');
+      const donViInput = row.querySelector('.fld-donvi');
+      const donViBox = row.querySelector('.fld-donvi-suggestions');
+      const soLuongInput = row.querySelector('.fld-soluong');
+
+      function applySmartDefaults(chiTietVal) {
+        const key = chiTietVal.trim().toLowerCase();
+        const defaults = INIT_DATA.chiTietDefaults && INIT_DATA.chiTietDefaults[key];
+        if (!defaults) return;
+        if (defaults.phanLoai && !phanLoaiSelect.value) phanLoaiSelect.value = defaults.phanLoai;
+        if (defaults.donVi && !donViInput.value) donViInput.value = defaults.donVi;
+      }
+
+      function markValid() {
+        chiTietActions.style.display = 'none';
+        chiTietInput.classList.remove('field-invalid');
+      }
+      function markInvalid() {
+        chiTietActions.style.display = 'flex';
+        chiTietInput.classList.add('field-invalid');
+      }
+      function selectChiTiet(val) {
+        chiTietInput.value = val;
+        markValid();
+        applySmartDefaults(val);
+      }
+
+      setupAutocomplete(chiTietInput, chiTietBox,
+        function () { return INIT_DATA.workItems; },
+        function (val) { selectChiTiet(val); }
+      );
+      chiTietInput.addEventListener('blur', function () {
+        setTimeout(function () { // trễ 1 chút để click nút hành động không bị mất trước khi xử lý
+          const v = chiTietInput.value.trim();
+          if (!v) { chiTietActions.style.display = 'none'; return; }
+          if (INIT_DATA.workItems.indexOf(v) === -1) markInvalid();
+          else { markValid(); applySmartDefaults(v); }
+        }, 150);
+      });
+
+      findBtn.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        openSimilarPopup(chiTietInput.value.trim(), selectChiTiet);
+      });
+      addNewBtn.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        openAddDanhMucPopup(chiTietInput.value.trim(), selectChiTiet);
+      });
+
+      setupAutocomplete(donViInput, donViBox,
+        function () { return INIT_DATA.units; },
+        function (val) { donViInput.value = val; }
+      );
+
+      row.querySelector('.remove-btn').addEventListener('click', function () {
+        row.remove();
+        renumberItems();
+      });
+      row.querySelector('.dup-btn').addEventListener('click', function () {
+        addItemRow(null, {
+          phanLoai: phanLoaiSelect.value,
+          chiTiet: chiTietInput.value,
+          soLuong: soLuongInput.value,
+          donVi: donViInput.value
+        });
+      });
+
+      if (copyFrom) {
+        phanLoaiSelect.value = copyFrom.phanLoai || '';
+        chiTietInput.value = copyFrom.chiTiet || '';
+        soLuongInput.value = copyFrom.soLuong || '';
+        donViInput.value = copyFrom.donVi || '';
+      } else if (prefillChiTiet) {
+        chiTietInput.value = prefillChiTiet;
+        soLuongInput.value = '1';
+        applySmartDefaults(prefillChiTiet);
+      }
+
+      renumberItems();
+      if (!copyFrom && !prefillChiTiet) chiTietInput.focus();
+    }
+
+    function renumberItems() {
+      const rows = document.querySelectorAll('.item-row');
+      rows.forEach(function (r, i) { r.querySelector('.stt-badge').innerText = i + 1; });
+      document.getElementById('itemsCount').innerText = rows.length + ' hạng mục';
+    }
+
+    document.getElementById('addItemBtn').addEventListener('click', function () { addItemRow(); });
+
+    /* ---------- Validate & Save ---------- */
+    function parseDateStr(str) {
+      const m = str.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (!m) return null;
+      const dd = parseInt(m[1], 10), mm = parseInt(m[2], 10), yyyy = parseInt(m[3], 10);
+      if (mm < 1 || mm > 12) return null;
+      const daysInMonth = new Date(yyyy, mm, 0).getDate();
+      if (dd < 1 || dd > daysInMonth) return null;
+      return { dd: dd, mm: mm, yyyy: yyyy };
+    }
+
+    function isKnownUnit(val) {
+      const target = val.trim().toLowerCase();
+      return (INIT_DATA.executionUnits || []).some(u => u.trim().toLowerCase() === target);
+    }
+
+    function doSave(payload) {
+      const globalErr = document.getElementById('globalError');
+      const saveBtn = document.getElementById('saveBtn');
+      saveBtn.disabled = true;
+      saveBtn.innerText = 'Đang lưu...';
+
+      apiCall('saveMaintenanceRecord', { args: [payload] })
+        .then(function (res) { onSaveSuccess(res, payload); })
+        .catch(function (err) {
+          saveBtn.disabled = false;
+          saveBtn.innerText = '💾 Lưu Dữ Liệu';
+          globalErr.innerText = 'Lỗi khi lưu: ' + (err.message || err);
+        });
+    }
+
+    function onSaveSuccess(res, payload) {
+      if (INIT_DATA.vehicles.indexOf(payload.plate) === -1) INIT_DATA.vehicles.push(payload.plate);
+      INIT_DATA.vehicleUnitMap[payload.plate] = payload.unit;
+      if (!isKnownUnit(payload.unit)) {
+        INIT_DATA.executionUnits = INIT_DATA.executionUnits || [];
+        INIT_DATA.executionUnits.push(payload.unit);
+      }
+
+      const banner = document.getElementById('successBanner');
+      banner.innerText = '✅ ' + res.message + ' — form đã sẵn sàng để nhập phiếu tiếp theo.';
+      banner.style.display = 'block';
+
+      resetFormForNextEntry();
+
+      const saveBtn = document.getElementById('saveBtn');
+      saveBtn.disabled = false;
+      saveBtn.innerText = '💾 Lưu Dữ Liệu';
+    }
+
+    function resetFormForNextEntry() {
+      document.getElementById('plate').value = '';
+      if (!document.getElementById('keepUnitToggle').checked) {
+        document.getElementById('unit').value = '';
+      }
+      document.getElementById('date').value = '';
+      document.getElementById('km').value = '';
+      document.getElementById('tongTien').value = '';
+      document.getElementById('dateError').innerText = '';
+      document.getElementById('globalError').innerText = '';
+      document.getElementById('kmHint').innerText = '';
+      document.getElementById('kmWarning').style.display = 'none';
+      document.getElementById('kmConfirm').checked = false;
+      lastKmInfo = null;
+
+      document.getElementById('itemsContainer').innerHTML = '';
+      addItemRow();
+
+      document.getElementById('plate').focus();
+    }
+
+    function askAddNewUnit(unitName, onConfirm, onCancel) {
+      const overlay = document.getElementById('newUnitOverlay');
+      document.getElementById('newUnitMessage').innerText =
+        'Đơn vị "' + unitName + '" chưa có trong danh sách hiện có. Bạn có muốn thêm mới đơn vị này không? ' +
+        'Sau khi xác nhận, đơn vị này sẽ được lưu và xuất hiện trong gợi ý cho các lần nhập sau.';
+      overlay.style.display = 'flex';
+
+      const confirmBtn = document.getElementById('newUnitConfirmBtn');
+      const cancelBtn = document.getElementById('newUnitCancelBtn');
+
+      function cleanup() {
+        overlay.style.display = 'none';
+        confirmBtn.removeEventListener('click', handleConfirm);
+        cancelBtn.removeEventListener('click', handleCancel);
+      }
+      function handleConfirm() { cleanup(); onConfirm(); }
+      function handleCancel() { cleanup(); onCancel(); }
+
+      confirmBtn.addEventListener('click', handleConfirm);
+      cancelBtn.addEventListener('click', handleCancel);
+    }
+
+    document.getElementById('saveBtn').addEventListener('click', function () {
+      const globalErr = document.getElementById('globalError');
+      globalErr.innerText = '';
+
+      const plate = document.getElementById('plate').value.trim();
+      const unit = document.getElementById('unit').value.trim();
+      const dateStr = document.getElementById('date').value.trim();
+      const km = document.getElementById('km').value;
+      const tongTien = document.getElementById('tongTien').value;
+
+      const dateErrEl = document.getElementById('dateError');
+      dateErrEl.innerText = '';
+      const dateParsed = parseDateStr(dateStr);
+      if (!dateParsed) dateErrEl.innerText = 'Định dạng phải là dd/mm/yyyy, vd 15/07/2026.';
+
+      const kmWarnVisible = document.getElementById('kmWarning').style.display === 'block';
+      const kmConfirmed = document.getElementById('kmConfirm').checked;
+
+      let errors = [];
+      if (!plate) errors.push('Thiếu Biển số xe.');
+      if (!unit) errors.push('Thiếu Đơn vị thực hiện.');
+      if (!dateParsed) errors.push('Ngày hoàn thành không hợp lệ.');
+      if (!km || isNaN(Number(km)) || Number(km) <= 0) errors.push('Thiếu/ sai Số kilomet.');
+      if (kmWarnVisible && !kmConfirmed) errors.push('Vui lòng tick xác nhận trường hợp km nhỏ hơn lần trước, hoặc sửa lại số km.');
+
+      const itemRows = document.querySelectorAll('.item-row');
+      if (itemRows.length === 0) errors.push('Cần ít nhất 1 hạng mục công việc.');
+
+      const items = [];
+      itemRows.forEach(function (r, idx) {
+        const phanLoai = r.querySelector('.fld-phanloai').value;
+        const chiTiet = r.querySelector('.fld-chitiet').value.trim();
+        const soLuong = r.querySelector('.fld-soluong').value;
+        const donVi = r.querySelector('.fld-donvi').value.trim();
+        if (!phanLoai) errors.push('Hạng mục #' + (idx + 1) + ': thiếu Phân loại.');
+        if (!chiTiet) errors.push('Hạng mục #' + (idx + 1) + ': thiếu Chi tiết công việc.');
+        if (!soLuong || isNaN(Number(soLuong)) || Number(soLuong) <= 0) errors.push('Hạng mục #' + (idx + 1) + ': thiếu/sai Số lượng.');
+        if (!donVi) errors.push('Hạng mục #' + (idx + 1) + ': thiếu Đơn vị.');
+        items.push({ phanLoai: phanLoai, chiTiet: chiTiet, soLuong: soLuong, donVi: donVi });
+      });
+
+      if (errors.length > 0) {
+        globalErr.innerText = errors.join(' ');
+        return;
+      }
+
+      const payload = { plate: plate, unit: unit, date: dateParsed, km: km, tongTien: tongTien, items: items };
+
+      if (!isKnownUnit(unit)) {
+        askAddNewUnit(unit,
+          function onConfirm() {
+            INIT_DATA.executionUnits = INIT_DATA.executionUnits || [];
+            INIT_DATA.executionUnits.push(unit);
+            doSave(payload);
+          },
+          function onCancel() { document.getElementById('unit').focus(); }
+        );
+        return;
+      }
+
+      doSave(payload);
+    });
+
+    /* =========================================================
+     * FUZZY MATCH: so khớp gần đúng với Danh_muc (chạy trên trình duyệt)
+     * ========================================================= */
+    function levenshtein_(a, b) {
+      const m = a.length, n = b.length;
+      const dp = new Array(n + 1);
+      for (let j = 0; j <= n; j++) dp[j] = j;
+      for (let i = 1; i <= m; i++) {
+        let prev = dp[0];
+        dp[0] = i;
+        for (let j = 1; j <= n; j++) {
+          const tmp = dp[j];
+          dp[j] = Math.min(dp[j] + 1, dp[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+          prev = tmp;
+        }
+      }
+      return dp[n];
+    }
+
+    function similarityScore_(a, b) {
+      const normA = a.toLowerCase().trim();
+      const normB = b.toLowerCase().trim();
+      if (!normA || !normB) return 0;
+      if (normA === normB) return 1;
+      const dist = levenshtein_(normA, normB);
+      const maxLen = Math.max(normA.length, normB.length) || 1;
+      let score = 1 - dist / maxLen;
+      if (normB.indexOf(normA) !== -1 || normA.indexOf(normB) !== -1) score = Math.max(score, 0.75);
+      const tokensA = normA.split(/\s+/);
+      const tokensB = normB.split(/\s+/);
+      const common = tokensA.filter(function (t) { return tokensB.indexOf(t) !== -1; }).length;
+      const tokenScore = common / Math.max(tokensA.length, tokensB.length);
+      return Math.max(score, tokenScore * 0.9);
+    }
+
+    function findSimilarChiTiet_(query, limit) {
+      const results = (INIT_DATA.workItems || []).map(function (item) {
+        return { item: item, score: similarityScore_(query, item) };
+      });
+      results.sort(function (a, b) { return b.score - a.score; });
+      return results.filter(function (r) { return r.score > 0.28; }).slice(0, limit || 5);
+    }
+
+    /* =========================================================
+     * POPUP: Tìm tương tự
+     * ========================================================= */
+    let currentChiTietCallback = null;
+
+    function openSimilarPopup(query, onSelectCallback) {
+      currentChiTietCallback = onSelectCallback;
+      const listEl = document.getElementById('similarList');
+      listEl.innerHTML = '';
+
+      const matches = query ? findSimilarChiTiet_(query, 5) : [];
+
+      if (matches.length === 0) {
+        listEl.innerHTML = '<div class="empty-state">Không tìm thấy gợi ý nào gần đúng.</div>';
+      } else {
+        matches.forEach(function (m) {
+          const item = document.createElement('div');
+          item.className = 'similar-item';
+          const pct = Math.round(m.score * 100);
+          item.innerHTML = '<span class="label">' + m.item + '</span><span class="score">' + pct + '%</span>';
+          item.addEventListener('click', function () {
+            if (currentChiTietCallback) currentChiTietCallback(m.item);
+            closeSimilarPopup();
+          });
+          listEl.appendChild(item);
+        });
+      }
+
+      document.getElementById('similarOverlay').style.display = 'flex';
+    }
+
+    function closeSimilarPopup() {
+      document.getElementById('similarOverlay').style.display = 'none';
+    }
+
+    document.getElementById('similarCloseBtn').addEventListener('click', closeSimilarPopup);
+    document.getElementById('similarGoAddNew').addEventListener('click', function () {
+      const lastQuery = document.getElementById('similarList').dataset.query || '';
+      closeSimilarPopup();
+      openAddDanhMucPopup(lastQuery, currentChiTietCallback);
+    });
+
+    /* =========================================================
+     * POPUP: Thêm mới vào Danh_muc
+     * ========================================================= */
+    let currentAddNewCallback = null;
+
+    function openAddDanhMucPopup(prefillChiTiet, onAddedCallback) {
+      currentAddNewCallback = onAddedCallback;
+      document.getElementById('newHeThong').value = '';
+      document.getElementById('newTenHangMuc').value = '';
+      document.getElementById('newChiTiet').value = prefillChiTiet || '';
+      document.getElementById('addDanhMucError').innerText = '';
+      document.getElementById('similarList').dataset.query = prefillChiTiet || '';
+      document.getElementById('addDanhMucOverlay').style.display = 'flex';
+      document.getElementById('newHeThong').focus();
+    }
+
+    function closeAddDanhMucPopup() {
+      document.getElementById('addDanhMucOverlay').style.display = 'none';
+    }
+
+    document.getElementById('addDanhMucCancelBtn').addEventListener('click', closeAddDanhMucPopup);
+
+    setupAutocomplete(
+      document.getElementById('newHeThong'),
+      document.getElementById('newHeThongSuggestions'),
+      function () { return INIT_DATA.heThongList || []; },
+      function (val) { document.getElementById('newHeThong').value = val; }
+    );
+    setupAutocomplete(
+      document.getElementById('newTenHangMuc'),
+      document.getElementById('newTenHangMucSuggestions'),
+      function () {
+        const heThongVal = document.getElementById('newHeThong').value.trim().toLowerCase();
+        const map = INIT_DATA.heThongToTenHangMuc || {};
+        return map[heThongVal] || Object.values(map).reduce(function (acc, arr) { return acc.concat(arr); }, []);
+      },
+      function (val) { document.getElementById('newTenHangMuc').value = val; }
+    );
+
+    document.getElementById('addDanhMucConfirmBtn').addEventListener('click', function () {
+      const heThong = document.getElementById('newHeThong').value.trim();
+      const tenHangMuc = document.getElementById('newTenHangMuc').value.trim();
+      const chiTiet = document.getElementById('newChiTiet').value.trim();
+      const errEl = document.getElementById('addDanhMucError');
+      errEl.innerText = '';
+
+      if (!heThong || !tenHangMuc || !chiTiet) {
+        errEl.innerText = 'Vui lòng điền đủ cả 3 trường.';
+        return;
+      }
+
+      const btn = document.getElementById('addDanhMucConfirmBtn');
+      btn.disabled = true;
+      btn.innerText = 'Đang lưu...';
+
+      apiCall('addDanhMucEntry', { args: [{ heThong: heThong, tenHangMuc: tenHangMuc, chiTiet: chiTiet }] })
+        .then(function (res) {
+          btn.disabled = false;
+          btn.innerText = '✓ Lưu vào Danh_muc';
+
+          INIT_DATA.workItems = INIT_DATA.workItems || [];
+          if (INIT_DATA.workItems.indexOf(res.chiTiet) === -1) INIT_DATA.workItems.push(res.chiTiet);
+          INIT_DATA.heThongList = INIT_DATA.heThongList || [];
+          if (INIT_DATA.heThongList.indexOf(res.heThong) === -1) INIT_DATA.heThongList.push(res.heThong);
+          INIT_DATA.heThongToTenHangMuc = INIT_DATA.heThongToTenHangMuc || {};
+          const key = res.heThong.toLowerCase();
+          if (!INIT_DATA.heThongToTenHangMuc[key]) INIT_DATA.heThongToTenHangMuc[key] = [];
+          if (INIT_DATA.heThongToTenHangMuc[key].indexOf(res.tenHangMuc) === -1) {
+            INIT_DATA.heThongToTenHangMuc[key].push(res.tenHangMuc);
+          }
+          INIT_DATA.chiTietDefaults = INIT_DATA.chiTietDefaults || {};
+          INIT_DATA.chiTietDefaults[res.chiTiet.toLowerCase()] = { phanLoai: '', donVi: '' };
+
+          if (currentAddNewCallback) currentAddNewCallback(res.chiTiet);
+          closeAddDanhMucPopup();
+        })
+        .catch(function (err) {
+          btn.disabled = false;
+          btn.innerText = '✓ Lưu vào Danh_muc';
+          errEl.innerText = err.message || String(err);
+        });
+    });
+  </script>
 </body>
+
 </html>
- 
