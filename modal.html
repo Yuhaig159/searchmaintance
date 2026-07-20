@@ -128,11 +128,20 @@
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: action, args: args })
       })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Lỗi mạng: " + res.status);
+        return res.text();
+      })
+      .then(text => {
+        try { return JSON.parse(text); } catch (e) { throw new Error("Không thể parse JSON"); }
+      })
       .then(data => {
-        if (data && data.error) {
-          if (failureCb) failureCb(new Error(data.error));
+        if (data && (data.error || data.serverApiError)) {
+          if (failureCb) failureCb(new Error(data.error || data.serverApiError));
         } else {
+          if (data && data.isCompressed) {
+            data = decompressKeys(data);
+          }
           if (successCb) successCb(data);
         }
       })
@@ -144,6 +153,29 @@
     getLastKmForPlate: function(plate) { this._call('getLastKmForPlate', [plate]); },
     saveMaintenanceRecord: function(payload) { this._call('saveMaintenanceRecord', [payload]); }
   };
+
+  function decompressKeys(obj) {
+    if (!obj || typeof obj !== 'object') return obj;
+    if (Array.isArray(obj)) return obj.map(decompressKeys);
+
+    const reverseMapping = {
+      p: 'plate', d: 'date', do: 'dateObj', kd: 'kmDisplay', k: 'km',
+      s: 'system', c: 'category', w: 'work', mt: 'maintenanceType',
+      dt: 'details', t: 'type', st: 'subType', vh: 'vehicles', stt: 'status'
+    };
+
+    const newObj = {};
+    for (let key in obj) {
+      let newKey = reverseMapping[key] || key;
+      let value = obj[key];
+      if (value && typeof value === 'object') {
+        newObj[newKey] = decompressKeys(value);
+      } else {
+        newObj[newKey] = value;
+      }
+    }
+    return newObj;
+  }
 
   document.addEventListener('DOMContentLoaded', function () {
     api.withSuccessHandler(onInitLoaded).withFailureHandler(onInitFailed).getFormInitData();
