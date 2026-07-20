@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nhập Dữ Liệu Bảo Dưỡng</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom styles for specific behaviors that Tailwind doesn't cover natively out-of-the-box perfectly */
+    .suggestions {
+      display: none;
+    }
+    .suggestions.active {
+      display: block;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans p-4 md:p-6 h-screen overflow-y-auto">
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="fixed inset-0 bg-white/80 z-50 flex flex-col items-center justify-center font-semibold text-slate-700 text-sm backdrop-blur-sm transition-opacity">
+    <div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+    <span id="loadingText">Đang tải dữ liệu...</span>
+  </div>
+
+  <!-- New Unit Overlay -->
+  <div id="newUnitOverlay" class="fixed inset-0 bg-slate-900/40 z-[200] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-xl p-5 max-w-sm w-full shadow-2xl">
+      <div class="font-bold text-sm text-slate-900 mb-2">Đơn vị thực hiện mới</div>
+      <div id="newUnitMessage" class="text-sm text-slate-700 leading-relaxed mb-4"></div>
+      <div class="flex justify-end gap-2">
+        <button type="button" id="newUnitCancelBtn" class="bg-slate-100 border border-slate-300 text-slate-700 px-4 py-2 rounded-lg cursor-pointer text-sm hover:bg-slate-200 transition-colors">Hủy, để tôi sửa lại</button>
+        <button type="button" id="newUnitConfirmBtn" class="bg-blue-600 border-none text-white px-4 py-2 rounded-lg cursor-pointer font-semibold text-sm hover:bg-blue-700 transition-colors">✓ Thêm mới & Lưu</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+      <span class="text-xl">📋</span> Nhập Dữ Liệu Bảo Dưỡng
+    </h2>
+
+    <div id="successBanner" class="hidden bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg text-sm font-semibold mb-4 shadow-sm"></div>
+
+    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="relative">
+        <label class="block font-semibold text-slate-700 text-xs mb-1">Biển Số Xe *</label>
+        <input id="plate" type="text" placeholder="Nhập hoặc chọn biển số..." autocomplete="off" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
+        <div id="plateSuggestions" class="suggestions absolute top-full left-0 right-0 bg-white border border-slate-300 border-t-0 rounded-b-lg max-h-40 overflow-y-auto z-50 shadow-lg"></div>
+        <div class="text-[11px] text-slate-500 mt-1 min-h-[14px]" id="plateHint"></div>
+      </div>
+
+      <div class="relative">
+        <label class="block font-semibold text-slate-700 text-xs mb-1">Đơn Vị Thực Hiện *</label>
+        <input id="unit" type="text" placeholder="Nhập hoặc chọn đơn vị..." autocomplete="off" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
+        <div id="unitSuggestions" class="suggestions absolute top-full left-0 right-0 bg-white border border-slate-300 border-t-0 rounded-b-lg max-h-40 overflow-y-auto z-50 shadow-lg"></div>
+        <div class="text-[11px] text-slate-500 mt-1 min-h-[14px]">&nbsp;</div>
+      </div>
+
+      <div>
+        <label class="block font-semibold text-slate-700 text-xs mb-1">Ngày Hoàn Thành * (dd/mm/yyyy)</label>
+        <input id="date" type="text" placeholder="vd: 15/07/2026" autocomplete="off" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
+        <div class="text-[11px] text-red-600 mt-1 min-h-[14px]" id="dateError"></div>
+      </div>
+
+      <div>
+        <label class="block font-semibold text-slate-700 text-xs mb-1">Số Kilomet *</label>
+        <input id="km" type="number" step="0.001" placeholder="vd: 90000" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
+        <div class="text-[11px] text-slate-500 mt-1 min-h-[14px]" id="kmHint">&nbsp;</div>
+      </div>
+    </div>
+
+    <div id="kmWarning" class="hidden mt-2 bg-orange-50 border border-orange-300 rounded-lg p-3 text-sm text-orange-800 shadow-sm mb-4">
+      <div class="font-medium mb-1">⚠️ <span id="kmWarningText"></span></div>
+      <label class="flex items-center gap-2 mt-2 font-normal cursor-pointer">
+        <input type="checkbox" id="kmConfirm" class="w-4 h-4 text-orange-600 rounded border-orange-300 focus:ring-orange-500">
+        <span>Tôi xác nhận đây là trường hợp đặc biệt (bổ sung/điều chỉnh), vẫn lưu số km này</span>
+      </label>
+    </div>
+
+    <h3 class="text-sm font-bold text-slate-700 border-b border-slate-200 pb-2 mb-3 mt-6">🧰 Hạng Mục Công Việc</h3>
+    
+    <div id="itemsContainer" class="flex flex-col gap-3"></div>
+    
+    <button type="button" id="addItemBtn" class="mt-3 w-full bg-blue-50 text-blue-700 border border-dashed border-blue-300 rounded-lg py-2.5 font-semibold text-sm cursor-pointer hover:bg-blue-100 transition-colors">
+      + Thêm hạng mục
+    </button>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+      <div class="md:col-start-3">
+        <label class="block font-semibold text-slate-700 text-xs mb-1">Tổng Tiền Báo Giá (VNĐ)</label>
+        <input id="tongTien" type="number" step="1" placeholder="vd: 2080512" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
+        <div class="text-[10.5px] text-slate-400 mt-1">Lưu 1 lần cho cả phiếu vào sheet "Phieu", không lặp lại ở từng hạng mục.</div>
+      </div>
+    </div>
+
+    <div id="globalError" class="text-xs text-red-600 mt-2 text-right font-medium"></div>
+
+    <div class="mt-6 flex justify-end gap-3 border-t border-slate-200 pt-4">
+      <button type="button" id="cancelBtn" class="bg-slate-100 text-slate-700 border border-slate-300 px-5 py-2.5 rounded-lg cursor-pointer text-sm font-medium hover:bg-slate-200 transition-colors">Xóa form</button>
+      <button type="button" id="saveBtn" class="bg-green-600 text-white border-none px-6 py-2.5 rounded-lg font-bold cursor-pointer text-sm shadow-sm hover:bg-green-700 hover:shadow disabled:bg-slate-400 disabled:cursor-not-allowed transition-all">💾 Lưu Dữ Liệu</button>
+    </div>
+  </div>
+
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbyJtGnyQcq5bxvAHqARyZ11x0mXIVlttBo3P6o7bSk06K_iN7oImLGToWWxX3nFrTaguA/exec';
+  let INIT_DATA = { vehicles: [], vehicleUnitMap: {}, workItems: [], units: [], phanLoaiOptions: [] };
+  let itemCounter = 0;
+  let lastKmInfo = null;
+
+  // Custom api wrapper to replace google.script.run
+  const api = {
+    withSuccessHandler: function(onSuccess) {
+      this.onSuccess = onSuccess;
+      return this;
+    },
+    withFailureHandler: function(onFailure) {
+      this.onFailure = onFailure;
+      return this;
+    },
+    _call: function(action, args) {
+      const successCb = this.onSuccess;
+      const failureCb = this.onFailure;
+      const finalUrl = API_URL + '?action=' + action;
+      
+      fetch(finalUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: action, args: args })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.error) {
+          if (failureCb) failureCb(new Error(data.error));
+        } else {
+          if (successCb) successCb(data);
+        }
+      })
+      .catch(err => {
+        if (failureCb) failureCb(err);
+      });
+    },
+    getFormInitData: function() { this._call('getFormInitData', []); },
+    getLastKmForPlate: function(plate) { this._call('getLastKmForPlate', [plate]); },
+    saveMaintenanceRecord: function(payload) { this._call('saveMaintenanceRecord', [payload]); }
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    api.withSuccessHandler(onInitLoaded).withFailureHandler(onInitFailed).getFormInitData();
+  });
+
+  function onInitFailed(err) {
+    document.getElementById('loadingText').innerText = 'Lỗi tải dữ liệu: ' + (err.message || err);
+    document.querySelector('.animate-spin').style.display = 'none';
+  }
+
+  function onInitLoaded(data) {
+    INIT_DATA = data;
+    document.getElementById('loadingOverlay').style.display = 'none';
+    
+    setupAutocomplete(document.getElementById('plate'), document.getElementById('plateSuggestions'),
+      function () { return INIT_DATA.vehicles || []; },
+      function (val) {
+        document.getElementById('plate').value = val;
+        const knownUnit = INIT_DATA.vehicleUnitMap ? INIT_DATA.vehicleUnitMap[val] : null;
+        if (knownUnit) document.getElementById('unit').value = knownUnit;
+        refreshLastKm(val);
+      }
+    );
+    
+    document.getElementById('plate').addEventListener('blur', function () {
+      refreshLastKm(this.value.trim());
+    });
+
+    setupAutocomplete(document.getElementById('unit'), document.getElementById('unitSuggestions'),
+      function () { return INIT_DATA.executionUnits || []; },
+      function (val) { document.getElementById('unit').value = val; }
+    );
+
+    addItemRow();
+  }
+
+  function refreshLastKm(plate) {
+    lastKmInfo = null;
+    document.getElementById('kmHint').innerText = '';
+    if (!plate) return;
+    
+    document.getElementById('loadingOverlay').style.display = 'flex';
+    document.getElementById('loadingText').innerText = 'Đang kiểm tra KM...';
+    document.querySelector('.animate-spin').style.display = 'block';
+
+    api.withSuccessHandler(function (info) {
+      document.getElementById('loadingOverlay').style.display = 'none';
+      lastKmInfo = info;
+      const hintEl = document.getElementById('kmHint');
+      if (info && info.km) {
+        hintEl.innerText = 'Km gần nhất của xe này: ' + Number(info.km).toLocaleString('vi-VN') + ' (ngày ' + info.date + ')';
+      } else {
+        hintEl.innerText = 'Chưa có dữ liệu km trước đó cho xe này.';
+      }
+      validateKm();
+    }).withFailureHandler(function(err) {
+      document.getElementById('loadingOverlay').style.display = 'none';
+      console.error(err);
+    }).getLastKmForPlate(plate);
+  }
+
+  function validateKm() {
+    const kmVal = Number(document.getElementById('km').value);
+    const warnBox = document.getElementById('kmWarning');
+    const warnText = document.getElementById('kmWarningText');
+    if (lastKmInfo && lastKmInfo.km && !isNaN(kmVal) && kmVal > 0 && kmVal < Number(lastKmInfo.km)) {
+      warnText.innerText = 'Số km bạn nhập (' + kmVal.toLocaleString('vi-VN') + ') NHỎ HƠN số km lần trước (' +
+        Number(lastKmInfo.km).toLocaleString('vi-VN') + ' - ngày ' + lastKmInfo.date + ').';
+      warnBox.classList.remove('hidden');
+    } else {
+      warnBox.classList.add('hidden');
+      document.getElementById('kmConfirm').checked = false;
+    }
+  }
+  document.getElementById('km').addEventListener('input', validateKm);
+
+  /* ---------- Autocomplete dùng chung ---------- */
+  function setupAutocomplete(inputEl, boxEl, getListFn, onSelectFn) {
+    inputEl.addEventListener('input', function () {
+      document.getElementById('successBanner').classList.add('hidden');
+      const q = this.value.trim().toLowerCase();
+      const list = getListFn();
+      if (!q) { boxEl.classList.remove('active'); return; }
+      const matches = list.filter(v => v && v.toLowerCase().includes(q)).slice(0, 30);
+      renderSuggestions(boxEl, matches, onSelectFn, inputEl);
+    });
+    inputEl.addEventListener('focus', function () {
+      const list = getListFn();
+      if (list.length) renderSuggestions(boxEl, list.slice(0, 30), onSelectFn, inputEl);
+    });
+    document.addEventListener('click', function (e) {
+      if (!boxEl.contains(e.target) && e.target !== inputEl) boxEl.classList.remove('active');
+    });
+  }
+
+  function renderSuggestions(boxEl, matches, onSelectFn, inputEl) {
+    boxEl.innerHTML = '';
+    if (matches.length === 0) { boxEl.classList.remove('active'); return; }
+    matches.forEach(function (m) {
+      const div = document.createElement('div');
+      div.innerText = m;
+      div.className = 'px-3 py-2 cursor-pointer text-sm text-slate-700 hover:bg-blue-50 transition-colors border-b border-slate-100 last:border-0';
+      div.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        onSelectFn(m);
+        boxEl.classList.remove('active');
+      });
+      boxEl.appendChild(div);
+    });
+    boxEl.classList.add('active');
+  }
+
+  /* ---------- Quản lý hạng mục ---------- */
+  function addItemRow() {
+    itemCounter++;
+    const id = itemCounter;
+    const container = document.getElementById('itemsContainer');
+    const row = document.createElement('div');
+    row.className = 'item-row bg-white p-4 border border-slate-200 rounded-xl relative shadow-sm grid grid-cols-1 sm:grid-cols-12 gap-3 items-start';
+    row.dataset.itemId = id;
+    
+    let phanLoaiOpts = '<option value="">-- chọn --</option>';
+    if (INIT_DATA.phanLoaiOptions && INIT_DATA.phanLoaiOptions.length) {
+      phanLoaiOpts += INIT_DATA.phanLoaiOptions.map(p => '<option value="' + p + '">' + p + '</option>').join('');
+    }
+
+    row.innerHTML = `
+      <div class="stt-badge absolute -top-2 -left-2 bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shadow-sm">${container.children.length + 1}</div>
+      <div class="sm:col-span-3">
+        <label class="block font-semibold text-slate-700 text-xs mb-1">Phân loại *</label>
+        <select class="fld-phanloai w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow">
+          ${phanLoaiOpts}
+        </select>
+      </div>
+      <div class="sm:col-span-4 relative">
+        <label class="block font-semibold text-slate-700 text-xs mb-1">Chi tiết công việc *</label>
+        <input type="text" class="fld-chitiet w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow" placeholder="Gõ để tìm..." autocomplete="off">
+        <div class="suggestions fld-chitiet-suggestions absolute top-full left-0 right-0 bg-white border border-slate-300 border-t-0 rounded-b-lg max-h-40 overflow-y-auto z-50 shadow-lg"></div>
+        <div class="small-note fld-chitiet-note text-[10.5px] text-slate-400 mt-1"></div>
+      </div>
+      <div class="sm:col-span-2">
+        <label class="block font-semibold text-slate-700 text-xs mb-1">Số lượng *</label>
+        <input type="number" step="0.01" class="fld-soluong w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow" placeholder="1">
+      </div>
+      <div class="sm:col-span-2 relative">
+        <label class="block font-semibold text-slate-700 text-xs mb-1">Đơn vị *</label>
+        <input type="text" class="fld-donvi w-full px-3 py-2 border border-slate-300 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-shadow" placeholder="Cái/Lít..." autocomplete="off">
+        <div class="suggestions fld-donvi-suggestions absolute top-full left-0 right-0 bg-white border border-slate-300 border-t-0 rounded-b-lg max-h-40 overflow-y-auto z-50 shadow-lg"></div>
+      </div>
+      <div class="sm:col-span-1 flex justify-end sm:mt-6">
+        <button type="button" class="remove-btn bg-red-100 text-red-700 border-none rounded-lg w-8 h-8 sm:w-full sm:h-[38px] flex items-center justify-center cursor-pointer hover:bg-red-200 transition-colors" title="Xóa hạng mục">✕</button>
+      </div>
+    `;
+
+    container.appendChild(row);
+
+    const chiTietInput = row.querySelector('.fld-chitiet');
+    const chiTietBox = row.querySelector('.fld-chitiet-suggestions');
+    const chiTietNote = row.querySelector('.fld-chitiet-note');
+    setupAutocomplete(chiTietInput, chiTietBox,
+      function () { return INIT_DATA.workItems || []; },
+      function (val) {
+        chiTietInput.value = val;
+        chiTietNote.innerText = '';
+        chiTietInput.classList.remove('border-red-500');
+      }
+    );
+    chiTietInput.addEventListener('blur', function () {
+      const v = this.value.trim();
+      if (v && INIT_DATA.workItems && INIT_DATA.workItems.indexOf(v) === -1) {
+        chiTietNote.innerHTML = '<span class="text-red-500">⚠️ Không khớp Danh_muc — có thể để trống.</span>';
+        chiTietInput.classList.add('border-red-500');
+      } else {
+        chiTietNote.innerText = '';
+        chiTietInput.classList.remove('border-red-500');
+      }
+    });
+
+    const donViInput = row.querySelector('.fld-donvi');
+    const donViBox = row.querySelector('.fld-donvi-suggestions');
+    setupAutocomplete(donViInput, donViBox,
+      function () { return INIT_DATA.units || []; },
+      function (val) { donViInput.value = val; }
+    );
+
+    row.querySelector('.remove-btn').addEventListener('click', function () {
+      row.remove();
+      renumberItems();
+    });
+
+    renumberItems();
+  }
+
+  function renumberItems() {
+    const rows = document.querySelectorAll('.item-row');
+    rows.forEach(function (r, i) {
+      r.querySelector('.stt-badge').innerText = i + 1;
+    });
+  }
+
+  document.getElementById('addItemBtn').addEventListener('click', addItemRow);
+  
+  // Custom Cancel Button Action (since it's not a native Google popup anymore)
+  document.getElementById('cancelBtn').addEventListener('click', function() {
+    if(confirm('Bạn có chắc muốn xóa trắng toàn bộ dữ liệu trên form?')) {
+      resetFormForNextEntry();
+    }
+  });
+
+  /* ---------- Validate & Save ---------- */
+  function parseDateStr(str) {
+    const m = str.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (!m) return null;
+    const dd = parseInt(m[1], 10), mm = parseInt(m[2], 10), yyyy = parseInt(m[3], 10);
+    if (mm < 1 || mm > 12) return null;
+    const daysInMonth = new Date(yyyy, mm, 0).getDate();
+    if (dd < 1 || dd > daysInMonth) return null;
+    return { dd: dd, mm: mm, yyyy: yyyy };
+  }
+
+  function isKnownUnit(val) {
+    const target = val.trim().toLowerCase();
+    return (INIT_DATA.executionUnits || []).some(u => u.trim().toLowerCase() === target);
+  }
+
+  function doSave(payload) {
+    const globalErr = document.getElementById('globalError');
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.disabled = true;
+    saveBtn.innerText = 'Đang lưu...';
+    
+    document.getElementById('loadingOverlay').style.display = 'flex';
+    document.getElementById('loadingText').innerText = 'Đang lưu dữ liệu...';
+    document.querySelector('.animate-spin').style.display = 'block';
+
+    api
+      .withSuccessHandler(function (res) {
+        document.getElementById('loadingOverlay').style.display = 'none';
+        onSaveSuccess(res, payload);
+      })
+      .withFailureHandler(function (err) {
+        document.getElementById('loadingOverlay').style.display = 'none';
+        saveBtn.disabled = false;
+        saveBtn.innerText = '💾 Lưu Dữ Liệu';
+        globalErr.innerText = 'Lỗi khi lưu: ' + (err.message || err);
+      })
+      .saveMaintenanceRecord(payload);
+  }
+
+  function onSaveSuccess(res, payload) {
+    if (INIT_DATA.vehicles && INIT_DATA.vehicles.indexOf(payload.plate) === -1) INIT_DATA.vehicles.push(payload.plate);
+    if(!INIT_DATA.vehicleUnitMap) INIT_DATA.vehicleUnitMap = {};
+    INIT_DATA.vehicleUnitMap[payload.plate] = payload.unit;
+    if (!isKnownUnit(payload.unit)) {
+      INIT_DATA.executionUnits = INIT_DATA.executionUnits || [];
+      INIT_DATA.executionUnits.push(payload.unit);
+    }
+
+    const banner = document.getElementById('successBanner');
+    banner.innerText = '✅ ' + (res.message || 'Lưu thành công') + ' — form đã sẵn sàng để nhập phiếu tiếp theo.';
+    banner.classList.remove('hidden');
+
+    resetFormForNextEntry();
+
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.disabled = false;
+    saveBtn.innerText = '💾 Lưu Dữ Liệu';
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function resetFormForNextEntry() {
+    document.getElementById('plate').value = '';
+    document.getElementById('unit').value = '';
+    document.getElementById('date').value = '';
+    document.getElementById('km').value = '';
+    document.getElementById('tongTien').value = '';
+    document.getElementById('dateError').innerText = '';
+    document.getElementById('globalError').innerText = '';
+    document.getElementById('kmHint').innerText = '';
+    document.getElementById('kmWarning').classList.add('hidden');
+    document.getElementById('kmConfirm').checked = false;
+    lastKmInfo = null;
+
+    document.getElementById('itemsContainer').innerHTML = '';
+    addItemRow();
+
+    document.getElementById('plate').focus();
+  }
+
+  function askAddNewUnit(unitName, onConfirm, onCancel) {
+    const overlay = document.getElementById('newUnitOverlay');
+    document.getElementById('newUnitMessage').innerText =
+      'Đơn vị "' + unitName + '" chưa có trong danh sách hiện có. Bạn có muốn thêm mới đơn vị này không? ' +
+      'Sau khi xác nhận, đơn vị này sẽ được lưu và xuất hiện trong gợi ý cho các lần nhập sau.';
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+
+    const confirmBtn = document.getElementById('newUnitConfirmBtn');
+    const cancelBtn = document.getElementById('newUnitCancelBtn');
+
+    function cleanup() {
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+      confirmBtn.removeEventListener('click', handleConfirm);
+      cancelBtn.removeEventListener('click', handleCancel);
+    }
+    function handleConfirm() { cleanup(); onConfirm(); }
+    function handleCancel() { cleanup(); onCancel(); }
+
+    confirmBtn.addEventListener('click', handleConfirm);
+    cancelBtn.addEventListener('click', handleCancel);
+  }
+
+  document.getElementById('saveBtn').addEventListener('click', function () {
+    const globalErr = document.getElementById('globalError');
+    globalErr.innerText = '';
+
+    const plate = document.getElementById('plate').value.trim();
+    const unit = document.getElementById('unit').value.trim();
+    const dateStr = document.getElementById('date').value.trim();
+    const km = document.getElementById('km').value;
+    const tongTien = document.getElementById('tongTien').value;
+
+    const dateErrEl = document.getElementById('dateError');
+    dateErrEl.innerText = '';
+    const dateParsed = parseDateStr(dateStr);
+    if (!dateParsed) dateErrEl.innerText = 'Định dạng phải là dd/mm/yyyy, vd 15/07/2026.';
+
+    const kmWarnVisible = !document.getElementById('kmWarning').classList.contains('hidden');
+    const kmConfirmed = document.getElementById('kmConfirm').checked;
+
+    let errors = [];
+    if (!plate) errors.push('Thiếu Biển số xe.');
+    if (!unit) errors.push('Thiếu Đơn vị thực hiện.');
+    if (!dateParsed) errors.push('Ngày hoàn thành không hợp lệ.');
+    if (!km || isNaN(Number(km)) || Number(km) <= 0) errors.push('Thiếu/ sai Số kilomet.');
+    if (kmWarnVisible && !kmConfirmed) errors.push('Vui lòng tick xác nhận trường hợp km nhỏ hơn lần trước, hoặc sửa lại số km.');
+
+    const itemRows = document.querySelectorAll('.item-row');
+    if (itemRows.length === 0) errors.push('Cần ít nhất 1 hạng mục công việc.');
+
+    const items = [];
+    itemRows.forEach(function (r, idx) {
+      const phanLoai = r.querySelector('.fld-phanloai').value;
+      const chiTiet = r.querySelector('.fld-chitiet').value.trim();
+      const soLuong = r.querySelector('.fld-soluong').value;
+      const donVi = r.querySelector('.fld-donvi').value.trim();
+      if (!phanLoai) errors.push('Hạng mục #' + (idx + 1) + ': thiếu Phân loại.');
+      if (!chiTiet) errors.push('Hạng mục #' + (idx + 1) + ': thiếu Chi tiết công việc.');
+      if (!soLuong || isNaN(Number(soLuong)) || Number(soLuong) <= 0) errors.push('Hạng mục #' + (idx + 1) + ': thiếu/sai Số lượng.');
+      if (!donVi) errors.push('Hạng mục #' + (idx + 1) + ': thiếu Đơn vị.');
+      items.push({ phanLoai: phanLoai, chiTiet: chiTiet, soLuong: soLuong, donVi: donVi });
+    });
+
+    if (errors.length > 0) {
+      globalErr.innerText = errors.join(' ');
+      return;
+    }
+
+    const payload = {
+      plate: plate,
+      unit: unit,
+      date: dateParsed,
+      km: km,
+      tongTien: tongTien,
+      items: items
+    };
+
+    if (!isKnownUnit(unit)) {
+      askAddNewUnit(unit,
+        function onConfirm() {
+          INIT_DATA.executionUnits = INIT_DATA.executionUnits || [];
+          INIT_DATA.executionUnits.push(unit);
+          doSave(payload);
+        },
+        function onCancel() {
+          document.getElementById('unit').focus();
+        }
+      );
+      return;
+    }
+
+    doSave(payload);
+  });
+</script>
+</body>
+</html>
