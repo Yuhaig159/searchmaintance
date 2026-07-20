@@ -675,7 +675,7 @@
         if (res.stt === 'error' || res.status === 'error' || !res.success) {
           throw new Error(res.error || res.message || 'Unknown error');
         }
-        return decompressKeys(res.data);
+        return decompressKeys(res);
       });
     }
 
