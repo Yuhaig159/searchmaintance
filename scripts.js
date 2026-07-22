@@ -1251,8 +1251,8 @@ function loadInfoData() {
         emptyState.querySelector('p').textContent = res?.error || 'Không tìm thấy thông tin xe.';
         return;
       }
-      emptyState.classList.add('hidden');
       currentInfoData = res.data;
+      window.currentInfoData = res.data;
       applyInfoFilters();
     })
     .withFailureHandler(err => {
