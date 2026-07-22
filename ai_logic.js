@@ -21,6 +21,7 @@
       // Auto-resize textarea
       input.addEventListener('input', () => autoResizeTextarea(input));
       input.hasListener = true;
+    }
     if (!window.currentInfoData && typeof loadInfoData === 'function') {
       try { loadInfoData(); } catch(e) {}
     }
