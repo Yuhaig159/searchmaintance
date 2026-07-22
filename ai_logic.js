@@ -188,8 +188,49 @@
       }
     }
 
-    // 1. Tra cứu thông tin xe / Tài xế / SĐT (Phản hồi siêu tốc < 10ms)
-    const isInfoIntent = ['thông tin', 'tài xế', 'lái xe', 'sđt', 'điện thoại', 'phụ trách', 'quản lý', 'ai lái', 'xe gì', 'ở đâu', 'khu vực', 'chức danh'].some(k => qLower.includes(k));
+    // 1A. Người dùng CHỈ HỎI SỐ ĐIỆN THOẠI
+    const isPhoneOnly = ['sđt', 'điện thoại', 'phone', 'số đt', 'gọi', 'liên hệ'].some(k => qLower.includes(k));
+    if (foundInfo && isPhoneOnly) {
+      const getVal = (keys) => typeof getColValue === 'function' ? getColValue(foundInfo, keys) : '---';
+      const plate = getVal(['biển số', 'plate', 'bks', 'mã xe', 'xe']);
+      const driver = getVal(['tài xế', 'driver', 'người lái', 'lái xe']);
+      const phone = getVal(['điện thoại', 'số điện thoại', 'sđt', 'phone', 'số đt']);
+      const pic = getVal(['người phụ trách', 'pic', 'quản lý', 'phụ trách', 'nvpt']);
+
+      if (phone !== '---') {
+        const nameStr = driver !== '---' ? driver : pic;
+        return `⚡ **Số điện thoại xe ${plate}** (${nameStr}): 📞 [**${phone}**](tel:${phone})`;
+      } else {
+        return `⚡ Xe **${plate}** hiện chưa cập nhật số điện thoại.`;
+      }
+    }
+
+    // 1B. Người dùng CHỈ HỎI TÀI XẾ
+    const isDriverOnly = ['tài xế', 'lái xe', 'ai lái'].some(k => qLower.includes(k));
+    if (foundInfo && isDriverOnly) {
+      const getVal = (keys) => typeof getColValue === 'function' ? getColValue(foundInfo, keys) : '---';
+      const plate = getVal(['biển số', 'plate', 'bks', 'mã xe', 'xe']);
+      const driver = getVal(['tài xế', 'driver', 'người lái', 'lái xe']);
+      const phone = getVal(['điện thoại', 'số điện thoại', 'sđt', 'phone', 'số đt']);
+
+      let answer = `⚡ **Tài xế xe ${plate}**: **${driver}**`;
+      if (phone !== '---') answer += ` (📞 [${phone}](tel:${phone}))`;
+      return answer;
+    }
+
+    // 1C. Người dùng CHỈ HỎI NGƯỜI PHỤ TRÁCH
+    const isPicOnly = ['phụ trách', 'quản lý', 'nvpt'].some(k => qLower.includes(k));
+    if (foundInfo && isPicOnly) {
+      const getVal = (keys) => typeof getColValue === 'function' ? getColValue(foundInfo, keys) : '---';
+      const plate = getVal(['biển số', 'plate', 'bks', 'mã xe', 'xe']);
+      const pic = getVal(['người phụ trách', 'pic', 'quản lý', 'phụ trách', 'nvpt']);
+      const branch = getVal(['nhánh', 'bộ phận']);
+
+      return `⚡ **Người phụ trách xe ${plate}**: **${pic}** ${branch !== '---' ? `(${branch})` : ''}`;
+    }
+
+    // 1D. Người dùng HỎI THÔNG TIN TỔNG QUAN
+    const isInfoIntent = ['thông tin', 'chi tiết', 'tổng quan', 'xe gì', 'ở đâu', 'khu vực', 'chức danh'].some(k => qLower.includes(k));
     if (foundInfo && isInfoIntent) {
       const getVal = (keys) => typeof getColValue === 'function' ? getColValue(foundInfo, keys) : '---';
       const plate = getVal(['biển số', 'plate', 'bks', 'mã xe', 'xe']);
