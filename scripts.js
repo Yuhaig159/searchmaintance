@@ -502,9 +502,9 @@ function renderSummary(response) {
       const fullTxt = ((d.category || '') + ' ' + (d.work || '') + ' ' + (d.system || '')).toUpperCase();
       targets.forEach(t => {
         if (latestReplacements[t.label].km !== '---') return;
-        const match = t.keys.some(k => fullTxt.includes(k)) && 
-                      (!t.subKeys || t.subKeys.some(s => fullTxt.includes(s))) &&
-                      (!t.excludeKeys || !t.excludeKeys.some(e => fullTxt.includes(e)));
+        const match = t.keys.some(k => fullTxt.includes(k)) &&
+          (!t.subKeys || t.subKeys.some(s => fullTxt.includes(s))) &&
+          (!t.excludeKeys || !t.excludeKeys.some(e => fullTxt.includes(e)));
         if (match) {
           const km = parseInt(g.km);
           latestReplacements[t.label] = { km: g.kmDisplay || km.toLocaleString('vi-VN'), date: g.date, nextDue: km + t.interval };
@@ -519,7 +519,7 @@ function renderSummary(response) {
     const rowKm = hasData ? item.km.replace(/\D/g, '') : '';
     const currentKmVal = hasData ? parseInt(item.km.replace(/\D/g, '')) : 0;
     const nextServiceKm = hasData ? (currentKmVal + t.interval).toLocaleString('vi-VN') : '---';
-    
+
     let progress = 0;
     let statusClass = 'status-ok';
     if (hasData) {
@@ -530,7 +530,7 @@ function renderSummary(response) {
     } else {
       statusClass = 'status-unknown';
     }
-    
+
     return { ...t, item, hasData, rowKm, currentKmVal, nextServiceKm, progress, statusClass };
   });
 
@@ -1268,22 +1268,25 @@ function loadInfoData() {
 function applyInfoFilters() {
   if (!currentInfoData) return;
   const query = document.getElementById('infoSearchInput').value.toLowerCase();
-  
+
   let filtered = currentInfoData;
   if (query) {
     filtered = currentInfoData.filter(v => {
       return Object.values(v).some(val => String(val).toLowerCase().includes(query));
     });
   }
-  
+
   renderInfoVehicleList(filtered);
 }
 
 function getColValue(obj, keys) {
+  if (!obj) return '---';
   const objKeys = Object.keys(obj);
   for (let key of keys) {
     const found = objKeys.find(k => k.toLowerCase().includes(key.toLowerCase()));
-    if (found && obj[found]) return obj[found];
+    if (found && obj[found] !== undefined && obj[found] !== null && String(obj[found]).trim() !== '') {
+      return String(obj[found]).trim();
+    }
   }
   return '---';
 }
@@ -1297,13 +1300,13 @@ function renderInfoVehicleList(vehicles) {
 
   const html = vehicles.map((v, index) => {
     const delay = index * 0.03;
-    
+
     // Attempt to identify core fields
-    const plate = getColValue(v, ['biển số', 'plate', 'xe']);
+    const plate = getColValue(v, ['biển số', 'plate', 'bks', 'mã xe', 'xe']);
     const pic = getColValue(v, ['người phụ trách', 'pic', 'quản lý', 'phụ trách', 'nvpt', 'người quản lý']);
     const driver = getColValue(v, ['tài xế', 'driver', 'người lái', 'lái xe']);
-    const phone = getColValue(v, ['điện thoại', 'sđt', 'phone', 'số đt']);
-    
+    const phone = getColValue(v, ['điện thoại', 'số điện thoại', 'sđt', 'phone', 'số đt']);
+
     const getIconForKey = (key) => {
       const k = key.toLowerCase();
       // === Thông tin xe ===
@@ -1359,7 +1362,7 @@ function renderInfoVehicleList(vehicles) {
     };
 
     const groups = { 'Thông tin xe': [], 'Thông số kỹ thuật': [], 'Thông tin quản lý': [] };
-    Object.keys(v).filter(k => v[k]).forEach(k => {
+    Object.keys(v).filter(k => v[k] !== undefined && v[k] !== null && String(v[k]).trim() !== '').forEach(k => {
       const groupName = getGroupForKey(k);
       if (!groups[groupName]) groups[groupName] = [];
       groups[groupName].push(k);
@@ -1384,7 +1387,7 @@ function renderInfoVehicleList(vehicles) {
           </div>
         `;
       }).join('');
-      
+
       return `
         <div class="info-bento-section collapsed">
           <div class="info-bento-section-title" onclick="toggleInfoSection(event, this)">
@@ -1478,20 +1481,20 @@ let activeInfoCard = null;
 
 function toggleInfoCard(containerEl, event) {
   if (event) event.stopPropagation();
-  
+
   if (activeInfoCard && activeInfoCard !== containerEl) {
     activeInfoCard.classList.remove('expanded');
     activeInfoCard.querySelector('.info-card').classList.remove('flipped');
   }
 
   const isExpanded = containerEl.classList.contains('expanded');
-  
+
   if (isExpanded) {
     closeInfoCard();
   } else {
     containerEl.classList.add('expanded');
     containerEl.querySelector('.info-card').classList.add('flipped');
-    
+
     // Create overlay if it doesn't exist
     let overlay = document.getElementById('infoOverlay');
     if (!overlay) {
@@ -1502,7 +1505,7 @@ function toggleInfoCard(containerEl, event) {
       document.getElementById('infoSection').appendChild(overlay);
     }
     overlay.classList.add('active');
-    
+
     activeInfoCard = containerEl;
   }
 }
@@ -1518,24 +1521,24 @@ function closeInfoCard() {
 }
 
 // Global function to toggle accordion sections in Info Card
-window.toggleInfoSection = function(event, el) {
+window.toggleInfoSection = function (event, el) {
   if (event) event.stopPropagation(); // Ngăn chặn sự kiện click lan ra ngoài gây đóng thẻ
   const section = el.closest('.info-bento-section');
   if (!section) return;
-  
+
   const isCurrentlyCollapsed = section.classList.contains('collapsed');
-  
+
   // Close ALL sections first (mutually exclusive accordion)
   const allSections = section.parentElement.querySelectorAll('.info-bento-section');
   allSections.forEach(s => s.classList.add('collapsed'));
-  
+
   // If it was collapsed, open it. (If it was open, it is now closed)
   if (isCurrentlyCollapsed) {
     section.classList.remove('collapsed');
   }
 };
 
-window.filterReplacementCards = function() {
+window.filterReplacementCards = function () {
   const query = document.getElementById('replSearchInput').value.toLowerCase();
   const cards = document.querySelectorAll('#replacementList .repl-card');
   cards.forEach(card => {
