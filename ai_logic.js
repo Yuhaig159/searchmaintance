@@ -21,6 +21,8 @@
       // Auto-resize textarea
       input.addEventListener('input', () => autoResizeTextarea(input));
       input.hasListener = true;
+    if (!window.currentInfoData && typeof loadInfoData === 'function') {
+      try { loadInfoData(); } catch(e) {}
     }
     scrollAiToBottom();
   }
@@ -160,6 +162,78 @@
     showToast('🗑️ Đã xóa lịch sử trò chuyện');
   }
 
+  function tryProcessFastLocalAiQuery(query) {
+    if (!query) return null;
+    const qLower = query.toLowerCase().trim();
+    const qClean = qLower.replace(/[\s\-\.]/g, '');
+
+    // Tìm biển số xuất hiện trong câu hỏi
+    let foundInfo = null;
+    let foundPlate = null;
+
+    if (window.currentInfoData && Array.isArray(window.currentInfoData)) {
+      for (let v of window.currentInfoData) {
+        const plateVal = typeof getColValue === 'function' ? getColValue(v, ['biển số', 'plate', 'bks', 'mã xe', 'xe']) : (v['Biển Số'] || v['biển số']);
+        if (!plateVal || plateVal === '---') continue;
+        const cleanP = plateVal.replace(/[\s\-\.]/g, '').toLowerCase();
+        const matchNumber = cleanP.match(/\d{4,5}$/);
+        const shortNum = matchNumber ? matchNumber[0] : '';
+
+        if (qClean.includes(cleanP) || (shortNum && shortNum.length >= 4 && qClean.includes(shortNum))) {
+          foundInfo = v;
+          foundPlate = plateVal;
+          break;
+        }
+      }
+    }
+
+    // 1. Tra cứu thông tin xe / Tài xế / SĐT (Phản hồi siêu tốc < 10ms)
+    const isInfoIntent = ['thông tin', 'tài xế', 'lái xe', 'sđt', 'điện thoại', 'phụ trách', 'quản lý', 'ai lái', 'xe gì', 'ở đâu', 'khu vực', 'chức danh'].some(k => qLower.includes(k));
+    if (foundInfo && isInfoIntent) {
+      const getVal = (keys) => typeof getColValue === 'function' ? getColValue(foundInfo, keys) : '---';
+      const plate = getVal(['biển số', 'plate', 'bks', 'mã xe', 'xe']);
+      const pic = getVal(['người phụ trách', 'pic', 'quản lý', 'phụ trách', 'nvpt']);
+      const driver = getVal(['tài xế', 'driver', 'người lái', 'lái xe']);
+      const phone = getVal(['điện thoại', 'số điện thoại', 'sđt', 'phone', 'số đt']);
+      const brand = getVal(['hãng xe', 'hãng']);
+      const model = getVal(['model', 'dòng xe']);
+      const type = getVal(['loại xe', 'loại']);
+      const fuel = getVal(['loại nl', 'nhiên liệu']);
+      const norm = getVal(['định mức', 'l/100km']);
+      const area = getVal(['khu vực', 'địa bàn', 'vùng']);
+      const branch = getVal(['nhánh', 'bộ phận']);
+
+      let answer = `⚡ **THÔNG TIN XE ${plate}** *(Phản hồi tức thì)*\n\n`;
+      answer += `- 🚘 **Dòng xe**: ${brand !== '---' ? brand + ' ' : ''}${model !== '---' ? model : type}\n`;
+      answer += `- 👤 **Người phụ trách**: **${pic}** ${branch !== '---' ? `(${branch})` : ''}\n`;
+      answer += `- 🛞 **Tài xế**: **${driver}**\n`;
+      if (phone !== '---') answer += `- 📞 **Số điện thoại**: [${phone}](tel:${phone})\n`;
+      if (fuel !== '---' || norm !== '---') answer += `- ⛽ **Nhiên liệu**: ${fuel} ${norm !== '---' ? `(${norm} L/100km)` : ''}\n`;
+      if (area !== '---') answer += `- 📍 **Khu vực**: ${area}\n`;
+
+      return answer;
+    }
+
+    // 2. Tra cứu tổng quan số lượng xe
+    const isCountIntent = (qLower.includes('bao nhiêu xe') || qLower.includes('tổng số xe') || qLower.includes('danh sách xe')) && !qLower.includes('bảo dưỡng');
+    if (isCountIntent && window.currentInfoData && window.currentInfoData.length > 0) {
+      const total = window.currentInfoData.length;
+      let answer = `⚡ **TỔNG QUAN ĐỘI XE** *(Phản hồi tức thì)*\n\n`;
+      answer += `Hệ thống đang quản lý **${total} xe** trong danh mục Info Car.\n\n`;
+      answer += `**Một số xe tiêu biểu:**\n`;
+      window.currentInfoData.slice(0, 6).forEach((v, idx) => {
+        const getVal = (keys) => typeof getColValue === 'function' ? getColValue(v, keys) : '---';
+        const p = getVal(['biển số', 'plate', 'bks', 'mã xe']);
+        const pic = getVal(['người phụ trách', 'phụ trách']);
+        answer += `${idx + 1}. **${p}** - Phụ trách: ${pic}\n`;
+      });
+      if (total > 6) answer += `\n*(Chạm vào tab **Info Car List** ở thanh điều hướng dưới để xem danh sách chi tiết)*`;
+      return answer;
+    }
+
+    return null;
+  }
+
   function submitAiQuery() {
     const input = document.getElementById('aiInput');
     const query = input ? input.value.trim() : '';
@@ -174,6 +248,15 @@
     if (suggestionsEl) suggestionsEl.style.display = 'none';
 
     appendAiMessage(query, false);
+
+    // ⚡ KIỂM TRA BỘ XỬ LÝ TỨC THÌ (FAST LOCAL ENGINE)
+    const fastAnswer = tryProcessFastLocalAiQuery(query);
+    if (fastAnswer) {
+      isAiLoading = false;
+      appendAiMessage(fastAnswer, true);
+      return;
+    }
+
     showAiTyping();
 
     // Build conversation context for better AI responses
